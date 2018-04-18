@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-import lokavidya.iitb.com.lvcreate.Intro.IntroActivity;
-import lokavidya.iitb.com.lvcreate.MainActivity;
 import lokavidya.iitb.com.lvcreate.R;
 
 public class SplashScreen extends AppCompatActivity {
@@ -25,10 +23,10 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void run() {
-                Intent intent = new Intent(context, IntroActivity.class);
+                /*Intent intent = new Intent(context, IntroActivity.class);
                 startActivity(intent);
-                finish();
-                /*final String PREFS_NAME = "MyPrefsFile";
+                finish();*/
+                final String PREFS_NAME = "MyPrefsFile";
                 SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
                 if (settings.getBoolean("my_first_time", true)) {
@@ -37,10 +35,10 @@ public class SplashScreen extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }else {
-                    Intent intent = new Intent(context, MainActivity.class);
+                    Intent intent = new Intent(context, WelcomeActivity.class);
                     startActivity(intent);
                     finish();
-                }*/
+                }
             }
         }, SPLASH_TIME_OUT);
     }

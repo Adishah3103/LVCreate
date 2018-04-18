@@ -1,4 +1,4 @@
-package lokavidya.iitb.com.lvcreate.Intro;
+package lokavidya.iitb.com.lvcreate.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
-import lokavidya.iitb.com.lvcreate.MainActivity;
 import lokavidya.iitb.com.lvcreate.R;
+import lokavidya.iitb.com.lvcreate.activity.WelcomeActivity;
 
 public class IntroActivity extends AppIntro {
 
@@ -26,7 +26,7 @@ public class IntroActivity extends AppIntro {
                 images[0],
                 Color.parseColor("#FFFFFF"),
                 0,
-                Color.parseColor("#3b3b3b")));
+                Color.parseColor("#161616")));
 
         addSlide(AppIntroFragment.newInstance("",
                 "",
@@ -35,7 +35,7 @@ public class IntroActivity extends AppIntro {
                 images[1],
                 Color.parseColor("#FFFFFF"),
                 0,
-                Color.parseColor("#3b3b3b")));
+                Color.parseColor("#161616")));
 
         addSlide(AppIntroFragment.newInstance("",
                 "",
@@ -44,16 +44,17 @@ public class IntroActivity extends AppIntro {
                 images[2],
                 Color.parseColor("#FFFFFF"),
                 0,
-                Color.parseColor("#3b3b3b")));
+                Color.parseColor("#161616")));
 
         setBarColor(Color.parseColor("#FFFFFF"));
         setSeparatorColor(Color.parseColor("#3b3b3b"));
 
-        setTitleColor(Color.parseColor("#3b3b3b"));
-        setIndicatorColor(Color.parseColor("#ebebeb"),Color.parseColor("#3b3b3b"));
-        setColorSkipButton(Color.parseColor("#3b3b3b"));
-        setColorDoneText(Color.parseColor("#3b3b3b"));
-        setNextArrowColor(Color.parseColor("#3b3b3b"));
+        setIndicatorColor(Color.parseColor("#252525"),Color.parseColor("#898989"));
+        setColorSkipButton(Color.parseColor("#d12523"));
+        setColorDoneText(Color.parseColor("#d12523"));
+        setNextArrowColor(Color.parseColor("#d12523"));
+        setDoneText("LOGIN");
+        setImageNextButton(getResources().getDrawable(R.drawable.ellipse_2));
 
         showSkipButton(true);
         setProgressButtonEnabled(true);
@@ -67,7 +68,7 @@ public class IntroActivity extends AppIntro {
     }
 
     private void loadMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
         finish();
     }

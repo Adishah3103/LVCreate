@@ -1,3 +1,351 @@
 <resources>
-    <string name="app_name">LVCreate</string>
+    <string name="app_name">LV Create</string>
+
+    <string name="lok_desc">Empowerment through Knowledge-Sharing</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="existingmember">Existing member?</string>
+    <string name="newmember">New Member?</string>
+    <string name="signin">Google Sign In</string>
+    <string name="signup">Google Sign Up</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_edit_project">Edit Project</string>
+    <string name="title_activity_recording">Recording</string>
+    <string name="title_activity_view_video">View Video</string>
+    <string name="title_activity_crop_image">Crop</string>
+    <string name="delete">Delete</string>
+    <string name="myprojects">My Projects</string>
+    <string name="addProject">Add project</string>
+    <string name="deleteProject">Delete project</string>
+    <string name="ffmpeg_cmd_hint">Enter command here. To run \"ffmpeg -version\" enter \"-version\"</string>
+    <string name="device_not_supported">Device not supported</string>
+    <string name="device_not_supported_message">FFmpeg is not supported on your device</string>
+    <string name="run">Run</string>
+    <string name="empty_command_toast">You cannot execute empty command</string>
+    <string name="title_activity_db">DBActivity</string>
+    <string name="takePic">Take a Picture</string>
+    <string name="gallery">Choose from Gallery</string>
+    <string name="start">start</string>
+    <string name="pause">pause</string>
+    <string name="stop">Stop</string>
+    <string name="current">Current</string>
+    <string name="totallength">Total</string>
+    <string name="retry">Retry</string>
+    <string name="done">Done</string>
+    <string name="record">Record</string>
+    <string name="listen">listen</string>
+    <string name="shot">Shots</string>
+    <string name="preview">Video Preview</string>
+
+    <string name="stitch">Stitch</string>
+    <string name="viewvideo">View Video</string>
+    <string name="enterName">Enter Project Name</string>
+    <string name="importproject">Import Project</string>
+    <string name="shareVideo">Share video</string>
+    <string name="shareProject">Share project</string>
+    <string name="uploadVideo">Upload the video</string>
+    <string name="share">Share/Upload</string>
+    <string name="shareDialog">Pick a project to share</string>
+    <string name="whatShareDialog">Choose an option to share or Upload</string>
+    <string name="forward">Next</string>
+    <string name="save">Do you want to save the changes made in the image?</string>
+    <string name="bad">Stretch</string>
+    <string name="fit">Fit</string>
+    <string name="crop">Crop</string>
+    <string name="rotate">Rotate</string>
+    <string name="deleteItembutton">Delete</string>
+    <string name="deleteProjectPickerDialog">Pick a project to delete</string>
+    <string name="deleteConfirmation">Are you sure you want to delete the file?</string>
+    <string name="projectNameSpace">Project name should not start or end with space</string>
+    <string name="projectNameDot">Project name should not contain dot.</string>
+    <string name="projectNameEmpty">Project name cannot be empty</string>
+    <string name="projectExists">Another project exists with same name.</string>
+    <string name="stitchingProcessTitle">Please wait ...</string>
+    <string name="stitchingProcessMessage">Stitching video ...</string>
+    <string name="selectProjectToImport">Select project file to import</string>
+    <string name="OkButton">Ok</string>
+    <string name="CancelButton">Cancel</string>
+    <string name="NoFileManager">Please install a File Manager to import</string>
+    <string name="galleryImageProcessMessage">Loading Images</string>
+    <string name="title_activity_tutorial_video">TutorialVideo</string>
+    <string name="seed_download">Download sample projects</string>
+    <string name="sampleproject1">sample1</string>
+    <string name="sampleproject2">sample2</string>
+    <string name="sampleproject3">sample3</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ChangeImage">Change Image</string>
+    <string name="UploadAudio">Upload Audio</string>
+    <string name="select_audio_file_title">Select file to upload</string>
+
+    <string name="Biogas">About Biogas(hindi)</string>
+    <string name="TreadlePump">Working of a Treadle Pump(odiya)</string>
+    <string name="offlineSeed">ST-Swirler-Marathi</string>
+    <string name="seedDownloadProgress">Downloading Sample Projects</string>
+    <string-array name="menu">
+        <item>Duplicate Project</item>
+        <item>Delete</item>
+        <item>Export Project</item>
+    </string-array>
+    <string-array name="drawer_list_array">
+        <item>My Projects</item>
+        <item>Download Sample Projects</item>
+        <item>View Videos</item>
+        <!-- <item>View by QR Code</item>-->
+        <item>Saved Videos</item>
+        <item>Feedback</item>
+        <item>SignOut</item>
+
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="fab_add_button">Add Project</string>
+    <string name="fab_import_button">Import Project</string>
+
+    <string name="croppedImageDesc">The cropped image.</string>
+
+    <string-array name="dummy_list">
+        <item>asdas</item>
+        <item>xyz</item>
+    </string-array>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_veiw_videos">Pick a video to watch it</string>
+    <string name="author_name_edittext">Enter your name</string>
+    <string name="video_title_edittext">Name the video</string>
+    <string name="video_description">Description</string>
+    <string name="uploadvideotext">Please provide the following information before uploading your Project:</string>
+    <string name="cannotupload">Please fill the required fields</string>
+    <string name="author_mail_edittext">Enter your Gmail id</string>
+    <string name="video_language_edittext">Language</string>
+    <string name="video_upload_category_spinner_textview">Category:</string>
+    <string name="category_spinner_title">Select Category</string>
+    <string name="input_keywords_edittext">Add keywords/tags(Comma separated values)</string>
+    <string name="app_slogan">Empowerment through Knowledge-Sharing</string>
+
+    <string name="server_client_id">1019684307342-5of7vukc91l6qn6tsatp5bki8cmvrl3f.apps.googleusercontent.com</string>
+    <string name="browse_govt_schemes">Government Schemes and Initiatives</string>
+    <string name="browse_rural_innovation">Rural Innovations</string>
+    <string name="browse_category_primaryeducation">Primary Education</string>
+    <string name="browse_category_skilldevelopment">Skill development</string>
+    <string name="browse_category_farming">Farming and Agriculture</string>
+    <string name="browse_category_animal">Animal Husbandry</string>
+    <string name="browse_category_health">Health and Sanitation</string>
+    <string name="browse_swirler_hindi">Swirler Pack- hindi</string>
+    <string name="browse_swirler_marathi">Swirler Pack - marathi</string>
+    <string name="browse_pump_hindi">Treadle Pump- hindi</string>
+    <string name="browse_pump_oriya">Treadle pump- Oriya</string>
+    <string name="browse_pump_marathi">Treadle Pump - Marathi</string>
+    <string name="browse_biogas_finance">Finance for Biogas (Government Subsidies)</string>
+    <string name="long_press_duplicate_proj">Duplicate Project</string>
+    <string name="long_press_zip_proj">Export Project</string>
+    <string name="import_overwrite">Overwrite existing project with same name?</string>
+    <string name="download_video_progress_message">Downloading your video</string>
+    <string name="upload_success_toast">Your project upload is in process, you will be able to download and view your video in some time.</string>
+    <string name="upload_fail_toast">Your project upload is in process, you will be able to download and view your video in some time.</string>
+    <string name="upload_progressdialog_message">Uploading, please wait</string>
+    <string name="link_button">Link</string>
+    <string name="title_activity_link_videos">LinkVideos</string>
+    <string name="title_activity_okbye">okbye</string>
+    <string name="link_videos">Link the selected videos</string>
+
+    <string name="contact_number">Enter you Contact No.</string>
+    <string name="organization_affiliation">Affiliated to which Organization?</string>
+    <string name="button_done">Done</string>
+    <string name="remove_link_button">Remove Link</string>
+    <string name="title_activity_remove_links">RemoveLinksActivity</string>
+
+    <string name="spinner_title">Select one of the below:</string>
+    <string name="feedback_type">Feedback Type:</string>
+    <string name="button_submit">SUBMIT</string>
+    <string name="helpfeedback_activity_description">Your feedback, system information and email address will be sent to the team. See the app\'s privacy policy and terms of service.</string>
+    <string name="menu_delete">Delete Selected Videos</string>
+    <string name="download_from_videoplayeractivity">Choose your download</string>
+    <string name="progressdialog_download_project_from_videoplayeractivity">Downloading as project</string>
+
+    <string-array name="download_video_or_project">
+        <item> Download Video</item>
+        <item>Download Project</item>
+    </string-array>
+
+
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_project">Create Project</string>
+    <string name="fragment_view_videos">My Projects</string>
+    <string name="view_videos">Videos</string>
+    <string name="user_account">Profile</string>
+    <string name="camera">Take\nImage</string>
+    <string name="image">Choose\nImage</string>
+    <string name="choose_video">Choose\nVideo</string>
+    <string name="play_video">Play Video</string>
+    <string name="add_audio">Add Audio</string>
+    <string name="captured_image_name">Lokavidya</string>
+    <string name="question">Write Question</string>
+    <string name="storage_error">Storage can not be accessed</string>
+    <string name="permission_storage_rationale">We need your permissions to save Projects and Videos on your phone</string>
+    <string name="button_allow">Permission granted</string>
+    <string name="button_deny">No</string>
+    <string name="record_audio">Record</string>
+    <string name="stop_record_audio">Stop</string>
+    <string name="cannot_record">Cannot record while playing</string>
+    <string name="cannot_play">Cannot play while recording</string>
+    <string name="save_project">Save Project</string>
+    <string-array name="tab_titles">
+        <item>LVCreate</item>
+        <item>Create Project</item>
+        <item>My Projects</item>
+    </string-array>
+    <string name="title_activity_audio_record">Add Audio</string>
+    <string name="projects">Projects</string>
+    <string name="my_projects">My Projects</string>
+    <string name="saved_projects">Saved Projects</string>
+    <string name="saved_videos">Saved Videos</string>
+    <string name="crop_image_activity_title">Edit Image</string>
+    <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>
+    <string name="crop_image_menu_rotate_right">Rotate</string>
+    <string name="crop_image_menu_crop">Crop</string>
+    <string name="pick_image_intent_chooser_title">Select source</string>
+    <string name="main_drawer_load">Load Image for cropping</string>
+    <string name="main_drawer_open">Open navigation drawer</string>
+    <string name="main_drawer_close">Close navigation drawer</string>
+    <string name="main_action_crop">CROP</string>
+    <string name="main_action_rotate">Rotate 90 degrees clockwise</string>
+    <string name="drawer_option_title">Crop View Presets</string>
+    <string name="drawer_option_oval">Circular</string>
+    <string name="drawer_option_rect">Rectangular</string>
+    <string name="drawer_option_min_max">Min/Max limits override</string>
+    <string name="drawer_option_customized_overlay">Customized Overlay</string>
+    <string name="drawer_option_scale_center">Scale Center Inside</string>
+    <string name="drawer_option_title2">Customization Toggles</string>
+    <string name="drawer_option_toggle_scale">Image Scale: %1s</string>
+    <string name="drawer_option_toggle_shape">Crop Shape: %1s</string>
+    <string name="drawer_option_toggle_guidelines">Guidelines: %1s</string>
+    <string name="drawer_option_toggle_aspect_ratio">Aspect Ratio: %1s</string>
+    <string name="drawer_option_toggle_auto_zoom">Auto zoom: %1s</string>
+    <string name="drawer_option_toggle_max_zoom">Max zoom level: %1s</string>
+    <string name="drawer_option_set_initial_crop_rect">Set initial crop rectangle</string>
+    <string name="drawer_option_reset_crop_rect">Reset crop rectangle to initial</string>
+    <string name="drawer_option_toggle_multitouch">Multitouch: %1s</string>
+    <string name="drawer_option_toggle_show_overlay">Show Overlay: %1s</string>
+    <string name="drawer_option_toggle_show_progress_bar">Show Progress Bar: %1s</string>
+    <string name="result_image_desc">hello resource</string>
+    <string name="crop_failed">Cropping Image Failed</string>
+    <string name="image_load_failed">Failed to load Image</string>
+    <string name="answer_option">Answer Option</string>
+    <string name="delete_button">X</string>
+    <string name="add_option">+</string>
+    <string name="file_copy_title">File copy</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="processing_image">Processing Image</string>
+    <string name="title_activity_upload_video">Upload Video</string>
+    <string name="skip">Skip</string>
+    <string name="description">Description</string>
+    <string name="language">Language</string>
+    <string name="tags">Enter only 50 tags</string>
+    <string name="video_name">Video Name</string>
+    <string name="project_string">Projects</string>
+    <string name="loading">Hold on!</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_splash_it">SplashIt</string>
+    <string name="title_activity_video_player">View Video</string>
+    <string name="project_title">Add project title</string>
+    <string name="undo">Undo</string>
+    <string name="wrongBuddy">The operation is not completed.</string>
+    <string name="gimmeAudio">Audio record feature can only be used if Microphone permission is granted</string>
+    <string name="gimmeCamera">Camera access is required for taking pictures</string>
+    <string name="noCameraFound">No camera found on this device</string>
+    <string name="cameraNotAvailable">Could not access camera, is any other application using it?</string>
+    <string name="gimmeStorage">Lokavidya requires storage permission to function correctly</string>
+    <string name="otpVerification">Verifying OTP</string>
+    <string name="invalidOTP">Invalid OTP</string>
+    <string name="otpVerified">OTP Verified</string>
+    <string name="gimmeSMS">Permission to receive SMS is required to automatically read OTP</string>
+    <string name="cannotGenOTP">Could not generate OTP, please try again in some time.</string>
+    <string name="signIn">Sign In to upload your projects.</string>
+    <string name="cannotSignIn">An error occured while signing out</string>
+    <string name="loggedOut">Successfully logged out</string>
+    <string name="network_signIn">An error occurred while signing in. Please check your network connection</string>
+    <string name="mobileSignedSuccess">Successfully signed in with user mobile number :</string>
+    <string name="emailSignedSuccess">Successfully signed in with Email ID :</string>
+    <string name="projectSaved">Project Uploaded successfully</string>
+    <string name="couldntUpload">Could not upload project. Please check your network connection.</string>
+    <string name="videoCompleted">Video play completed</string>
+    <string name="videoError">Video play error</string>
+    <string name="selected">Selected :</string>
+    <string name="wrongWhileSaving">Something went wrong while saving project :(</string>
+    <string name="childPosition">Clicked Position:</string>
+    <string name="cannotUndo">You have reached the origin the file.</string>
+    <string name="networkConnect">Check your internet connectivity.</string>
+    <string name="imagePermissiondenied">Cancelling, required permissions are not granted</string>
+    <string name="create_and_share">Create and Share</string>
+    <string name="timer_null_text">"--:--"</string>
+    <string name="download">Download</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="projectDesc">See your created videos and projects.</string>
+    <string name="videoDesc">Create videos and share them with hundreds of other users.</string>
+    <string name="title_activity_sign_in_mark2">SignInMark2</string>
+    <string name="existing_lokavidya_user">EXISTING LOKAVIDYA USER</string>
+    <string name="new_user">NEW USER</string>
+    <string name="create_your_account">Create Your Account</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="or">OR</string>
+    <string name="enter_phone_no">Enter Phone No.</string>
+    <string name="_91">+91</string>
+    <string name="next">NEXT</string>
+    <string name="project_saved_successfully">Project saved successfully</string>
+    <string name="project_discarded">Project discarded</string>
+    <string name="select_a_method">Select a method</string>
+    <string name="select_camera">Camera</string>
+    <string name="add_naudio">Add  \nAudio</string>
+    <string name="add_nimage">Add  \nImage</string>
+    <string name="add_nvideo">Add  \nVideo</string>
+    <string name="add_nquestion">Add  \nQuestion</string>
+    <string name="phoneNo">phoneNo</string>
+    <string name="email">email</string>
+    <string name="registrationData">registrationData</string>
+    <string name="registrationType">registrationType</string>
+    <string name="otp">otp</string>
+
+    <string name="register">Register</string>
+    <string name="toast_technical_issue">We are facing some technical issues. Please try again!</string>
+    <string name="pdialog_loading">Loading…</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+
+    <string name="label_cancel">Cancel</string>
+    <string name="label_ok">OK</string>
+    <string name="label_select_video">Select Video</string>
+    <string name="permission_title_rationale">Permission needed</string>
+    <string name="permission_read_storage_rationale">Storage read permission is needed to pick files.</string>
+    <string name="toast_cannot_retrieve_selected_video">Cannot retrieve selected video</string>
+    <string name="video_saved_at">Video saves at : $%1s</string>
+    <string name="title_description">A library with UI and mechanisms to trim local videos on Android applications</string>
+    <string name="description_app">
+            # Provide UI to preview and select start/end of the video to trim
+        \n\n# Thumbnails with frame by frame overview of the video
+        \n\n# Works with gallery and recorded videos
+    </string>
+    <string name="pick_a_video">Select or record a a video below to try it out:</string>
+    <string name="trimming_progress">Trimming your video...</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+
+    <string name="txt_welcome_to">Welcome to <font fgcolor="#c82c1f">LV Create</font></string>
+    <string name="error_empty_name_of_org">Enter name of organization</string>
+    <string name="show_password_text">Show</string>
+    <string name="forgot_password_login_text">Forgot Password?</string>
+    <string name="txt_sign_in">"Sign In"</string>
+    <string name="txt_dont_have_lv_account">Don\'t have an Account?</string>
+    <string name="txt_sign_up">SignUp</string>
+    <string name="email_id_phone_number_text">"E-mail ID or Mobile Number"</string>
+    <string name="password_text">"Password"</string>
+
 </resources>
