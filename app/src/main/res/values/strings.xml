@@ -345,7 +345,26 @@
     <string name="txt_sign_in">"Sign In"</string>
     <string name="txt_dont_have_lv_account">Don\'t have an Account?</string>
     <string name="txt_sign_up">SignUp</string>
-    <string name="email_id_phone_number_text">"E-mail ID or Mobile Number"</string>
+    <string name="email_id_phone_number_text">"Mobile Number or Email Id"</string>
     <string name="password_text">"Password"</string>
+    <string name="txt_forgot_pwd_msg">We just need your registered E-mail ID or Phone number to send you password reset</string>
+    <string name="reset_password_txt">Reset Password</string>
+    <string name="txt_dont_have_account">Don\'t have an account? </string>
+    <string name="otp_verify_text">Verify OTP</string>
+    <string name="otp_verify_content_text">An OTP has been sent on your registered mobile number.\nPlease enter it below</string>
+    <string name="otp_validity_text">OTP will be valid for next 5 minutes.</string>
+    <string name="verify_text">Verify</string>
+    <string name="otp_resend_text">Resend OTP</string>
+    <string name="otp_screen_bottom_text">Didn’t get OTP?</string>
+    <string name="txt_reset_pwd">Reset your password</string>
+    <string name="txt_reset_pwd_msg">The password must be of minimum eight characters</string>
+    <string name="sign_up_min_character_text">Minimum 8 characters</string>
+    <string name="txt_new_pwd">New Password</string>
+    <string name="txt_confirm_pwd">Confirm Password</string>
+    <string name="sign_up_screen_name">Name</string>
+    <string name="sign_up_screen_mobile_number">Phone Number</string>
+    <string name="sign_up_screen_email_id">E-mail ID</string>
+    <string name="sign_up_screen_aadhar_number">Adhaar Number (Optional)</string>
+    <string name="txt_next">Next</string>
 
 </resources>

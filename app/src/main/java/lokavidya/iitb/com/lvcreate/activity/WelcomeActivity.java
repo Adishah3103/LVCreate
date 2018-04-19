@@ -8,10 +8,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +35,7 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
     SharedPreferences sharedPreferences;
     EditText phone, password;
     private NetworkCommunicator networkCommunicator;
+    TextInputLayout passwordInputLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
         if (!sharedPreferences.getString("idToken", "N/A").equals("N/A")/* && sharedPreferences.getString("lokavidyaToken", "N/A").equals("N/A")*/) {
             Intent projectsIntent = new Intent(WelcomeActivity.this, DashboardActivity.class);
             startActivity(projectsIntent);
-            finish();
+            finishAffinity();
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_activity);
@@ -58,9 +59,19 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
 
         phone = findViewById(R.id.et_login_email_id);
         password = findViewById(R.id.et_login_password);
+        passwordInputLayout = findViewById(R.id.textInputLayout5);
 
         signInButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
+
+        password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                password.setError(null);
+                if(!passwordInputLayout.isPasswordVisibilityToggleEnabled())
+                    passwordInputLayout.setPasswordVisibilityToggleEnabled(true);
+            }
+        });
     }
 
     @Override
@@ -85,13 +96,14 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
                         checkLoginInfo(mobile, pass);
                     } else {
                         password.setError("Enter valid password!");
+                        passwordInputLayout.setPasswordVisibilityToggleEnabled(false);
                     }
                 } else {
                     phone.setError("Enter valid mobile no");
                 }
                 break;
             case R.id.sign_up_button:
-                Intent intent = new Intent(this, RegisterUserActivity.class);
+                Intent intent = new Intent(this, SignUpActivity.class);
                 startActivity(intent);
                 break;
             /*case R.id.skipbutton:
@@ -171,7 +183,7 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
 
         Toast.makeText(WelcomeActivity.this, "Welcome " + name, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(WelcomeActivity.this, DashboardActivity.class);
-        finish();
+        finishAffinity();
         startActivity(intent);
     }
 

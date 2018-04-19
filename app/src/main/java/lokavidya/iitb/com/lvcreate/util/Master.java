@@ -3,6 +3,10 @@ package lokavidya.iitb.com.lvcreate.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +41,8 @@ public class Master {
     private static ProgressDialog pDialog;
 
     private static String currentProjectName;
+
+    public static JSONObject userObject;
 
     public static String getCurrentProjectName() {
         return currentProjectName;

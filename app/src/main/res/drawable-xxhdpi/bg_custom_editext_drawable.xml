@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- custom error state drawable -->
+    <item android:drawable="@drawable/textview_bottom_line_error"/> <!-- app:state_error="true"-->
+
+    <item android:state_pressed="true"
+        android:drawable="@drawable/textview_bottom_line_accent" /> <!-- pressed -->
+    <item android:state_focused="true"
+        android:drawable="@drawable/textview_bottom_line_accent" /> <!-- focused -->
+    <item android:drawable="@drawable/textview_bottom_line_gray" /> <!-- default -->
+</selector>

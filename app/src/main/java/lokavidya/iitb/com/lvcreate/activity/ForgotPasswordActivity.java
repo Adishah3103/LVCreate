@@ -3,10 +3,13 @@ package lokavidya.iitb.com.lvcreate.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 
@@ -23,11 +26,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private static final String PHONE_NUMBER_REGEX = "(^)([\\d]){10}$";
 
-    EditText mEnterEmailOrPhoneNoEditText;
-    Button mGenerateOtpButton;
+    TextInputEditText mEnterEmailOrPhoneNoEditText;
+    TextView mGenerateOtpButton, mSignupButton;
+    private Toolbar toolbar;
+    private View toolbarView;
+    private ImageView ivBack;
+    String type;
 
-    EditText mEnterOtp;
-    Button mVerifyOtp;
     String uuid;
 
     String mEmailOrPhone;
@@ -36,14 +41,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
+        setContentView(R.layout.forgot_password_activity);
 
-        mEnterEmailOrPhoneNoEditText = findViewById(R.id.et_enter_email_phone_no);
-        mGenerateOtpButton = findViewById(R.id.btn_generate_otp);
+        mEnterEmailOrPhoneNoEditText = findViewById(R.id.et_login_email_id);
+        mGenerateOtpButton = findViewById(R.id.tv_reset_btn);
         networkCommunicator = NetworkCommunicator.getInstance();
-
-        mEnterOtp = findViewById(R.id.et_enter_otp);
-        mVerifyOtp = findViewById(R.id.btn_verify_otp);
+        mSignupButton = findViewById(R.id.tv_sign_up);
+        configureToolBar();
 
         mGenerateOtpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,86 +55,50 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 mEmailOrPhone = mEnterEmailOrPhoneNoEditText.getText().toString().trim();
                 if (mEmailOrPhone.length() == 0) {
                     mEnterEmailOrPhoneNoEditText.requestFocus();
-                    mEnterEmailOrPhoneNoEditText.setError("Please enter valid mobile number");
+                    mEnterEmailOrPhoneNoEditText.setError("Enter valid mobile number");
                     return;
                 } else {
                     if (mEmailOrPhone.matches(PHONE_NUMBER_REGEX)) {
+                        type = "phone";
                         sendOTP("phone", mEmailOrPhone);
                     } else {
+                        type = "email";
                         sendOTP("email", mEmailOrPhone);
                     }
                 }
             }
         });
 
-        mVerifyOtp.setOnClickListener(new View.OnClickListener() {
+        mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mEnterOtp.getText().toString().length() == 0) {
-                    mEnterOtp.setError("Please enter otp!");
-                    return;
-                }else {
-                    verifyOTP(mEnterOtp.getText().toString());
-                }
+                startActivity(new Intent(ForgotPasswordActivity.this, SignUpActivity.class));
             }
         });
 
     }
 
-    void verifyOTP(String otp) {
-        Master.showProgressDialog(ForgotPasswordActivity.this, "Verifying OTP!");
-        JSONObject userJsonObject = new JSONObject();
-        JSONObject jsonObject = new JSONObject();
+    protected void configureToolBar() {
 
-        try {
-            jsonObject.put("otp", otp);
-            userJsonObject.put("user", jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        toolbar = findViewById(R.id.forgot_pwd_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setContentInsetsRelative(0, 0);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        final LayoutInflater layoutInflater = LayoutInflater.from(this);
+        toolbarView = layoutInflater.inflate(R.layout.back_button_layout, null);
+        ivBack = toolbarView.findViewById(R.id.iv_back_icon);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowCustomEnabled(true);
+            getSupportActionBar().setCustomView(toolbarView);
         }
-
-        networkCommunicator.data(Master.getOTPCheckAPI(),
-                Request.Method.POST,
-                userJsonObject,
-                false, new NetworkResponse.Listener() {
-
-                    @Override
-                    public void onResponse(Object result) {
-                        Master.dismissProgressDialog();
-                        String response = (String) result;
-                        JSONObject obj = null;
-                        try {
-                            obj = new JSONObject(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        if (obj != null) {
-                            try {
-                                String res = obj.getString("status");
-                                String message = obj.getString("message");
-
-                                if (res.equals("200") && message.equals("OTP verified.")) {
-                                    uuid = obj.getString("uuid");
-                                    Bundle args = new Bundle();
-                                    args.putString("uuid", uuid);
-                                    Intent intent = new Intent(ForgotPasswordActivity.this, ResetPasswordActivity.class);
-                                    intent.putExtras(args);
-                                    startActivity(intent);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }, new NetworkResponse.ErrorListener() {
-                    @Override
-                    public void onError(NetworkException error) {
-                        Master.dismissProgressDialog();
-                        error.printStackTrace();
-                    }
-
-
-                }, "ForgotPassword", ForgotPasswordActivity.this);
 
     }
 
@@ -201,10 +169,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     void otpGenerated() {
         Snackbar.make(mGenerateOtpButton, "OTP Sent to the mobile number!", Snackbar.LENGTH_LONG).show();
 
-        mEnterOtp.setVisibility(View.VISIBLE);
-        mVerifyOtp.setVisibility(View.VISIBLE);
-
-        mEnterOtp.requestFocus();
+        Intent intent = new Intent(this, OTPVerificationActivity.class);
+        intent.putExtra("id",mEmailOrPhone);
+        intent.putExtra("type",type);
+        startActivity(intent);
     }
 
 }

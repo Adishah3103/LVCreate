@@ -33,11 +33,11 @@ public class SplashScreen extends AppCompatActivity {
                     settings.edit().putBoolean("my_first_time", false).commit();
                     Intent intent = new Intent(context, IntroActivity.class);
                     startActivity(intent);
-                    finish();
+                    finishAffinity();
                 }else {
                     Intent intent = new Intent(context, WelcomeActivity.class);
                     startActivity(intent);
-                    finish();
+                    finishAffinity();
                 }
             }
         }, SPLASH_TIME_OUT);

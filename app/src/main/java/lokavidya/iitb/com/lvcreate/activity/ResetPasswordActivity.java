@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,7 +24,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     EditText passwordEdt;
     EditText confirmPasswordEdt;
-    Button mConfirmButton;
+    TextView mConfirmButton;
     String uuid;
     private NetworkCommunicator networkCommunicator;
 
@@ -35,9 +36,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
         Bundle args = getIntent().getExtras();
         uuid = args.getString("uuid");
 
-        passwordEdt = findViewById(R.id.et_enter_new_password);
-        confirmPasswordEdt = findViewById(R.id.et_re_enter_to_confirm);
-        mConfirmButton = findViewById(R.id.btn_confirm);
+        passwordEdt = findViewById(R.id.et_new_password);
+        confirmPasswordEdt = findViewById(R.id.et_confirm_password);
+        mConfirmButton = findViewById(R.id.tv_reset_btn);
 
         networkCommunicator = NetworkCommunicator.getInstance();
 
@@ -110,7 +111,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                     Intent intent = new Intent(ResetPasswordActivity.this, WelcomeActivity.class);
                                     finishAffinity();
                                     startActivity(intent);
-                                }else {
+                                }else if (res.equals("400") && message.equals("Your new password cannot be same as last password")) {
+                                    Toast.makeText(ResetPasswordActivity.this, "Your new password cannot be same as last password", Toast.LENGTH_LONG).show();
+                                } else {
                                     Toast.makeText(ResetPasswordActivity.this, getString(R.string.toast_technical_issue), Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {

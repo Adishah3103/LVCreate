@@ -70,7 +70,7 @@ public class IntroActivity extends AppIntro {
     private void loadMainActivity(){
         Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 
     @Override

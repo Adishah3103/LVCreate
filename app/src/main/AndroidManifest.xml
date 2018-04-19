@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -31,21 +34,24 @@
         <activity
             android:name=".activity.DashboardActivity"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.WelcomeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/Base.Theme.AppCompat.Light"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.RegisterUserActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light" />
+            android:name=".activity.SignUpActivity" />
+        <activity android:name=".activity.ForgotPasswordActivity" />
         <activity
-            android:name=".activity.ForgotPasswordActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light" />
-        <activity
-            android:name=".activity.ResetPasswordActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light" />
+            android:name=".activity.ResetPasswordActivity" />
+        <activity android:name=".activity.OTPVerificationActivity" />
+
+        <receiver android:name=".receiver.OPTReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
