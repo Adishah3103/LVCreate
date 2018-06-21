@@ -176,7 +176,6 @@
         android:id="@+id/sign_up_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:paddingTop="@dimen/padding_5_dp"
         android:text="@string/txt_sign_up"

@@ -44,7 +44,7 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
         fromUpload = i.getBooleanExtra("fromUpload", false);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         sharedPreferences.edit().putBoolean("Skip", false).apply();
-        if (!sharedPreferences.getString("idToken", "N/A").equals("N/A")/* && sharedPreferences.getString("lokavidyaToken", "N/A").equals("N/A")*/) {
+        if (!sharedPreferences.getString("idToken", "N/A").equals("N/A")) {
             Intent projectsIntent = new Intent(WelcomeActivity.this, DashboardActivity.class);
             startActivity(projectsIntent);
             finishAffinity();
