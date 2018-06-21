@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,6 +43,9 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
 
         Intent i = getIntent();
         fromUpload = i.getBooleanExtra("fromUpload", false);
+
+        // If user is already logged in, Intent it to Dashboard
+        // Do Functional work after this
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         sharedPreferences.edit().putBoolean("Skip", false).apply();
         if (!sharedPreferences.getString("idToken", "N/A").equals("N/A")) {
@@ -68,7 +72,7 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 password.setError(null);
-                if(!passwordInputLayout.isPasswordVisibilityToggleEnabled())
+                if (!passwordInputLayout.isPasswordVisibilityToggleEnabled())
                     passwordInputLayout.setPasswordVisibilityToggleEnabled(true);
             }
         });
@@ -122,6 +126,7 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
         }
     }
 
+    // Boilerplate Volley and JSON Calls
     void checkLoginInfo(final String mobile, String pass) {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -176,10 +181,12 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
 
     }
 
+    // Once user has successfully logged in
+    // save the login instance with Shared Pref's
     void requestLogin(String name, String strPhone) {
-        sharedPreferences.edit().putString("idToken","LoggedIn").apply();
-        sharedPreferences.edit().putString("UserName",name).apply();
-        sharedPreferences.edit().putString("UserPhone",strPhone).apply();
+        sharedPreferences.edit().putString("idToken", "LoggedIn").apply();
+        sharedPreferences.edit().putString("UserName", name).apply();
+        sharedPreferences.edit().putString("UserPhone", strPhone).apply();
 
         Toast.makeText(WelcomeActivity.this, "Welcome " + name, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(WelcomeActivity.this, DashboardActivity.class);

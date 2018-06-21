@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,10 +21,13 @@ import lokavidya.iitb.com.lvcreate.util.Master;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
+    // Fields for views
     EditText passwordEdt;
     EditText confirmPasswordEdt;
     TextView mConfirmButton;
+
     String uuid;
+
     private NetworkCommunicator networkCommunicator;
 
     @Override
@@ -40,12 +42,13 @@ public class ResetPasswordActivity extends AppCompatActivity {
         confirmPasswordEdt = findViewById(R.id.et_confirm_password);
         mConfirmButton = findViewById(R.id.tv_reset_btn);
 
+        // Get Singleton instance of NetworkCommunicator
         networkCommunicator = NetworkCommunicator.getInstance();
 
         mConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!uuid.equals("")) {
+                if (!uuid.equals("")) {
                     if (passwordEdt.getText().toString().length() > 0) {
                         String pass = passwordEdt.getText().toString();
                         String cnfPass = confirmPasswordEdt.getText().toString();
@@ -58,7 +61,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     } else {
                         passwordEdt.setError("Please enter valid password!");
                     }
-                }else {
+                } else {
                     Toast.makeText(ResetPasswordActivity.this, getString(R.string.toast_technical_issue), Toast.LENGTH_LONG).show();
                     mConfirmButton.setEnabled(false);
                 }
@@ -74,6 +77,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         }
     }
 
+    // Volley Network call and JSON Parsing
     void setNewPassword(String password) {
         Master.showProgressDialog(ResetPasswordActivity.this, "Setting up new password for you");
         JSONObject userJsonObject = new JSONObject();
@@ -111,7 +115,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                     Intent intent = new Intent(ResetPasswordActivity.this, WelcomeActivity.class);
                                     finishAffinity();
                                     startActivity(intent);
-                                }else if (res.equals("400") && message.equals("Your new password cannot be same as last password")) {
+                                } else if (res.equals("400") && message.equals("Your new password cannot be same as last password")) {
                                     Toast.makeText(ResetPasswordActivity.this, "Your new password cannot be same as last password", Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(ResetPasswordActivity.this, getString(R.string.toast_technical_issue), Toast.LENGTH_LONG).show();

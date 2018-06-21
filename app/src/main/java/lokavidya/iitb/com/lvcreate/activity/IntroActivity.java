@@ -9,7 +9,6 @@ import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
 import lokavidya.iitb.com.lvcreate.R;
-import lokavidya.iitb.com.lvcreate.activity.WelcomeActivity;
 
 public class IntroActivity extends AppIntro {
 
@@ -49,7 +48,7 @@ public class IntroActivity extends AppIntro {
         setBarColor(Color.parseColor("#FFFFFF"));
         setSeparatorColor(Color.parseColor("#3b3b3b"));
 
-        setIndicatorColor(Color.parseColor("#252525"),Color.parseColor("#898989"));
+        setIndicatorColor(Color.parseColor("#252525"), Color.parseColor("#898989"));
         setColorSkipButton(Color.parseColor("#d12523"));
         setColorDoneText(Color.parseColor("#d12523"));
         setNextArrowColor(Color.parseColor("#d12523"));
@@ -67,7 +66,7 @@ public class IntroActivity extends AppIntro {
 
     }
 
-    private void loadMainActivity(){
+    private void loadMainActivity() {
         Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
         finishAffinity();

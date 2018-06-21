@@ -90,6 +90,8 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    // First invoked when Register button is clicked
+    // Validation and Text Retrieval
     void registerUesr() {
         String strName = name.getText().toString();
         String strEmail = email.getText().toString();
@@ -113,6 +115,8 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    // Method overloading with all the params to register a user
+    // JSON Parsing and volley network calls
     void registerUser(final String strName, final String strEmail, final String strPhone, String strAadhar, String pass) {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -172,7 +176,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    void proceedToLogin(String strName,String  strEmail,String  strPhone) {
+    // Once user has registered successfully
+    // Login the user and save the login instance with Shared Pref's
+    void proceedToLogin(String strName, String  strEmail, String  strPhone) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         sharedPreferences.edit().putString("idToken","LoggedIn").apply();
@@ -185,6 +191,7 @@ public class SignUpActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Basic Boilerplate validation
     boolean validate(String name, String email, String phone) {
         if(name.length() <= 0) {
             return false;

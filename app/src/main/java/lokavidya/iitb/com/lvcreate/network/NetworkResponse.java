@@ -3,10 +3,11 @@ package lokavidya.iitb.com.lvcreate.network;
 
 public interface NetworkResponse {
 
-    interface Listener{
+    interface Listener {
         void onResponse(Object result);
     }
-    interface ErrorListener{
+
+    interface ErrorListener {
         void onError(NetworkException error);
     }
 }

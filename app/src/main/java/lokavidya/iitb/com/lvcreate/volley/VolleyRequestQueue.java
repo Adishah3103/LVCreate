@@ -6,13 +6,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-public class VolleyRequestQueue{
+public class VolleyRequestQueue {
 
     private static VolleyRequestQueue mInstance;
     private RequestQueue mRequestQueue;
     private static Context mCtx;
 
-    private VolleyRequestQueue(Context context){
+    private VolleyRequestQueue(Context context) {
         mCtx = context;
 
         mRequestQueue = getRequestQueue();
@@ -25,18 +25,15 @@ public class VolleyRequestQueue{
         return mInstance;
     }
 
-    public RequestQueue getRequestQueue()
-    {
-        if (mRequestQueue == null)
-        {
+    public RequestQueue getRequestQueue() {
+        if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;
     }
 
 
-    public <T> void addToRequestQueue(Request<T> req)
-    {
+    public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }
 }

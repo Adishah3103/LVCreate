@@ -43,7 +43,7 @@ public class VolleyRequestDispatcher {
                                 @Override
                                 public void onResponse(T response) {
                                     try {
-                                        System.out.println("-------response data-------- "+ response);
+                                        System.out.println("-------response data-------- " + response);
                                         listener.onResponse(response);
                                     } catch (Exception e) {
                                         e.printStackTrace();

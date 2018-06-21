@@ -23,9 +23,7 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void run() {
-                /*Intent intent = new Intent(context, IntroActivity.class);
-                startActivity(intent);
-                finish();*/
+
                 final String PREFS_NAME = "MyPrefsFile";
                 SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
@@ -34,7 +32,7 @@ public class SplashScreen extends AppCompatActivity {
                     Intent intent = new Intent(context, IntroActivity.class);
                     startActivity(intent);
                     finishAffinity();
-                }else {
+                } else {
                     Intent intent = new Intent(context, WelcomeActivity.class);
                     startActivity(intent);
                     finishAffinity();

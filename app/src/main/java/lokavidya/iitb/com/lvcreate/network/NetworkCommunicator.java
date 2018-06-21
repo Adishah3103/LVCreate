@@ -8,8 +8,7 @@ import lokavidya.iitb.com.lvcreate.volley.RequestResponseListener;
 import lokavidya.iitb.com.lvcreate.volley.VolleyRequest;
 import lokavidya.iitb.com.lvcreate.volley.VolleyRequestDispatcher;
 
-public class NetworkCommunicator
-{
+public class NetworkCommunicator {
 
     private static NetworkCommunicator networkCommunicator;
 
@@ -21,7 +20,8 @@ public class NetworkCommunicator
         return networkCommunicator;
     }
 
-    private NetworkCommunicator() {}
+    private NetworkCommunicator() {
+    }
 
     public void data
             (String url,
@@ -31,8 +31,7 @@ public class NetworkCommunicator
              final NetworkResponse.Listener listener,
              final NetworkResponse.ErrorListener errorListener,
              String tag,
-             Context context)
-    {
+             Context context) {
         try {
 
             final VolleyRequest volleyRequest = new VolleyRequest();
@@ -40,8 +39,8 @@ public class NetworkCommunicator
             volleyRequest.method = method;
             volleyRequest.context = context.getApplicationContext();
             volleyRequest.tag = tag;
-            volleyRequest.jsonObject=jsonObject;
-            volleyRequest.authentication=auth;
+            volleyRequest.jsonObject = jsonObject;
+            volleyRequest.authentication = auth;
             volleyRequest.contentType = "application/json;charset=utf-8";
 
 
@@ -58,17 +57,14 @@ public class NetworkCommunicator
             }, new RequestResponseListener.ErrorListener() {
                 @Override
                 public void onError(NetworkException error) {
-                    try
-                    {
+                    try {
                         errorListener.onError(error);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

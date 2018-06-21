@@ -26,16 +26,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private static final String PHONE_NUMBER_REGEX = "(^)([\\d]){10}$";
 
+    // Fields for views
     TextInputEditText mEnterEmailOrPhoneNoEditText;
     TextView mGenerateOtpButton, mSignupButton;
     private Toolbar toolbar;
     private View toolbarView;
     private ImageView ivBack;
+
+    // Fields for Information storing
     String type;
-
     String uuid;
-
     String mEmailOrPhone;
+
+    // Fields for Utils
     private NetworkCommunicator networkCommunicator;
 
     @Override
@@ -43,12 +46,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forgot_password_activity);
 
+        // Bind views here
         mEnterEmailOrPhoneNoEditText = findViewById(R.id.et_login_email_id);
         mGenerateOtpButton = findViewById(R.id.tv_reset_btn);
         networkCommunicator = NetworkCommunicator.getInstance();
         mSignupButton = findViewById(R.id.tv_sign_up);
         configureToolBar();
 
+        // Generate OTP onClick
         mGenerateOtpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +74,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             }
         });
 
+        // SignUp onClick
         mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,8 +90,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setContentInsetsRelative(0, 0);
         toolbar.setContentInsetsAbsolute(0, 0);
+
         final LayoutInflater layoutInflater = LayoutInflater.from(this);
         toolbarView = layoutInflater.inflate(R.layout.back_button_layout, null);
+
         ivBack = toolbarView.findViewById(R.id.iv_back_icon);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +107,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(toolbarView);
         }
-
     }
 
     @Override
@@ -110,15 +117,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         }
     }
 
+    // Method to queue Send OTP API Call
     void sendOTP(String type, String data) {
+
         Master.showProgressDialog(ForgotPasswordActivity.this, "Sending OTP!");
+
         JSONObject userJsonObject = new JSONObject();
         JSONObject jsonObject = new JSONObject();
 
         try {
-            if(type.equals("phone")) {
+            if (type.equals("phone")) {
                 jsonObject.put("phone", data);
-            }else {
+            } else {
                 jsonObject.put("email", data);
             }
             userJsonObject.put("user", jsonObject);
@@ -146,6 +156,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 String res = obj.getString("status");
                                 String message = obj.getString("message");
 
+                                // Upon 200 Success, call otpGenerated method to close activity
                                 if (res.equals("200") && message.equals("OTP Sent Please Generate New Password")) {
                                     uuid = obj.getString("uuid");
                                     otpGenerated();
@@ -170,8 +181,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         Snackbar.make(mGenerateOtpButton, "OTP Sent to the mobile number!", Snackbar.LENGTH_LONG).show();
 
         Intent intent = new Intent(this, OTPVerificationActivity.class);
-        intent.putExtra("id",mEmailOrPhone);
-        intent.putExtra("type",type);
+        intent.putExtra("id", mEmailOrPhone);
+        intent.putExtra("type", type);
         startActivity(intent);
     }
 

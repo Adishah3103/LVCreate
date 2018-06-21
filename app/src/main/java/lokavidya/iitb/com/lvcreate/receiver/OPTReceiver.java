@@ -9,8 +9,6 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-import lokavidya.iitb.com.lvcreate.activity.OTPVerificationActivity;
-
 public class OPTReceiver extends BroadcastReceiver {
 
     // Get the object of SmsManager
@@ -41,7 +39,7 @@ public class OPTReceiver extends BroadcastReceiver {
                     Log.i("SmsReceiver", "senderNum: " + senderNum + "; message: " + message);
 
                     Intent myIntent = new Intent("otp_sms_receive");
-                    myIntent.putExtra("message",message);
+                    myIntent.putExtra("message", message);
                     LocalBroadcastManager.getInstance(context).sendBroadcast(myIntent);
                     // Show Alert
 
@@ -49,7 +47,7 @@ public class OPTReceiver extends BroadcastReceiver {
             } // bundle is null
 
         } catch (Exception e) {
-            Log.e("SmsReceiver", "Exception smsReceiver" +e);
+            Log.e("SmsReceiver", "Exception smsReceiver" + e);
 
         }
     }

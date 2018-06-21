@@ -1,6 +1,5 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_sign_in_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -47,11 +46,11 @@
         android:paddingEnd="0dp"
         android:paddingLeft="@dimen/padding_10_dp"
         android:paddingRight="0dp"
-        android:textColorHint="@color/edit_text_gray_background"
         android:paddingStart="@dimen/padding_10_dp"
+        android:textColorHint="@color/edit_text_gray_background"
+        android:theme="@style/TextLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:theme="@style/TextLabel"
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <android.support.design.widget.TextInputEditText
@@ -86,16 +85,16 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_custom_editext_drawable"
         android:paddingEnd="0dp"
-        app:passwordToggleEnabled="true"
         android:paddingLeft="@dimen/padding_10_dp"
         android:paddingRight="0dp"
         android:paddingStart="@dimen/padding_10_dp"
         android:textColorHint="@color/edit_text_gray_background"
+        android:theme="@style/TextLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        android:theme="@style/TextLabel"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4"
+        app:passwordToggleEnabled="true">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/et_login_password"

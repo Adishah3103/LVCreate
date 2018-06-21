@@ -24,15 +24,14 @@ class CustomJSONObjectRequest<T> extends Request<T> {
 
 
     public CustomJSONObjectRequest(int method, String url, Map<String, String> headers,
-                                   Response.Listener<T> listener, Response.ErrorListener errorListener)
-    {
+                                   Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(method, url, errorListener);
 
         this.headers = headers;
         this.listener = listener;
     }
 
-    void setRequestBody(JSONObject object){
+    void setRequestBody(JSONObject object) {
         this.jsonObject = object;
     }
 
@@ -42,14 +41,11 @@ class CustomJSONObjectRequest<T> extends Request<T> {
     }
 
     @Override
-    public byte[] getBody()
-    {
+    public byte[] getBody() {
         try {
             return jsonObject == null ? null : jsonObject.toString().getBytes();
             //return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-        }
-
-        catch (Exception uee) {
+        } catch (Exception uee) {
             VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", jsonObject, "utf-8");
             return null;
         }
@@ -62,8 +58,7 @@ class CustomJSONObjectRequest<T> extends Request<T> {
     }
 
     @Override
-    protected void deliverResponse(T response)
-    {
+    protected void deliverResponse(T response) {
         listener.onResponse(response);
     }
 
@@ -71,9 +66,9 @@ class CustomJSONObjectRequest<T> extends Request<T> {
     protected Response parseNetworkResponse(NetworkResponse response) {
         try {
 
-            String json = new String(response.data,HttpHeaderParser.parseCharset(response.headers));
+            String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
 
-            return Response.success(json,HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(json, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException e) {

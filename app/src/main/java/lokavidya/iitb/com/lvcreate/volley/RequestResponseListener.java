@@ -5,11 +5,11 @@ import lokavidya.iitb.com.lvcreate.network.NetworkException;
 
 public interface RequestResponseListener {
 
-    interface Listener{
+    interface Listener {
         <T> void onResponse(T response);
     }
 
-    interface ErrorListener{
+    interface ErrorListener {
         void onError(NetworkException error);
     }
 
