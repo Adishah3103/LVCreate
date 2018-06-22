@@ -1,6 +1,7 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import lokavidya.iitb.com.lvcreate.BottomNavigationViewHelper;
 import lokavidya.iitb.com.lvcreate.R;
 
 public class DashboardActivity extends AppCompatActivity
@@ -24,16 +26,11 @@ public class DashboardActivity extends AppCompatActivity
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.navigationView);
+        BottomNavigationViewHelper.removeShiftMode(bottomNavigation);
 
         // Boilerplate NavigationDrawer Activity code
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
