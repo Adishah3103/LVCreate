@@ -94,6 +94,12 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
                 String mobile = phone.getText().toString();
                 String pass = password.getText().toString();
 
+                // Use Temporary login credentials as:
+                // Mobile: 1234 Pass: 1234
+                if (mobile.equals("1234") && pass.equals("1234")) {
+                    requestLogin(mobile, pass);
+                }
+
                 if (mobile.length() == 10) {
                     if (pass.length() > 0) {
                         Master.showProgressDialog(WelcomeActivity.this, getString(R.string.pdialog_loading));
@@ -195,9 +201,7 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
     }
 
     private boolean weHavePermissionToReadContacts() {
-        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
-            return true;
-        } else return false;
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
     }
 
     public void forgotPassword(View view) {
