@@ -11,8 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import lokavidya.iitb.com.lvcreate.BottomNavigationViewHelper;
 import lokavidya.iitb.com.lvcreate.R;
+import lokavidya.iitb.com.lvcreate.util.BottomNavigationViewHelper;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
