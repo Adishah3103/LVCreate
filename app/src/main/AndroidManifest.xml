@@ -39,11 +39,9 @@
             android:name=".activity.WelcomeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activity.SignUpActivity" />
+        <activity android:name=".activity.SignUpActivity" />
         <activity android:name=".activity.ForgotPasswordActivity" />
-        <activity
-            android:name=".activity.ResetPasswordActivity" />
+        <activity android:name=".activity.ResetPasswordActivity" />
         <activity android:name=".activity.OTPVerificationActivity" />
 
         <receiver android:name=".receiver.OPTReceiver">

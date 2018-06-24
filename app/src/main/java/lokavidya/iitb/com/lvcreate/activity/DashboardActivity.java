@@ -1,8 +1,10 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,10 +14,52 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import lokavidya.iitb.com.lvcreate.R;
+import lokavidya.iitb.com.lvcreate.fragment.ProjectFragment;
 import lokavidya.iitb.com.lvcreate.util.BottomNavigationViewHelper;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+
+                    switch (item.getItemId()) {
+                        case R.id.bottom_home:
+                            selectedFragment = null;
+                            break;
+                        case R.id.bottom_project:
+                            selectedFragment = new ProjectFragment();
+                            break;
+                        case R.id.bottom_category:
+                            selectedFragment = null;
+                            break;
+                        case R.id.bottom_profile:
+                            selectedFragment = null;
+                            break;
+                    }
+
+                    // Set the selected fragment in frame layout container
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.dash_fragment_container, selectedFragment)
+                            .commit();
+
+                    return true;
+
+                }
+            };
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +67,12 @@ public class DashboardActivity extends AppCompatActivity
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         BottomNavigationView bottomNavigation = findViewById(R.id.navigationView);
+        // To remove the bubble-like animation
         BottomNavigationViewHelper.removeShiftMode(bottomNavigation);
+        // Listener is defined below
+        bottomNavigation.setOnNavigationItemSelectedListener(bottomNavListener);
 
         // Boilerplate NavigationDrawer Activity code
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -35,16 +83,6 @@ public class DashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override

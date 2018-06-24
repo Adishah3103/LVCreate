@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/published_project_layout"
+        style="@style/ProjectDashboardLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/published_project_title"
+            style="@style/ProjectDashboardTitle"
+            android:text="Published Projects"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/published_project_desc"
+            style="@style/ProjectDashboardDesc"
+            android:text="This folder consist of projects that are published and can be seen in LV-View App"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/published_project_title" />
+
+        <TextView
+            android:id="@+id/published_project_open_btn"
+            style="@style/ProjectDashboardOpen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/published_project_desc" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/uploaded_project_layout"
+        style="@style/ProjectDashboardLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/published_project_layout">
+
+        <TextView
+            android:id="@+id/uploaded_project_title"
+            style="@style/ProjectDashboardTitle"
+            android:text="Uploaded Projects"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/uploaded_project_desc"
+            style="@style/ProjectDashboardDesc"
+            android:text="This folder consist of projects that are stiched and converted into video but are not published."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/uploaded_project_title" />
+
+        <TextView
+            android:id="@+id/uploaded_project_open_btn"
+            style="@style/ProjectDashboardOpen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/uploaded_project_desc" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/saved_project_layout"
+        style="@style/ProjectDashboardLayout"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/uploaded_project_layout">
+
+        <TextView
+            android:id="@+id/saved_project_title"
+            style="@style/ProjectDashboardTitle"
+            android:text="Saved Projects"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/saved_project_desc"
+            style="@style/ProjectDashboardDesc"
+            android:text="This folder consist of projects that are neither uploaded nor published."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saved_project_title" />
+
+        <TextView
+            android:id="@+id/saved_project_open_btn"
+            style="@style/ProjectDashboardOpen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saved_project_desc" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/uploading_project_layout"
+        style="@style/ProjectDashboardLayout"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saved_project_layout">
+
+        <TextView
+            android:id="@+id/uploading_project_title"
+            style="@style/ProjectDashboardTitle"
+            android:text="Uploading Projects"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/uploading_project_desc"
+            style="@style/ProjectDashboardDesc"
+            android:text="This folder consist of projects that are already uplaoded on the server and are in process of stiching."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/uploading_project_title" />
+
+        <TextView
+            android:id="@+id/uploading_project_open_btn"
+            style="@style/ProjectDashboardOpen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/uploading_project_desc" />
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>
