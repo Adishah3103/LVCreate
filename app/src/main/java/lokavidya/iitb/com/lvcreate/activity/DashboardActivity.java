@@ -42,9 +42,10 @@ public class DashboardActivity extends AppCompatActivity
                     }
 
                     // Set the selected fragment in frame layout container
-                    getSupportFragmentManager().beginTransaction().
+            /*        getSupportFragmentManager().beginTransaction().
                             replace(R.id.dash_fragment_container, selectedFragment)
                             .commit();
+                            */
 
                     return true;
 
