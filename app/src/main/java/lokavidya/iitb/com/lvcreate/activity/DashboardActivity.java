@@ -29,6 +29,9 @@ public class DashboardActivity extends AppCompatActivity
         BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.navigationView);
         BottomNavigationViewHelper.removeShiftMode(bottomNavigation);
 
+
+
+
         // Boilerplate NavigationDrawer Activity code
 
 
