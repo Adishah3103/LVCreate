@@ -15,8 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import lokavidya.iitb.com.lvcreate.R;
-import lokavidya.iitb.com.lvcreate.fragment.CategoryFragment;
 import lokavidya.iitb.com.lvcreate.fragment.HomeFragment;
+import lokavidya.iitb.com.lvcreate.fragment.NotificationFragment;
 import lokavidya.iitb.com.lvcreate.fragment.ProfileFragment;
 import lokavidya.iitb.com.lvcreate.fragment.ProjectFragment;
 import lokavidya.iitb.com.lvcreate.util.BottomNavigationViewHelper;
@@ -71,8 +71,8 @@ public class DashboardActivity extends AppCompatActivity
                         case R.id.bottom_project:
                             selectedFragment = new ProjectFragment();
                             break;
-                        case R.id.bottom_category:
-                            selectedFragment = new CategoryFragment();
+                        case R.id.bottom_notification:
+                            selectedFragment = new NotificationFragment();
                             break;
                         case R.id.bottom_profile:
                             selectedFragment = new ProfileFragment();
