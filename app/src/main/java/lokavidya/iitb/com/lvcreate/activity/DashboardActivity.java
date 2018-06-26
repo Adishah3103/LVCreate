@@ -1,5 +1,6 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -24,28 +25,28 @@ public class DashboardActivity extends AppCompatActivity
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+
 
                     switch (item.getItemId()) {
                         case R.id.bottom_home:
-                            selectedFragment = null;
+                            Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
+                            startActivity(i);
+
                             break;
                         case R.id.bottom_project:
-                            selectedFragment = new ProjectFragment();
+                             ProjectFragment pf = new ProjectFragment();
+                            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+                            fm.beginTransaction().replace(R.id.dashboard, pf, pf.getTag()).commit();
                             break;
                         case R.id.bottom_category:
-                            selectedFragment = null;
+
                             break;
                         case R.id.bottom_profile:
-                            selectedFragment = null;
+
                             break;
                     }
 
-                    // Set the selected fragment in frame layout container
-            /*        getSupportFragmentManager().beginTransaction().
-                            replace(R.id.dash_fragment_container, selectedFragment)
-                            .commit();
-                            */
+
 
                     return true;
 
