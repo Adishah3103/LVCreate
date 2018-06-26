@@ -1,8 +1,10 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,8 +13,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.fragment.HomeFragment;
@@ -55,6 +63,61 @@ public class DashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Click action
+                /*LayoutInflater factory = LayoutInflater.from(DashboardActivity.this);
+                final View dialogView = factory.inflate(R.layout.create_dialog, null);
+                final AlertDialog createDialog = new AlertDialog.Builder(DashboardActivity.this).create();
+                createDialog.setView(dialogView);
+                createDialog.setContentView(R.layout.create_dialog);
+                createDialog.setTitle("Project Name");
+
+                final EditText projectName = (EditText)createDialog.findViewById(R.id.projectname);
+
+                Button next = (Button)findViewById(R.id.next);*/
+
+                LayoutInflater factory = LayoutInflater.from(DashboardActivity.this);
+                final View dialogView = factory.inflate(R.layout.create_dialog, null);
+                final AlertDialog dialog = new AlertDialog.Builder(DashboardActivity.this)
+                        .setView(dialogView)
+                        .create();
+
+                //we don't want title
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.create_dialog);
+
+                //bind views from dialog layout
+                final EditText projectName = dialogView.findViewById(R.id.projectname);
+                Button next = dialogView.findViewById(R.id.next);
+
+                next.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (projectName.getText().toString() != "") {
+
+                            Toast.makeText(getApplicationContext(), "Opened Project activity", Toast.LENGTH_SHORT).show();
+                            //createDialog.dismiss();
+                            dialog.dismiss();
+
+                        } else {
+
+                            Toast.makeText(getApplicationContext(), "Enter project name", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+                dialog.show();
+                //createDialog.show();
+            }
+        });
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
