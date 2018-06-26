@@ -36,7 +36,7 @@ public class DashboardActivity extends AppCompatActivity
                         case R.id.bottom_project:
                              ProjectFragment pf = new ProjectFragment();
                             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-                            fm.beginTransaction().replace(R.id.dashboard, pf, pf.getTag()).commit();
+                            fm.beginTransaction().replace(R.id.main_frame, pf, pf.getTag()).commit();
                             break;
                         case R.id.bottom_category:
 
