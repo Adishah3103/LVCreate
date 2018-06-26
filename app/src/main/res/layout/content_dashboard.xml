@@ -12,8 +12,8 @@
         android:id="@+id/main_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_frame"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="511dp" />
 

@@ -26,12 +26,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/published_project_title" />
 
-        <TextView
-            android:id="@+id/published_project_open_btn"
-            style="@style/ProjectDashboardOpen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/published_project_desc" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -45,24 +39,19 @@
         <TextView
             android:id="@+id/uploaded_project_title"
             style="@style/ProjectDashboardTitle"
-            android:text="Uploaded Projects"
+            android:text="Upublished Projects"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/uploaded_project_desc"
             style="@style/ProjectDashboardDesc"
+            android:layout_marginStart="8dp"
             android:text="This folder consist of projects that are stiched and converted into video but are not published."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/uploaded_project_title" />
 
-        <TextView
-            android:id="@+id/uploaded_project_open_btn"
-            style="@style/ProjectDashboardOpen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/uploaded_project_desc" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -88,12 +77,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/saved_project_title" />
 
-        <TextView
-            android:id="@+id/saved_project_open_btn"
-            style="@style/ProjectDashboardOpen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saved_project_desc" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -107,7 +90,7 @@
         <TextView
             android:id="@+id/uploading_project_title"
             style="@style/ProjectDashboardTitle"
-            android:text="Uploading Projects"
+            android:text="In progress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -119,12 +102,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/uploading_project_title" />
 
-        <TextView
-            android:id="@+id/uploading_project_open_btn"
-            style="@style/ProjectDashboardOpen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/uploading_project_desc" />
     </android.support.constraint.ConstraintLayout>
 
 
