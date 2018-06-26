@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
 
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/published_project_layout"
         style="@style/ProjectDashboardLayout"
@@ -127,6 +128,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/uploading_project_desc" />
     </android.support.constraint.ConstraintLayout>
+
+
 
 
 </android.support.constraint.ConstraintLayout>
