@@ -26,35 +26,6 @@ public class DashboardActivity extends AppCompatActivity
 
     // Global fields
     FragmentManager fragmentManager;
-    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                    Fragment selectedFragment = null;
-
-                    switch (item.getItemId()) {
-                        case R.id.bottom_home:
-                            selectedFragment = new HomeFragment();
-                            break;
-                        case R.id.bottom_project:
-                            selectedFragment = new ProjectFragment();
-                            break;
-                        case R.id.bottom_category:
-                            selectedFragment = new CategoryFragment();
-                            break;
-                        case R.id.bottom_profile:
-                            selectedFragment = new ProfileFragment();
-                            break;
-                    }
-
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.main_frame, selectedFragment)
-                            .commit();
-                    return true;
-
-                }
-            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +56,36 @@ public class DashboardActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                    Fragment selectedFragment = null;
+
+                    switch (item.getItemId()) {
+                        case R.id.bottom_home:
+                            selectedFragment = new HomeFragment();
+                            break;
+                        case R.id.bottom_project:
+                            selectedFragment = new ProjectFragment();
+                            break;
+                        case R.id.bottom_category:
+                            selectedFragment = new CategoryFragment();
+                            break;
+                        case R.id.bottom_profile:
+                            selectedFragment = new ProfileFragment();
+                            break;
+                    }
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.main_frame, selectedFragment)
+                            .commit();
+                    return true;
+
+                }
+            };
 
     @Override
     public void onBackPressed() {
