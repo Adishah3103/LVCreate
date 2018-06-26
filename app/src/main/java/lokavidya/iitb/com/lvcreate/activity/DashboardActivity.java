@@ -1,11 +1,11 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,53 +15,46 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import lokavidya.iitb.com.lvcreate.R;
+import lokavidya.iitb.com.lvcreate.fragment.CategoryFragment;
+import lokavidya.iitb.com.lvcreate.fragment.HomeFragment;
+import lokavidya.iitb.com.lvcreate.fragment.ProfileFragment;
 import lokavidya.iitb.com.lvcreate.fragment.ProjectFragment;
 import lokavidya.iitb.com.lvcreate.util.BottomNavigationViewHelper;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    // Global fields
+    FragmentManager fragmentManager;
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                    Fragment selectedFragment = null;
 
                     switch (item.getItemId()) {
                         case R.id.bottom_home:
-                            Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
-                            startActivity(i);
-
+                            selectedFragment = new HomeFragment();
                             break;
                         case R.id.bottom_project:
-                             ProjectFragment pf = new ProjectFragment();
-                            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-                            fm.beginTransaction().replace(R.id.dashboard, pf, pf.getTag()).commit();
+                            selectedFragment = new ProjectFragment();
                             break;
                         case R.id.bottom_category:
-
+                            selectedFragment = new CategoryFragment();
                             break;
                         case R.id.bottom_profile:
-
+                            selectedFragment = new ProfileFragment();
                             break;
                     }
 
-
-
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.main_frame, selectedFragment)
+                            .commit();
                     return true;
 
                 }
             };
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +69,11 @@ public class DashboardActivity extends AppCompatActivity
         // Listener is defined below
         bottomNavigation.setOnNavigationItemSelectedListener(bottomNavListener);
 
-
-
+        // Set the Frame to HomeFragment
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_frame, new HomeFragment())
+                .commit();
 
         // Boilerplate NavigationDrawer Activity code
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -88,6 +84,16 @@ public class DashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
