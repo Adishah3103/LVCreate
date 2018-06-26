@@ -50,6 +50,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".activity.ProjectActivity"></activity>
     </application>
 
 </manifest>

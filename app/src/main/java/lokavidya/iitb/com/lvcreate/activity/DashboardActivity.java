@@ -1,7 +1,11 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -34,6 +38,7 @@ public class DashboardActivity extends AppCompatActivity
 
     // Global fields
     FragmentManager fragmentManager;
+    public static final String MyPREFERENCES = "MyPrefs" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,43 +74,40 @@ public class DashboardActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Click action
-                /*LayoutInflater factory = LayoutInflater.from(DashboardActivity.this);
-                final View dialogView = factory.inflate(R.layout.create_dialog, null);
-                final AlertDialog createDialog = new AlertDialog.Builder(DashboardActivity.this).create();
-                createDialog.setView(dialogView);
-                createDialog.setContentView(R.layout.create_dialog);
-                createDialog.setTitle("Project Name");
 
-                final EditText projectName = (EditText)createDialog.findViewById(R.id.projectname);
 
-                Button next = (Button)findViewById(R.id.next);*/
 
-                LayoutInflater factory = LayoutInflater.from(DashboardActivity.this);
-                final View dialogView = factory.inflate(R.layout.create_dialog, null);
-                final AlertDialog dialog = new AlertDialog.Builder(DashboardActivity.this)
-                        .setView(dialogView)
-                        .create();
 
-                //we don't want title
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.create_dialog);
+                AlertDialog.Builder mBuilder= new AlertDialog.Builder(DashboardActivity.this);
+                View mView= getLayoutInflater().inflate(R.layout.create_dialog,null);
 
                 //bind views from dialog layout
-                final EditText projectName = dialogView.findViewById(R.id.projectname);
-                Button next = dialogView.findViewById(R.id.next);
+                final EditText projectName = (EditText)mView.findViewById(R.id.projectname);
+                Button next = (Button)mView.findViewById(R.id.next);
+                mBuilder.setView(mView);
+                final AlertDialog dialog=mBuilder.create();
+
 
                 next.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
-                        if (projectName.getText().toString() != "") {
+                        if (!projectName.getText().toString().isEmpty()) {
 
-                            Toast.makeText(getApplicationContext(), "Opened Project activity", Toast.LENGTH_SHORT).show();
-                            //createDialog.dismiss();
+                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+                            String name=projectName.getText().toString();
+                            sharedPreferences.edit().putString("ProjectName", name).apply();
+                            Toast.makeText(getApplicationContext(), "Project Created Succesfully", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(getApplicationContext(),ProjectActivity.class);
+                            startActivity(i);
                             dialog.dismiss();
 
+
+
+
                         } else {
+
 
                             Toast.makeText(getApplicationContext(), "Enter project name", Toast.LENGTH_SHORT).show();
                         }
@@ -113,8 +115,9 @@ public class DashboardActivity extends AppCompatActivity
                     }
                 });
 
+
                 dialog.show();
-                //createDialog.show();
+
             }
         });
 
