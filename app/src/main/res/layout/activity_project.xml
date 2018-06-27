@@ -17,5 +17,59 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-   
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        android:layout_marginTop="56dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableTop="@drawable/ic_image"
+            android:paddingBottom="10dp"
+            android:paddingTop="@dimen/margin_5_dp"
+            android:text="Add Image"
+            android:textSize="12sp"
+            tools:layout_editor_absoluteX="220dp"
+            tools:layout_editor_absoluteY="185dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableTop="@drawable/ic_video"
+            android:paddingBottom="10dp"
+
+            android:paddingTop="@dimen/margin_5_dp"
+            android:text="Add Video"
+            android:textSize="12sp"
+            tools:layout_editor_absoluteX="104dp"
+            tools:layout_editor_absoluteY="165dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableTop="@drawable/ic_audio"
+            android:paddingBottom="10dp"
+            android:paddingTop="@dimen/margin_5_dp"
+            android:text="Add Audio"
+            android:textSize="12sp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="197dp" />
+    </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>
