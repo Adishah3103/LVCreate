@@ -62,4 +62,38 @@
         <item name="android:paddingBottom">@dimen/padding_12_dp</item>
     </style>
 
+    <!-- style for Text inside Order and EditImagedialog box -->
+    <style name="DialogText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
+    <!-- Themes required for FilePicker and Glide -->
+    <style name="LibAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@android:color/background_light</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <style name="PickerTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@color/colorPrimary</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMaxWidth">0dp</item>
+    </style>
+
+    <style name="SmoothCheckBoxStyle">
+        <item name="color_checked">@color/checkbox_color</item>
+        <item name="color_unchecked">@android:color/white</item>
+        <item name="color_unchecked_stroke">@color/checkbox_unchecked_color</item>
+        <item name="color_tick">@android:color/white</item>
+    </style>
+
 </resources>

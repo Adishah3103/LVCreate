@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/btn_add_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,26 +38,27 @@
             android:paddingTop="@dimen/margin_5_dp"
             android:text="Add Image"
             android:textSize="12sp"
+            android:onClick="addImage"
             tools:layout_editor_absoluteX="220dp"
             tools:layout_editor_absoluteY="185dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_add_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
             android:drawableTop="@drawable/ic_video"
             android:paddingBottom="10dp"
-
             android:paddingTop="@dimen/margin_5_dp"
             android:text="Add Video"
             android:textSize="12sp"
+            android:onClick="addVideo"
             tools:layout_editor_absoluteX="104dp"
             tools:layout_editor_absoluteY="165dp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_add_audio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,6 +68,7 @@
             android:paddingTop="@dimen/margin_5_dp"
             android:text="Add Audio"
             android:textSize="12sp"
+            android:onClick="addAudio"
             tools:layout_editor_absoluteX="60dp"
             tools:layout_editor_absoluteY="197dp" />
     </LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/click_photo"
+        style="@style/DialogText"
+        android:layout_alignParentTop="true"
+        android:drawableStart="@drawable/ic_add_camera"
+        android:text="Click Photo"
+        android:textColor="#424242" />
+
+    <TextView
+        android:id="@+id/choose_photo"
+        style="@style/DialogText"
+        android:layout_below="@+id/click_photo"
+        android:layout_marginTop="10dp"
+        android:drawableStart="@drawable/ic_add_gallery"
+        android:text="Choose Photo"
+        android:textColor="#424242" />
+</RelativeLayout>
