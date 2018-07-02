@@ -9,7 +9,7 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-public class OPTReceiver extends BroadcastReceiver {
+public class OTPReceiver extends BroadcastReceiver {
 
     // Get the object of SmsManager
     final SmsManager sms = SmsManager.getDefault();
