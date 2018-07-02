@@ -7,21 +7,19 @@
     tools:context="lokavidya.iitb.com.lvcreate.activity.ProjectActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-
         android:layout_marginTop="56dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,11 +32,11 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:drawableTop="@drawable/ic_image"
+            android:onClick="addImage"
             android:paddingBottom="10dp"
             android:paddingTop="@dimen/margin_5_dp"
             android:text="Add Image"
             android:textSize="12sp"
-            android:onClick="addImage"
             tools:layout_editor_absoluteX="220dp"
             tools:layout_editor_absoluteY="185dp" />
 
@@ -49,11 +47,11 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:drawableTop="@drawable/ic_video"
+            android:onClick="addVideo"
             android:paddingBottom="10dp"
             android:paddingTop="@dimen/margin_5_dp"
             android:text="Add Video"
             android:textSize="12sp"
-            android:onClick="addVideo"
             tools:layout_editor_absoluteX="104dp"
             tools:layout_editor_absoluteY="165dp" />
 
@@ -64,14 +62,24 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:drawableTop="@drawable/ic_audio"
+            android:onClick="addAudio"
             android:paddingBottom="10dp"
             android:paddingTop="@dimen/margin_5_dp"
             android:text="Add Audio"
             android:textSize="12sp"
-            android:onClick="addAudio"
             tools:layout_editor_absoluteX="60dp"
             tools:layout_editor_absoluteY="197dp" />
     </LinearLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/project_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:listitem="@layout/project_recycler_item" />
 
 </android.support.constraint.ConstraintLayout>
