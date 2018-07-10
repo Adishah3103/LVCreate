@@ -77,20 +77,22 @@ public class ProjectActivity extends AppCompatActivity {
 
     public void addImage(View view) {
 
-        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-        View dialogView = inflater.inflate(R.layout.add_image_layout, null);
-        final AlertDialog dialog = new AlertDialog.Builder(ProjectActivity.this).create();
 
-        dialog.setView(dialogView);
 
-        // we don't want title
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProjectActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.add_image_layout, null);
+        mBuilder.setView(mView);
 
-        dialog.setContentView(R.layout.add_image_layout);
+        TextView clickPhoto = mView.findViewById(R.id.click_photo);
+        TextView choosePhoto = mView.findViewById(R.id.choose_photo);
 
-        // Bind views from dialog layout
-        TextView clickPhoto = dialogView.findViewById(R.id.click_photo);
-        TextView choosePhoto = dialogView.findViewById(R.id.choose_photo);
+
+        final AlertDialog dialog = mBuilder.create();
+
+
+
+
+     
 
         clickPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,8 +137,9 @@ public class ProjectActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
         dialog.show();
+
+
     }
 
     public void addVideo(View view) {
