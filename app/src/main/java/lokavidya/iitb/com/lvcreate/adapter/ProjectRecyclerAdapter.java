@@ -20,7 +20,6 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     public ProjectRecyclerAdapter(List<ProjectItem> data) {
         this.data = data;
     }
-
     @NonNull
     @Override
     public ProjectRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,7 +35,23 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
         if (data != null && !data.isEmpty()) {
             ProjectItem currentItem = data.get(position);
 
-            holder.itemThumb.setImageBitmap(currentItem.getItemThumb());
+            //holder.itemThumb.setImageBitmap(currentItem.getItemThumb());
+            if (currentItem.getItemIsAudio()) {
+
+                // Hide the Video thumbnail views
+                holder.itemVideoThumb.setVisibility(View.GONE);
+                holder.itemVideoDeleteBtn.setVisibility(View.GONE);
+                // Show the Image-Audio thumbnails
+                holder.itemImageThumb.setVisibility(View.VISIBLE);
+                holder.itemAudioThumb.setVisibility(View.VISIBLE);
+                holder.itemImageDeleteBtn.setVisibility(View.VISIBLE);
+
+                // Set the image thumbnail
+                holder.itemImageThumb.setImageBitmap(currentItem.getItemThumb());
+
+            } else {
+                holder.itemVideoThumb.setImageBitmap(currentItem.getItemThumb());
+            }
         }
 
     }
@@ -47,12 +62,20 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView itemThumb;
+        ImageView itemVideoThumb;
+        ImageView itemImageThumb;
+        ImageView itemAudioThumb;
+        ImageView itemVideoDeleteBtn;
+        ImageView itemImageDeleteBtn;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            //itemThumb = itemView.findViewById(R.id.project_item_thumb);
+            itemVideoThumb = itemView.findViewById(R.id.item_video_thumb);
+            itemImageThumb = itemView.findViewById(R.id.item_img_thumb);
+            itemAudioThumb = itemView.findViewById(R.id.item_audio_thumb);
+            itemImageDeleteBtn = itemView.findViewById(R.id.btn_delete_image);
+            itemVideoDeleteBtn = itemView.findViewById(R.id.btn_delete_video);
         }
     }
 }
