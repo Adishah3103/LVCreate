@@ -18,7 +18,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -53,6 +53,7 @@ public class ProjectActivity extends AppCompatActivity {
     RecyclerView projectItemList;
     ProjectRecyclerAdapter adapter;
     ArrayList<ProjectItem> list = new ArrayList<>();
+    String cameraIntentImgPath;
 
 
     //permission status https://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
@@ -84,7 +85,7 @@ public class ProjectActivity extends AppCompatActivity {
         // Set up RecyclerView
         adapter = new ProjectRecyclerAdapter(list);
         projectItemList.setAdapter(adapter);
-        projectItemList.setLayoutManager(new GridLayoutManager(this, 2));
+        projectItemList.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -138,7 +139,7 @@ public class ProjectActivity extends AppCompatActivity {
                 //Code for permission
                 if (ActivityCompat.checkSelfPermission(ProjectActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                    askForStoragePermisssion();
+                    askForStoragePermission();
 
                 } else {
 
@@ -155,21 +156,9 @@ public class ProjectActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
 
-
-//                ArrayList<String> filePaths = null;
-//
-//                FilePickerBuilder.getInstance().setMaxCount(50)
-//                        .setSelectedFiles(filePaths)
-//                        .setActivityTheme(R.style.LibAppTheme)
-//                        .enableImagePicker(true)
-//                        .enableVideoPicker(false)
-//                        .pickPhoto(ProjectActivity.this, REQUEST_PICK_IMAGE);
-//
-//                dialog.dismiss();
             }
         });
         dialog.show();
-
 
     }
 
@@ -223,8 +212,13 @@ public class ProjectActivity extends AppCompatActivity {
                         photoPaths.get(i)),
                         IMG_THUMB_WIDTH,
                         IMG_THUMB_HEIGHT);
-                Log.d("Aapdu debug", "" + photoPaths.get(i));
-                list.add(new ProjectItem(null, null, imageThumb));
+
+                list.add(new ProjectItem(
+                        null,
+                        null,
+                        imageThumb,
+                        true,
+                        null));
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();
@@ -247,7 +241,12 @@ public class ProjectActivity extends AppCompatActivity {
                 // Crop the thumbnails
                 Bitmap croppedBitmap = cropImage(videoThumb);
 
-                list.add(new ProjectItem(null, null, croppedBitmap));
+                list.add(new ProjectItem(
+                        null,
+                        null,
+                        croppedBitmap,
+                        false,
+                        null));
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();
@@ -255,7 +254,7 @@ public class ProjectActivity extends AppCompatActivity {
             }
         }
 
-        // PICK_VIDEO code
+        // PICK_AUDIO code
         if (requestCode == REQUEST_PICK_AUDIO && resultCode == RESULT_OK && data != null) {
             audioPaths = new ArrayList<>();
             audioPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
@@ -265,8 +264,23 @@ public class ProjectActivity extends AppCompatActivity {
             }
         }
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+        // Get thumbnail from the Image capture intent
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
+            // To get the Image thumbnail
+            Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
+                    cameraIntentImgPath),
+                    IMG_THUMB_WIDTH,
+                    IMG_THUMB_HEIGHT);
+
+            list.add(new ProjectItem(
+                    null,
+                    null,
+                    imageThumb,
+                    true,
+                    null));
+
+            adapter.notifyDataSetChanged();
         }
 
     }
@@ -319,10 +333,12 @@ public class ProjectActivity extends AppCompatActivity {
                 storageDir      /* directory */
         );
 
+        cameraIntentImgPath = image.getAbsolutePath();
+
         return image;
     }
 
-    private void askForStoragePermisssion() {
+    private void askForStoragePermission() {
 
         //https://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
         if (ActivityCompat.shouldShowRequestPermissionRationale(ProjectActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
