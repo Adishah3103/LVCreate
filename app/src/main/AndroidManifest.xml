@@ -54,7 +54,6 @@
 
         <activity android:name=".activity.ProjectActivity" />
 
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="lokavidya.iitb.com.lvcreate.fileprovider"
@@ -64,6 +63,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".activity.AddProjectDetails"></activity>
     </application>
 
 </manifest>

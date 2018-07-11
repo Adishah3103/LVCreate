@@ -379,6 +379,17 @@ public class ProjectActivity extends AppCompatActivity {
         editor.commit();
 
 
+
+
+
+    }
+
+
+    public void addDetails(View v)
+    {
+        Intent i = new Intent(this, AddProjectDetails.class);
+        startActivity(i);
+
     }
 
 }

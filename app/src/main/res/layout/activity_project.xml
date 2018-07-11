@@ -95,6 +95,7 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/brick_btn_outline"
         android:text="Next"
+        android:onClick="addDetails"
         android:textColor="@color/brick_color"
         android:textSize="@dimen/font_size_16sp"
         android:textStyle="bold"
