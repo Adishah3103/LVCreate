@@ -1,8 +1,11 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -11,6 +14,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -49,6 +54,14 @@ public class ProjectActivity extends AppCompatActivity {
     ProjectRecyclerAdapter adapter;
     ArrayList<ProjectItem> list = new ArrayList<>();
 
+
+    //permission status https://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
+    private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
+    private boolean sentToSettings = false;
+    private SharedPreferences permissionStatus;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +70,8 @@ public class ProjectActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         // Retrieve project name from sharedpref
         String projectName = preferences.getString("ProjectName", "");
+
+        permissionStatus = getSharedPreferences("permissionStatus", MODE_PRIVATE);
 
         // Find views
         Toolbar toolBar = findViewById(R.id.toolbar);
@@ -87,7 +102,9 @@ public class ProjectActivity extends AppCompatActivity {
         clickPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
                 // Ensure that there's a camera activity to handle the intent
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     // Create the File where the photo should go
@@ -97,11 +114,14 @@ public class ProjectActivity extends AppCompatActivity {
                     } catch (IOException ex) {
                         Toast.makeText(getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
                     }
+
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
                         Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
                                 "lokavidya.iitb.com.lvcreate.fileprovider",
                                 photoFile);
+                        Log.d("Aapdu debug", "" + photoFile + " : " + photoURI);
+
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
@@ -115,16 +135,37 @@ public class ProjectActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ArrayList<String> filePaths = null;
+                //Code for permission
+                if (ActivityCompat.checkSelfPermission(ProjectActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                FilePickerBuilder.getInstance().setMaxCount(50)
-                        .setSelectedFiles(filePaths)
-                        .setActivityTheme(R.style.LibAppTheme)
-                        .enableImagePicker(true)
-                        .enableVideoPicker(false)
-                        .pickPhoto(ProjectActivity.this, REQUEST_PICK_IMAGE);
+                    askForStoragePermisssion();
 
-                dialog.dismiss();
+                } else {
+
+                    //You already have the permission, just go ahead.
+                    ArrayList<String> filePaths = null;
+
+                    FilePickerBuilder.getInstance().setMaxCount(50)
+                            .setSelectedFiles(filePaths)
+                            .setActivityTheme(R.style.LibAppTheme)
+                            .enableImagePicker(true)
+                            .enableVideoPicker(false)
+                            .pickPhoto(ProjectActivity.this, REQUEST_PICK_IMAGE);
+
+                    dialog.dismiss();
+                }
+
+
+//                ArrayList<String> filePaths = null;
+//
+//                FilePickerBuilder.getInstance().setMaxCount(50)
+//                        .setSelectedFiles(filePaths)
+//                        .setActivityTheme(R.style.LibAppTheme)
+//                        .enableImagePicker(true)
+//                        .enableVideoPicker(false)
+//                        .pickPhoto(ProjectActivity.this, REQUEST_PICK_IMAGE);
+//
+//                dialog.dismiss();
             }
         });
         dialog.show();
@@ -182,6 +223,7 @@ public class ProjectActivity extends AppCompatActivity {
                         photoPaths.get(i)),
                         IMG_THUMB_WIDTH,
                         IMG_THUMB_HEIGHT);
+                Log.d("Aapdu debug", "" + photoPaths.get(i));
                 list.add(new ProjectItem(null, null, imageThumb));
 
                 // Update the adapter to reflect the changes
@@ -221,6 +263,10 @@ public class ProjectActivity extends AppCompatActivity {
             for (int i = 0; i < audioPaths.size(); i++) {
                 Log.i("Audio Paths", audioPaths.get(i));
             }
+        }
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+
         }
 
     }
@@ -274,6 +320,65 @@ public class ProjectActivity extends AppCompatActivity {
         );
 
         return image;
+    }
+
+    private void askForStoragePermisssion() {
+
+        //https://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
+        if (ActivityCompat.shouldShowRequestPermissionRationale(ProjectActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            //Show Information about why you need the permission
+            AlertDialog.Builder builder = new AlertDialog.Builder(ProjectActivity.this);
+            builder.setTitle("Need Storage Permission");
+            builder.setMessage("This app needs storage permission.");
+            builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    ActivityCompat.requestPermissions(ProjectActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.show();
+        } else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE, false)) {
+            //Previously Permission Request was cancelled with 'Dont Ask Again',
+            // Redirect to Settings after showing Information about why you need the permission
+            AlertDialog.Builder builder = new AlertDialog.Builder(ProjectActivity.this);
+            builder.setTitle("Need Storage Permission");
+            builder.setMessage("This app needs storage permission.");
+            builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    sentToSettings = true;
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                    Toast.makeText(getBaseContext(), "Go to Permissions to Grant Storage", Toast.LENGTH_LONG).show();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.show();
+        } else {
+            //just request the permission
+            ActivityCompat.requestPermissions(ProjectActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+        }
+
+        SharedPreferences.Editor editor = permissionStatus.edit();
+        editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE, true);
+        editor.commit();
+
+
     }
 
 }
