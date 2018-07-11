@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#c82c1f</color>
-    <color name="brick_color">#c82c1f</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="brick_color">#FF9800</color>
 
     <color name="sysWhite">#FFFFFFFF</color>
     <color name="white">#FFFFFF</color>

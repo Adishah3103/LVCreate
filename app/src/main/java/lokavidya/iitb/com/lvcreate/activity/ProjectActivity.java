@@ -17,9 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,8 +75,6 @@ public class ProjectActivity extends AppCompatActivity {
 
     public void addImage(View view) {
 
-
-
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProjectActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.add_image_layout, null);
         mBuilder.setView(mView);
@@ -86,13 +82,7 @@ public class ProjectActivity extends AppCompatActivity {
         TextView clickPhoto = mView.findViewById(R.id.click_photo);
         TextView choosePhoto = mView.findViewById(R.id.choose_photo);
 
-
         final AlertDialog dialog = mBuilder.create();
-
-
-
-
-     
 
         clickPhoto.setOnClickListener(new View.OnClickListener() {
             @Override

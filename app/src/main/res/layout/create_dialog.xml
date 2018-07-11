@@ -7,16 +7,17 @@
 
     <TextView
         android:id="@+id/home_item_title"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:text="Project Name"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-
-        android:padding="15dp"
-        android:textSize="20sp"
         android:background="#FF6F00"
+        android:padding="15dp"
+
+        android:text="Project Name"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,14 +41,14 @@
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="35dp"
 
+        android:layout_marginTop="35dp"
         android:background="@drawable/signin_btn_bg"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:text="NEXT"
         android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/projectname"
         app:layout_constraintStart_toStartOf="@+id/projectname"
         app:layout_constraintTop_toBottomOf="@+id/projectname" />
 </android.support.constraint.ConstraintLayout>

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import lokavidya.iitb.com.lvcreate.R;
@@ -36,6 +36,46 @@ public class DashboardActivity extends AppCompatActivity
     // Global fields
     FragmentManager fragmentManager;
     public static final String MyPREFERENCES = "MyPrefs";
+
+    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                    Fragment selectedFragment = null;
+                    boolean changeFragment = false;
+
+                    switch (item.getItemId()) {
+                        case R.id.bottom_home:
+                            selectedFragment = new HomeFragment();
+                            changeFragment = true;
+                            break;
+                        case R.id.bottom_project:
+                            selectedFragment = new ProjectFragment();
+                            changeFragment = true;
+                            break;
+                        case R.id.bottom_blank:
+                            createProjectDialog();
+                            break;
+                        case R.id.bottom_notification:
+                            selectedFragment = new NotificationFragment();
+                            changeFragment = true;
+                            break;
+                        case R.id.bottom_profile:
+                            selectedFragment = new ProfileFragment();
+                            changeFragment = true;
+                            break;
+                    }
+
+                    if (changeFragment) {
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.main_frame, selectedFragment)
+                                .commit();
+                    }
+                    return true;
+
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,77 +107,15 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
+        ImageView imgCreateBtn = findViewById(R.id.image_create_btn);
+        imgCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DashboardActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.create_dialog, null);
-
-                //bind views from dialog layout
-                final EditText projectName = mView.findViewById(R.id.projectname);
-                Button next = mView.findViewById(R.id.next);
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
-
-                next.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (!projectName.getText().toString().isEmpty()) {
-
-                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-                            String name = projectName.getText().toString();
-                            sharedPreferences.edit().putString("ProjectName", name).apply();
-                            Toast.makeText(getApplicationContext(), "Project Created Successfully", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getApplicationContext(), ProjectActivity.class);
-                            startActivity(i);
-                            dialog.dismiss();
-
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Enter project name", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
-
-                dialog.show();
+                createProjectDialog();
             }
         });
 
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                    Fragment selectedFragment = null;
-
-                    switch (item.getItemId()) {
-                        case R.id.bottom_home:
-                            selectedFragment = new HomeFragment();
-                            break;
-                        case R.id.bottom_project:
-                            selectedFragment = new ProjectFragment();
-                            break;
-                        case R.id.bottom_notification:
-                            selectedFragment = new NotificationFragment();
-                            break;
-                        case R.id.bottom_profile:
-                            selectedFragment = new ProfileFragment();
-                            break;
-                    }
-
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.main_frame, selectedFragment)
-                            .commit();
-                    return true;
-
-                }
-            };
 
     @Override
     public void onBackPressed() {
@@ -194,5 +172,42 @@ public class DashboardActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    void createProjectDialog() {
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DashboardActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.create_dialog, null);
+
+        //bind views from dialog layout
+        final EditText projectName = mView.findViewById(R.id.projectname);
+        Button next = mView.findViewById(R.id.next);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!projectName.getText().toString().isEmpty()) {
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+                    String name = projectName.getText().toString();
+                    sharedPreferences.edit().putString("ProjectName", name).apply();
+                    Toast.makeText(getApplicationContext(), "Project Created Successfully", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(), ProjectActivity.class);
+                    startActivity(i);
+                    dialog.dismiss();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Enter project name", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        dialog.show();
+
     }
 }

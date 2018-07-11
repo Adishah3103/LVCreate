@@ -27,15 +27,16 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="511dp">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+        <ImageView
+            android:id="@+id/image_create_btn"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="15dp"
             android:clickable="true"
             android:focusable="true"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_add_circle" />
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/navigationView"
@@ -44,8 +45,8 @@
             android:layout_gravity="bottom"
             android:paddingBottom="@dimen/margin_5_dp"
             android:paddingTop="@dimen/margin_5_dp"
-            app:itemIconTint="#000000"
-            app:itemTextColor="#000000"
+            app:itemIconTint="@color/bottom_nav_color"
+            app:itemTextColor="@color/bottom_nav_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
