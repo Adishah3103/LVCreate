@@ -9,10 +9,8 @@
         android:id="@+id/home_item_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:background="#FF6F00"
         android:padding="15dp"
-
         android:text="Project Name"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -27,7 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="28dp"
         android:layout_marginStart="28dp"
-
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="Enter Project Name"
@@ -41,9 +38,8 @@
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="35dp"
-        android:background="@drawable/signin_btn_bg"
+        android:background="@drawable/brick_btn_bg"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:text="NEXT"
@@ -51,4 +47,5 @@
         app:layout_constraintEnd_toEndOf="@+id/projectname"
         app:layout_constraintStart_toStartOf="@+id/projectname"
         app:layout_constraintTop_toBottomOf="@+id/projectname" />
+
 </android.support.constraint.ConstraintLayout>

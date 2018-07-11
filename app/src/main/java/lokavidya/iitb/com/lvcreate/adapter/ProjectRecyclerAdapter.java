@@ -52,7 +52,7 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            itemThumb = itemView.findViewById(R.id.project_item_thumb);
+            //itemThumb = itemView.findViewById(R.id.project_item_thumb);
         }
     }
 }

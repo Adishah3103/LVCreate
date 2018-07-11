@@ -139,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:background="@drawable/signin_btn_bg"
+        android:background="@drawable/brick_btn_bg"
         android:paddingBottom="@dimen/padding_12_dp"
         android:paddingEnd="@dimen/padding_45_dp"
         android:paddingLeft="@dimen/padding_45_dp"
@@ -150,6 +150,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/font_size_18sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_forgot_password" />
