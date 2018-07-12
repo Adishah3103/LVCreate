@@ -12,7 +12,6 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -54,7 +53,7 @@ public class CreateProjectActivity extends AppCompatActivity {
     ProjectRecyclerAdapter adapter;
     ArrayList<ProjectItem> list = new ArrayList<>();
     String cameraIntentImgPath;
-
+    Intent intent;
 
     //permission status https://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
@@ -67,12 +66,13 @@ public class CreateProjectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_project);
-        // Get Shared Pref instance
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        // Retrieve project name from sharedpref
-        String projectName = preferences.getString("ProjectName", "");
 
         permissionStatus = getSharedPreferences("permissionStatus", MODE_PRIVATE);
+
+        intent = getIntent();
+        //set the title as the project name on toolbar
+        String title = intent.getStringExtra("title");
+        title = title.substring(0, 1).toUpperCase() + title.substring(1);
 
         // Find views
         Toolbar toolBar = findViewById(R.id.toolbar);
@@ -80,7 +80,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
         // Set up Toolbar
         setSupportActionBar(toolBar);
-        getSupportActionBar().setTitle(projectName);
+        getSupportActionBar().setTitle(title);
 
         // Set up RecyclerView
         adapter = new ProjectRecyclerAdapter(list);

@@ -2,9 +2,7 @@ package lokavidya.iitb.com.lvcreate.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -191,13 +189,14 @@ public class DashboardActivity extends AppCompatActivity
 
                 if (!projectName.getText().toString().isEmpty()) {
 
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
                     String name = projectName.getText().toString();
-                    sharedPreferences.edit().putString("ProjectName", name).apply();
+
                     Toast.makeText(getApplicationContext(), "Project Created Successfully", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getApplicationContext(), CreateProjectActivity.class);
-                    startActivity(i);
+
+                    Intent intent = new Intent(getApplicationContext(), CreateProjectActivity.class);
+                    intent.putExtra("title", name);
+                    startActivity(intent);
+
                     dialog.dismiss();
 
                 } else {
