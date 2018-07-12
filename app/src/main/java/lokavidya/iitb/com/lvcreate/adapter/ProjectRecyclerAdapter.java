@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -48,7 +49,6 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
 
                 // Set the image thumbnail
                 holder.itemImageThumb.setImageBitmap(currentItem.getItemThumb());
-
             } else {
                 holder.itemVideoThumb.setImageBitmap(currentItem.getItemThumb());
             }
@@ -65,8 +65,8 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
         ImageView itemVideoThumb;
         ImageView itemImageThumb;
         ImageView itemAudioThumb;
-        ImageView itemVideoDeleteBtn;
-        ImageView itemImageDeleteBtn;
+        Button itemVideoDeleteBtn;
+        Button itemImageDeleteBtn;
 
         public MyViewHolder(View itemView) {
             super(itemView);
