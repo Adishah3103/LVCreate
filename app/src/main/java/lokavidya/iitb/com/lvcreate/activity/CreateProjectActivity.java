@@ -38,7 +38,7 @@ import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.adapter.ProjectRecyclerAdapter;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 
-public class ProjectActivity extends AppCompatActivity {
+public class CreateProjectActivity extends AppCompatActivity {
 
     // Request codes for File intents
     public static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -66,7 +66,7 @@ public class ProjectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project);
+        setContentView(R.layout.activity_create_project);
         // Get Shared Pref instance
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         // Retrieve project name from sharedpref
@@ -91,7 +91,7 @@ public class ProjectActivity extends AppCompatActivity {
 
     public void addImage(View view) {
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProjectActivity.this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(CreateProjectActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.add_image_layout, null);
         mBuilder.setView(mView);
 
@@ -137,7 +137,7 @@ public class ProjectActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //Code for permission
-                if (ActivityCompat.checkSelfPermission(ProjectActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(CreateProjectActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                     askForStoragePermission();
 
@@ -151,7 +151,7 @@ public class ProjectActivity extends AppCompatActivity {
                             .setActivityTheme(R.style.LibAppTheme)
                             .enableImagePicker(true)
                             .enableVideoPicker(false)
-                            .pickPhoto(ProjectActivity.this, REQUEST_PICK_IMAGE);
+                            .pickPhoto(CreateProjectActivity.this, REQUEST_PICK_IMAGE);
 
                     dialog.dismiss();
                 }
@@ -170,7 +170,7 @@ public class ProjectActivity extends AppCompatActivity {
                 .setActivityTheme(R.style.LibAppTheme)
                 .enableVideoPicker(true)
                 .enableImagePicker(false)
-                .pickPhoto(ProjectActivity.this, REQUEST_PICK_VIDEO);
+                .pickPhoto(CreateProjectActivity.this, REQUEST_PICK_VIDEO);
     }
 
     public void addAudio(View view) {
@@ -341,16 +341,16 @@ public class ProjectActivity extends AppCompatActivity {
     private void askForStoragePermission() {
 
         //https://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
-        if (ActivityCompat.shouldShowRequestPermissionRationale(ProjectActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(CreateProjectActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             //Show Information about why you need the permission
-            AlertDialog.Builder builder = new AlertDialog.Builder(ProjectActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(CreateProjectActivity.this);
             builder.setTitle("Need Storage Permission");
             builder.setMessage("This app needs storage permission.");
             builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
-                    ActivityCompat.requestPermissions(ProjectActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                    ActivityCompat.requestPermissions(CreateProjectActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -363,7 +363,7 @@ public class ProjectActivity extends AppCompatActivity {
         } else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE, false)) {
             //Previously Permission Request was cancelled with 'Dont Ask Again',
             // Redirect to Settings after showing Information about why you need the permission
-            AlertDialog.Builder builder = new AlertDialog.Builder(ProjectActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(CreateProjectActivity.this);
             builder.setTitle("Need Storage Permission");
             builder.setMessage("This app needs storage permission.");
             builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
@@ -387,16 +387,12 @@ public class ProjectActivity extends AppCompatActivity {
             builder.show();
         } else {
             //just request the permission
-            ActivityCompat.requestPermissions(ProjectActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+            ActivityCompat.requestPermissions(CreateProjectActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
         }
 
         SharedPreferences.Editor editor = permissionStatus.edit();
         editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE, true);
         editor.commit();
-
-
-
-
 
     }
 

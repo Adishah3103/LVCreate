@@ -112,7 +112,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                 String message = obj.getString("message");
 
                                 if (res.equals("200") && message.equals("Password Updated")) {
-                                    Intent intent = new Intent(ResetPasswordActivity.this, WelcomeActivity.class);
+                                    Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
                                     finishAffinity();
                                     startActivity(intent);
                                 } else if (res.equals("400") && message.equals("Your new password cannot be same as last password")) {

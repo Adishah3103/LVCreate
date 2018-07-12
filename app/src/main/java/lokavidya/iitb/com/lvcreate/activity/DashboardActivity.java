@@ -196,7 +196,7 @@ public class DashboardActivity extends AppCompatActivity
                     String name = projectName.getText().toString();
                     sharedPreferences.edit().putString("ProjectName", name).apply();
                     Toast.makeText(getApplicationContext(), "Project Created Successfully", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getApplicationContext(), ProjectActivity.class);
+                    Intent i = new Intent(getApplicationContext(), CreateProjectActivity.class);
                     startActivity(i);
                     dialog.dismiss();
 

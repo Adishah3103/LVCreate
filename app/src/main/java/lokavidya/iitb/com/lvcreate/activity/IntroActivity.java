@@ -67,7 +67,7 @@ public class IntroActivity extends AppIntro {
     }
 
     private void loadMainActivity() {
-        Intent intent = new Intent(this, WelcomeActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finishAffinity();
     }

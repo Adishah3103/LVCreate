@@ -38,7 +38,7 @@
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.WelcomeActivity"
+            android:name=".activity.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.SignUpActivity" />
@@ -52,7 +52,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.ProjectActivity" />
+        <activity android:name=".activity.CreateProjectActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -64,7 +64,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activity.AddProjectDetails"></activity>
+        <activity android:name=".activity.AddProjectDetails" />
     </application>
 
 </manifest>

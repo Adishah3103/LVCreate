@@ -27,7 +27,7 @@ import lokavidya.iitb.com.lvcreate.network.NetworkException;
 import lokavidya.iitb.com.lvcreate.network.NetworkResponse;
 import lokavidya.iitb.com.lvcreate.util.Master;
 
-public class WelcomeActivity extends FragmentActivity implements View.OnClickListener {
+public class LoginActivity extends FragmentActivity implements View.OnClickListener {
 
     public static int MY_REQUEST_CODE3;
     public int check = 0;
@@ -49,12 +49,12 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         sharedPreferences.edit().putBoolean("Skip", false).apply();
         if (!sharedPreferences.getString("idToken", "N/A").equals("N/A")) {
-            Intent projectsIntent = new Intent(WelcomeActivity.this, DashboardActivity.class);
+            Intent projectsIntent = new Intent(LoginActivity.this, DashboardActivity.class);
             startActivity(projectsIntent);
             finishAffinity();
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome_activity);
+        setContentView(R.layout.activity_login);
 
         networkCommunicator = NetworkCommunicator.getInstance();
 
@@ -102,7 +102,7 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
 
                 if (mobile.length() == 10) {
                     if (pass.length() > 0) {
-                        Master.showProgressDialog(WelcomeActivity.this, getString(R.string.pdialog_loading));
+                        Master.showProgressDialog(LoginActivity.this, getString(R.string.pdialog_loading));
                         checkLoginInfo(mobile, pass);
                     } else {
                         password.setError("Enter valid password!");
@@ -118,7 +118,7 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
                 break;
             /*case R.id.skipbutton:
                 check = 3;
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WelcomeActivity.this);
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                 sharedPreferences.edit().putBoolean("Skip", true).apply();
                 Intent i = new Intent(this, DashboardActivity.class);
 
@@ -166,9 +166,9 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
                                 if (res.equals("200")) {
                                     requestLogin(obj.get("session_name").toString(), mobile);
                                 } else if (res.equals("404")) {
-                                    Toast.makeText(WelcomeActivity.this, "You are not a member of LokaVidya!\nPlease register first!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginActivity.this, "You are not a member of LokaVidya!\nPlease register first!", Toast.LENGTH_LONG).show();
                                 } else {
-                                    Toast.makeText(WelcomeActivity.this, "Please enter valid credentials", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginActivity.this, "Please enter valid credentials", Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -194,8 +194,8 @@ public class WelcomeActivity extends FragmentActivity implements View.OnClickLis
         sharedPreferences.edit().putString("UserName", name).apply();
         sharedPreferences.edit().putString("UserPhone", strPhone).apply();
 
-        Toast.makeText(WelcomeActivity.this, "Welcome " + name, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(WelcomeActivity.this, DashboardActivity.class);
+        Toast.makeText(LoginActivity.this, "Welcome " + name, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
         finishAffinity();
         startActivity(intent);
     }
