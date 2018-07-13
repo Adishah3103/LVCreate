@@ -2,6 +2,8 @@ package lokavidya.iitb.com.lvcreate.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -174,7 +176,7 @@ public class DashboardActivity extends AppCompatActivity
 
     void createProjectDialog() {
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DashboardActivity.this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DashboardActivity.this, R.style.CustomAlertDialog);
         View mView = getLayoutInflater().inflate(R.layout.create_dialog, null);
 
         //bind views from dialog layout

@@ -96,4 +96,8 @@
         <item name="color_tick">@android:color/white</item>
     </style>
 
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/dialog_bg</item>
+    </style>
+
 </resources>
