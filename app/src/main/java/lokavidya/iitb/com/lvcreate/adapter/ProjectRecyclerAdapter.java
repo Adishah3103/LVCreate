@@ -48,9 +48,9 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
                 holder.itemImageDeleteBtn.setVisibility(View.VISIBLE);
 
                 // Set the image thumbnail
-                holder.itemImageThumb.setImageBitmap(currentItem.getItemThumb());
+                //holder.itemImageThumb.setImageBitmap(currentItem.getItemThumb());
             } else {
-                holder.itemVideoThumb.setImageBitmap(currentItem.getItemThumb());
+                //holder.itemVideoThumb.setImageBitmap(currentItem.getItemThumb());
             }
         }
 

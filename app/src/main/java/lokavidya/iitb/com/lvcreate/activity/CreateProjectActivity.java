@@ -87,6 +87,16 @@ public class CreateProjectActivity extends AppCompatActivity {
         projectItemList.setAdapter(adapter);
         projectItemList.setLayoutManager(new LinearLayoutManager(this));
 
+        /*Log.i("DB", "Adding item in DB");
+        ProjectItemDb mDb = ProjectItemDb.getsInstance(getApplicationContext());
+        ProjectItem item = new ProjectItem("asd",
+                000,
+                001,
+                null,
+                null);
+
+        Log.i("DB", "Item added in DB");*/
+
     }
 
     public void addImage(View view) {
@@ -213,12 +223,12 @@ public class CreateProjectActivity extends AppCompatActivity {
                         IMG_THUMB_WIDTH,
                         IMG_THUMB_HEIGHT);
 
-                list.add(new ProjectItem(
+                /*list.add(new ProjectItem(
                         null,
                         null,
                         imageThumb,
                         true,
-                        null));
+                        null));*/
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();
@@ -241,12 +251,12 @@ public class CreateProjectActivity extends AppCompatActivity {
                 // Crop the thumbnails
                 Bitmap croppedBitmap = cropImage(videoThumb);
 
-                list.add(new ProjectItem(
+                /*list.add(new ProjectItem(
                         null,
                         null,
                         croppedBitmap,
                         false,
-                        null));
+                        null));*/
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();
@@ -273,12 +283,12 @@ public class CreateProjectActivity extends AppCompatActivity {
                     IMG_THUMB_WIDTH,
                     IMG_THUMB_HEIGHT);
 
-            list.add(new ProjectItem(
+            /*list.add(new ProjectItem(
                     null,
                     null,
                     imageThumb,
                     true,
-                    null));
+                    null));*/
 
             adapter.notifyDataSetChanged();
         }

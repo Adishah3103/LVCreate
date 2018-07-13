@@ -1,21 +1,47 @@
 package lokavidya.iitb.com.lvcreate.model;
 
-import android.graphics.Bitmap;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
+@Entity(tableName = "project_item_table")
 public class ProjectItem {
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
+    private int id;
+
     private String itemFilePath;
-    private String itemTitle;
-    private Bitmap itemThumb;
+    private long itemFileSize;
+    private long itemFileDuration;
     private Boolean itemIsAudio;
     private String itemAudioPath;
 
-    public ProjectItem(String itemFilePath, String itemTitle, Bitmap itemThumb, Boolean itemIsAudio, String itemAudioPath) {
+    @Ignore
+    public ProjectItem(int id, String itemFilePath, long itemFileSize, long itemFileDuration, Boolean itemIsAudio, String itemAudioPath) {
+        this.id = id;
         this.itemFilePath = itemFilePath;
-        this.itemTitle = itemTitle;
-        this.itemThumb = itemThumb;
+        this.itemFileSize = itemFileSize;
+        this.itemFileDuration = itemFileDuration;
         this.itemIsAudio = itemIsAudio;
         this.itemAudioPath = itemAudioPath;
+    }
+
+    public ProjectItem(String itemFilePath, long itemFileSize, long itemFileDuration, Boolean itemIsAudio, String itemAudioPath) {
+        this.itemFilePath = itemFilePath;
+        this.itemFileSize = itemFileSize;
+        this.itemFileDuration = itemFileDuration;
+        this.itemIsAudio = itemIsAudio;
+        this.itemAudioPath = itemAudioPath;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getItemFilePath() {
@@ -26,20 +52,20 @@ public class ProjectItem {
         this.itemFilePath = itemFilePath;
     }
 
-    public String getItemTitle() {
-        return itemTitle;
+    public long getItemFileSize() {
+        return itemFileSize;
     }
 
-    public void setItemTitle(String itemTitle) {
-        this.itemTitle = itemTitle;
+    public void setItemFileSize(long itemFileSize) {
+        this.itemFileSize = itemFileSize;
     }
 
-    public Bitmap getItemThumb() {
-        return itemThumb;
+    public long getItemFileDuration() {
+        return itemFileDuration;
     }
 
-    public void setItemThumb(Bitmap itemThumb) {
-        this.itemThumb = itemThumb;
+    public void setItemFileDuration(long itemFileDuration) {
+        this.itemFileDuration = itemFileDuration;
     }
 
     public Boolean getItemIsAudio() {
