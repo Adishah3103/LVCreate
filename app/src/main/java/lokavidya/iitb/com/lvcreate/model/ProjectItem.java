@@ -12,28 +12,51 @@ public class ProjectItem {
     @ColumnInfo(name = "_id")
     private int id;
 
+    @ColumnInfo(name = "item_project_id")
+    private String itemProjectId;
+
+    @ColumnInfo(name = "item_file_path")
     private String itemFilePath;
+
+    @ColumnInfo(name = "item_file_size")
     private long itemFileSize;
-    private long itemFileDuration;
+
+    @ColumnInfo(name = "item_is_audio")
     private Boolean itemIsAudio;
+
+    @ColumnInfo(name = "item_audio_path")
     private String itemAudioPath;
 
+    @ColumnInfo(name = "item_audio_file_size")
+    private long itemAudioFileSize;
+
+    @ColumnInfo(name = "item_file_duration")
+    private long itemFileDuration;
+
+    private int order;
+
     @Ignore
-    public ProjectItem(int id, String itemFilePath, long itemFileSize, long itemFileDuration, Boolean itemIsAudio, String itemAudioPath) {
+    public ProjectItem(int id, String itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order) {
         this.id = id;
+        this.itemProjectId = itemProjectId;
         this.itemFilePath = itemFilePath;
         this.itemFileSize = itemFileSize;
-        this.itemFileDuration = itemFileDuration;
         this.itemIsAudio = itemIsAudio;
         this.itemAudioPath = itemAudioPath;
+        this.itemAudioFileSize = itemAudioFileSize;
+        this.itemFileDuration = itemFileDuration;
+        this.order = order;
     }
 
-    public ProjectItem(String itemFilePath, long itemFileSize, long itemFileDuration, Boolean itemIsAudio, String itemAudioPath) {
+    public ProjectItem(String itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order) {
+        this.itemProjectId = itemProjectId;
         this.itemFilePath = itemFilePath;
         this.itemFileSize = itemFileSize;
-        this.itemFileDuration = itemFileDuration;
         this.itemIsAudio = itemIsAudio;
         this.itemAudioPath = itemAudioPath;
+        this.itemAudioFileSize = itemAudioFileSize;
+        this.itemFileDuration = itemFileDuration;
+        this.order = order;
     }
 
     public int getId() {
@@ -42,6 +65,14 @@ public class ProjectItem {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getItemProjectId() {
+        return itemProjectId;
+    }
+
+    public void setItemProjectId(String itemProjectId) {
+        this.itemProjectId = itemProjectId;
     }
 
     public String getItemFilePath() {
@@ -60,14 +91,6 @@ public class ProjectItem {
         this.itemFileSize = itemFileSize;
     }
 
-    public long getItemFileDuration() {
-        return itemFileDuration;
-    }
-
-    public void setItemFileDuration(long itemFileDuration) {
-        this.itemFileDuration = itemFileDuration;
-    }
-
     public Boolean getItemIsAudio() {
         return itemIsAudio;
     }
@@ -82,5 +105,29 @@ public class ProjectItem {
 
     public void setItemAudioPath(String itemAudioPath) {
         this.itemAudioPath = itemAudioPath;
+    }
+
+    public long getItemAudioFileSize() {
+        return itemAudioFileSize;
+    }
+
+    public void setItemAudioFileSize(long itemAudioFileSize) {
+        this.itemAudioFileSize = itemAudioFileSize;
+    }
+
+    public long getItemFileDuration() {
+        return itemFileDuration;
+    }
+
+    public void setItemFileDuration(long itemFileDuration) {
+        this.itemFileDuration = itemFileDuration;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

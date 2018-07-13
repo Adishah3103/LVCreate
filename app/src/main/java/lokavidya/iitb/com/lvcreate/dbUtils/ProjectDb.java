@@ -6,29 +6,33 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 
-@Database(entities = {ProjectItem.class}, version = 1, exportSchema = false)
-public abstract class ProjectItemDb extends RoomDatabase {
+@Database(entities = {ProjectItem.class, Project.class}, version = 1, exportSchema = false)
+public abstract class ProjectDb extends RoomDatabase {
 
-    private static final String DATABASE_NAME = "project_item_db";
+    private static final String DATABASE_NAME = "project_db";
     private static final Object LOCK = new Object();
-    private static ProjectItemDb sInstance;
+    private static ProjectDb sInstance;
 
-    public static ProjectItemDb getsInstance(Context context) {
+    public static ProjectDb getsInstance(Context context) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                Log.d("ProjectItemDb", "Creating new Database instance.");
+                Log.d("ProjectDb", "Creating new Database instance.");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
-                        ProjectItemDb.class, ProjectItemDb.DATABASE_NAME)
+                        ProjectDb.class, ProjectDb.DATABASE_NAME)
                         // Run this on UI thread temporarily
                         .allowMainThreadQueries()
                         .build();
             }
         }
-        Log.d("ProjectItemDb", "Getting new Database instance.");
+        Log.d("ProjectDb", "Getting new Database instance.");
         return sInstance;
     }
 
     public abstract ProjectItemDao projectItemDao();
+
+    public abstract ProjectDao projectDao();
+
 }

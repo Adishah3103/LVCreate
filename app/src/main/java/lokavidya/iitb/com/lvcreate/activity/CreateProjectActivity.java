@@ -35,6 +35,7 @@ import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.adapter.ProjectRecyclerAdapter;
+import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 
 public class CreateProjectActivity extends AppCompatActivity {
@@ -87,13 +88,21 @@ public class CreateProjectActivity extends AppCompatActivity {
         projectItemList.setAdapter(adapter);
         projectItemList.setLayoutManager(new LinearLayoutManager(this));
 
-        /*Log.i("DB", "Adding item in DB");
-        ProjectItemDb mDb = ProjectItemDb.getsInstance(getApplicationContext());
-        ProjectItem item = new ProjectItem("asd",
-                000,
-                001,
-                null,
-                null);
+        ProjectDb mDb = ProjectDb.getsInstance(getApplicationContext());
+
+        /*List<ProjectItem> items = mDb.projectItemDao().loadAllProjectItems();
+        Log.i("DB", items.toString());
+
+        List<Project> projects = mDb.projectDao().loadAllProject();
+        Log.i("DB", projects.toString());
+
+        Project project = new Project("Project Title",
+                "Description",
+                01,
+                21,
+                "English");
+
+        mDb.projectDao().insertItem(project);
 
         Log.i("DB", "Item added in DB");*/
 
