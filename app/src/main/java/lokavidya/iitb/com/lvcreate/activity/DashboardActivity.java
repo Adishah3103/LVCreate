@@ -47,10 +47,12 @@ public class DashboardActivity extends AppCompatActivity
 
                     switch (item.getItemId()) {
                         case R.id.bottom_home:
+                            getSupportActionBar().setTitle("Home");
                             selectedFragment = new HomeFragment();
                             changeFragment = true;
                             break;
                         case R.id.bottom_project:
+                            getSupportActionBar().setTitle("Projects");
                             selectedFragment = new ProjectFragment();
                             changeFragment = true;
                             break;
@@ -58,10 +60,12 @@ public class DashboardActivity extends AppCompatActivity
                             createProjectDialog();
                             break;
                         case R.id.bottom_notification:
+                            getSupportActionBar().setTitle("Notifications");
                             selectedFragment = new NotificationFragment();
                             changeFragment = true;
                             break;
                         case R.id.bottom_profile:
+                            getSupportActionBar().setTitle("Profile");
                             selectedFragment = new ProfileFragment();
                             changeFragment = true;
                             break;
@@ -155,19 +159,6 @@ public class DashboardActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
