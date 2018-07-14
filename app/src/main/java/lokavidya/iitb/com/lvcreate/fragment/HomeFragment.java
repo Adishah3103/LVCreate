@@ -1,23 +1,38 @@
 package lokavidya.iitb.com.lvcreate.fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.adapter.HomeRecyclerAdapter;
 import lokavidya.iitb.com.lvcreate.model.HomeItem;
+import lokavidya.iitb.com.lvcreate.util.Master;
 
 public class HomeFragment extends Fragment {
 
+    // Global fields
     RecyclerView homeItemList;
     HomeRecyclerAdapter adapter;
     View rootLayout;
@@ -44,6 +59,58 @@ public class HomeFragment extends Fragment {
 
         homeItemList.setAdapter(adapter);
 
+        /**
+         * Start calling API here
+         * **/
+        // Get the Uri to append user_id
+        Uri.Builder mostViewedAPI = Master.getMostViewedAPI();
+        mostViewedAPI.appendQueryParameter("user_id", "16");
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        String url = mostViewedAPI.toString();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        // JsonObject to get the response
+                        JSONArray rootArray = new JSONArray();
+
+                        try {
+                            rootArray = new JSONArray(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+
+                            if (rootArray != null) {
+
+                                for (int i = 0; i < rootArray.length(); i++) {
+
+                                    JSONObject videoItem = rootArray.getJSONObject(i);
+
+                                    Log.i("API " + i, videoItem.toString());
+
+                                }
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(stringRequest);
 
         return rootLayout;
     }

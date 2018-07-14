@@ -2,6 +2,7 @@ package lokavidya.iitb.com.lvcreate.util;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.Uri;
 
 import org.json.JSONObject;
 
@@ -44,8 +45,21 @@ public class Master {
         return SSO_SERVER_URL + "/reset";
     }
 
-    public static String getMostViewedAPI() {
-        return SSO_SERVER_URL + "search/views";
+    public static Uri.Builder getMostViewedAPI() {
+
+        Uri.Builder apiUri;
+
+        Uri baseUri = Uri.parse(CMS_SERVER_URL + "search/views");
+
+        apiUri = baseUri.buildUpon();
+
+        apiUri.appendQueryParameter("org_id", "2");
+        apiUri.appendQueryParameter("languge[]", "English");
+        apiUri.appendQueryParameter("languge[]", "Hindi");
+        apiUri.appendQueryParameter("page", "1");
+
+        return apiUri;
+
     }
 
 

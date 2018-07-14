@@ -26,7 +26,6 @@ import lokavidya.iitb.com.lvcreate.fragment.HomeFragment;
 import lokavidya.iitb.com.lvcreate.fragment.NotificationFragment;
 import lokavidya.iitb.com.lvcreate.fragment.ProfileFragment;
 import lokavidya.iitb.com.lvcreate.fragment.ProjectFragment;
-import lokavidya.iitb.com.lvcreate.network.NetworkCommunicator;
 import lokavidya.iitb.com.lvcreate.util.BottomNavigationViewHelper;
 
 public class DashboardActivity extends AppCompatActivity
@@ -35,8 +34,6 @@ public class DashboardActivity extends AppCompatActivity
     // Global fields
     FragmentManager fragmentManager;
     public static final String MyPREFERENCES = "MyPrefs";
-
-    private NetworkCommunicator networkCommunicator;
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -118,7 +115,6 @@ public class DashboardActivity extends AppCompatActivity
                 createProjectDialog();
             }
         });
-
 
     }
 

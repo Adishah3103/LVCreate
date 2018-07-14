@@ -68,5 +68,4 @@ public class NetworkCommunicator {
             e.printStackTrace();
         }
     }
-
 }
