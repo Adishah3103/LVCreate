@@ -44,16 +44,6 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
         if (data != null && !data.isEmpty()) {
             ProjectItem currentItem = data.get(position);
 
-            // Create thumbnail from video path
-            Bitmap videoThumb = ThumbnailUtils.createVideoThumbnail(
-                    currentItem.getItemFilePath(),
-                    MediaStore.Video.Thumbnails.MINI_KIND);
-
-            // Crop the thumbnails
-            Bitmap croppedBitmap = cropImage(videoThumb);
-
-            holder.videoThumb.setImageBitmap(croppedBitmap);
-
             //holder.itemThumb.setImageBitmap(currentItem.getItemThumb());
             if (currentItem.getItemIsAudio()) {
 
@@ -74,7 +64,15 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
                 // Set the image thumbnail
                 holder.imageThumb.setImageBitmap(imageThumb);
             } else {
-                // Do Nothing
+                // Create thumbnail from video path
+                Bitmap videoThumb = ThumbnailUtils.createVideoThumbnail(
+                        currentItem.getItemFilePath(),
+                        MediaStore.Video.Thumbnails.MINI_KIND);
+
+                // Crop the thumbnails
+                Bitmap croppedBitmap = cropImage(videoThumb);
+
+                holder.videoThumb.setImageBitmap(croppedBitmap);
             }
         }
 
