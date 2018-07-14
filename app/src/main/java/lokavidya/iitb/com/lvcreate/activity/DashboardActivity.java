@@ -2,8 +2,6 @@ package lokavidya.iitb.com.lvcreate.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -28,6 +26,7 @@ import lokavidya.iitb.com.lvcreate.fragment.HomeFragment;
 import lokavidya.iitb.com.lvcreate.fragment.NotificationFragment;
 import lokavidya.iitb.com.lvcreate.fragment.ProfileFragment;
 import lokavidya.iitb.com.lvcreate.fragment.ProjectFragment;
+import lokavidya.iitb.com.lvcreate.network.NetworkCommunicator;
 import lokavidya.iitb.com.lvcreate.util.BottomNavigationViewHelper;
 
 public class DashboardActivity extends AppCompatActivity
@@ -36,6 +35,8 @@ public class DashboardActivity extends AppCompatActivity
     // Global fields
     FragmentManager fragmentManager;
     public static final String MyPREFERENCES = "MyPrefs";
+
+    private NetworkCommunicator networkCommunicator;
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -110,7 +111,6 @@ public class DashboardActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         ImageView imgCreateBtn = findViewById(R.id.image_create_btn);
         imgCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +118,7 @@ public class DashboardActivity extends AppCompatActivity
                 createProjectDialog();
             }
         });
+
 
     }
 

@@ -86,23 +86,14 @@ public class CreateProjectActivity extends AppCompatActivity {
         projectItemList.setAdapter(adapter);
         projectItemList.setLayoutManager(new LinearLayoutManager(this));
 
+        try {
+            list = (ArrayList<ProjectItem>) getLastNonConfigurationInstance();
+            adapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         ProjectDb mDb = ProjectDb.getsInstance(getApplicationContext());
-
-        /*List<ProjectItem> items = mDb.projectItemDao().loadAllProjectItems();
-        Log.i("DB", items.toString());
-
-        List<Project> projects = mDb.projectDao().loadAllProject();
-        Log.i("DB", projects.toString());
-
-        Project project = new Project("Project Title",
-                "Description",
-                01,
-                21,
-                "English");
-
-        mDb.projectDao().insertItem(project);
-
-        Log.i("DB", "Item added in DB");*/
 
     }
 
@@ -142,6 +133,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
                     }
                 }
 
@@ -224,12 +216,6 @@ public class CreateProjectActivity extends AppCompatActivity {
             for (int i = 0; i < photoPaths.size(); i++) {
                 Log.i("Photo Paths", photoPaths.get(i));
 
-                /*// Create thumbnail from image path
-                Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
-                        photoPaths.get(i)),
-                        IMG_THUMB_WIDTH,
-                        IMG_THUMB_HEIGHT);*/
-
                 list.add(new ProjectItem(
                         0,
                         photoPaths.get(i),
@@ -252,14 +238,6 @@ public class CreateProjectActivity extends AppCompatActivity {
 
             for (int i = 0; i < videoPaths.size(); i++) {
                 Log.i("Video Paths", videoPaths.get(i));
-
-                /*// Create thumbnail from video path
-                Bitmap videoThumb = ThumbnailUtils.createVideoThumbnail(
-                        videoPaths.get(i),
-                        MediaStore.Video.Thumbnails.MINI_KIND);
-
-                // Crop the thumbnails
-                Bitmap croppedBitmap = cropImage(videoThumb);*/
 
                 list.add(new ProjectItem(
                         0,
@@ -286,18 +264,28 @@ public class CreateProjectActivity extends AppCompatActivity {
                 Log.i("Audio Paths", audioPaths.get(i));
             }
         }
+        Log.i("Result Code", String.valueOf(resultCode));
 
-        // Get thumbnail from the Image capture intent
-        /*if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
-            // To get the Image thumbnail
-            Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
-                    cameraIntentImgPath),
-                    IMG_THUMB_WIDTH,
-                    IMG_THUMB_HEIGHT);
+            File file = new File(cameraIntentImgPath);
+            if (file.exists()) {
 
-        }*/
+                list.add(new ProjectItem(
+                        0,
+                        cameraIntentImgPath,
+                        24324,
+                        true,
+                        "asdsad",
+                        3244,
+                        324234,
+                        1));
 
+                adapter.notifyDataSetChanged();
+
+                cameraIntentImgPath = null;
+            }
+        }
     }
 
     // Boilerplate methods starts from here
@@ -349,18 +337,6 @@ public class CreateProjectActivity extends AppCompatActivity {
         );
 
         cameraIntentImgPath = image.getAbsolutePath();
-
-        list.add(new ProjectItem(
-                0,
-                cameraIntentImgPath,
-                24324,
-                true,
-                "asdsad",
-                3244,
-                324234,
-                1));
-
-        adapter.notifyDataSetChanged();
 
         return image;
     }
@@ -423,6 +399,10 @@ public class CreateProjectActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return list;
+    }
 
     public void addDetails(View v)
     {

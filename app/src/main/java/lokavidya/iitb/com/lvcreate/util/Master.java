@@ -13,27 +13,41 @@ public class Master {
 
     // We store all the CONSTANT STRING Values here
 
-    private static final String serverURL = "http://ssonew.lokavidya.com/api";
+    /**
+     * SSO API's Start here
+     **/
+
+    private static final String SSO_SERVER_URL = "http://ssonew.lokavidya.com/api";
+    /**
+     * CMS API's Start here
+     **/
+
+    private static final String CMS_SERVER_URL = "https://lvcms.herokuapp.com/api/v1/";
 
     public static String getLoginAPI() {
-        return serverURL + "/login";
+        return SSO_SERVER_URL + "/login";
     }
 
     public static String getRegistrationAPI() {
-        return serverURL + "/signup";
+        return SSO_SERVER_URL + "/signup";
     }
 
     public static String getForgotPasswordAPI() {
-        return serverURL + "/forgot";
+        return SSO_SERVER_URL + "/forgot";
     }
 
     public static String getOTPCheckAPI() {
-        return serverURL + "/check";
+        return SSO_SERVER_URL + "/check";
     }
 
     public static String getResetPasswordAPI() {
-        return serverURL + "/reset";
+        return SSO_SERVER_URL + "/reset";
     }
+
+    public static String getMostViewedAPI() {
+        return SSO_SERVER_URL + "search/views";
+    }
+
 
     private static ProgressDialog pDialog;
 
