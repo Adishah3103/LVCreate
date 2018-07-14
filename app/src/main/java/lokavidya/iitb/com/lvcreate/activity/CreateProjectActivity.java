@@ -59,6 +59,7 @@ public class CreateProjectActivity extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_SETTING = 101;
     private boolean sentToSettings = false;
     private SharedPreferences permissionStatus;
+    private String title = "";
 
 
     @Override
@@ -69,9 +70,21 @@ public class CreateProjectActivity extends AppCompatActivity {
         permissionStatus = getSharedPreferences("permissionStatus", MODE_PRIVATE);
 
         intent = getIntent();
+
+
+        // Check whether we're recreating a previously destroyed instance
+        if (savedInstanceState != null) {
+
+            // Restore value of members from saved state
+            title = savedInstanceState.getString("title");
+        } else {
+
+            // Initialize members with default values for a new instance
+            title = intent.getStringExtra("title");
+            title = title.substring(0, 1).toUpperCase() + title.substring(1);
+        }
+
         //set the title as the project name on toolbar
-        String title = intent.getStringExtra("title");
-        title = title.substring(0, 1).toUpperCase() + title.substring(1);
 
         // Find views
         Toolbar toolBar = findViewById(R.id.toolbar);
@@ -86,12 +99,6 @@ public class CreateProjectActivity extends AppCompatActivity {
         projectItemList.setAdapter(adapter);
         projectItemList.setLayoutManager(new LinearLayoutManager(this));
 
-        try {
-            list = (ArrayList<ProjectItem>) getLastNonConfigurationInstance();
-            adapter.notifyDataSetChanged();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         ProjectDb mDb = ProjectDb.getsInstance(getApplicationContext());
 
@@ -399,16 +406,39 @@ public class CreateProjectActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public Object onRetainCustomNonConfigurationInstance() {
-        return list;
-    }
 
-    public void addDetails(View v)
-    {
+    public void addDetails(View v) {
         Intent i = new Intent(this, AddProjectDetails.class);
         startActivity(i);
 
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        Log.d("AAD", "restored the state");
+        // Check whether we're recreating a previously destroyed instance
+        if (savedInstanceState != null) {
+
+            // Restore value of members from saved state
+            title = savedInstanceState.getString("title");
+        } else {
+
+            // Initialize members with default values for a new instance
+            title = intent.getStringExtra("title");
+            title = title.substring(0, 1).toUpperCase() + title.substring(1);
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+
+        Log.d("AAD", "saved the state");
+        savedInstanceState.putString("title", getIntent().getStringExtra("title"));
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+
+    }
 }

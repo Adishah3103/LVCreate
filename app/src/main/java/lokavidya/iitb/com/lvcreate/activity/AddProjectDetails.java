@@ -1,7 +1,6 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -380,12 +379,4 @@ public class AddProjectDetails extends AppCompatActivity {
         onBackPressed();
         return true;
     }
-
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        startActivity(new Intent(this, CreateProjectActivity.class));
-        finish();
-    }
-
 }
