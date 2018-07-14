@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -226,18 +224,21 @@ public class CreateProjectActivity extends AppCompatActivity {
             for (int i = 0; i < photoPaths.size(); i++) {
                 Log.i("Photo Paths", photoPaths.get(i));
 
-                // Create thumbnail from image path
+                /*// Create thumbnail from image path
                 Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
                         photoPaths.get(i)),
                         IMG_THUMB_WIDTH,
-                        IMG_THUMB_HEIGHT);
+                        IMG_THUMB_HEIGHT);*/
 
-                /*list.add(new ProjectItem(
-                        null,
-                        null,
-                        imageThumb,
+                list.add(new ProjectItem(
+                        0,
+                        photoPaths.get(i),
+                        24324,
                         true,
-                        null));*/
+                        "asdsad",
+                        325325,
+                        324324,
+                        1));
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();
@@ -252,20 +253,23 @@ public class CreateProjectActivity extends AppCompatActivity {
             for (int i = 0; i < videoPaths.size(); i++) {
                 Log.i("Video Paths", videoPaths.get(i));
 
-                // Create thumbnail from video path
+                /*// Create thumbnail from video path
                 Bitmap videoThumb = ThumbnailUtils.createVideoThumbnail(
                         videoPaths.get(i),
                         MediaStore.Video.Thumbnails.MINI_KIND);
 
                 // Crop the thumbnails
-                Bitmap croppedBitmap = cropImage(videoThumb);
+                Bitmap croppedBitmap = cropImage(videoThumb);*/
 
-                /*list.add(new ProjectItem(
-                        null,
-                        null,
-                        croppedBitmap,
+                list.add(new ProjectItem(
+                        0,
+                        videoPaths.get(i),
+                        24324,
                         false,
-                        null));*/
+                        "asdsad",
+                        3244,
+                        324234,
+                        1));
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();
@@ -284,7 +288,7 @@ public class CreateProjectActivity extends AppCompatActivity {
         }
 
         // Get thumbnail from the Image capture intent
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        /*if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
             // To get the Image thumbnail
             Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
@@ -292,15 +296,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                     IMG_THUMB_WIDTH,
                     IMG_THUMB_HEIGHT);
 
-            /*list.add(new ProjectItem(
-                    null,
-                    null,
-                    imageThumb,
-                    true,
-                    null));*/
-
-            adapter.notifyDataSetChanged();
-        }
+        }*/
 
     }
 
@@ -353,6 +349,18 @@ public class CreateProjectActivity extends AppCompatActivity {
         );
 
         cameraIntentImgPath = image.getAbsolutePath();
+
+        list.add(new ProjectItem(
+                0,
+                cameraIntentImgPath,
+                24324,
+                true,
+                "asdsad",
+                3244,
+                324234,
+                1));
+
+        adapter.notifyDataSetChanged();
 
         return image;
     }

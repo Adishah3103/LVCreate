@@ -1,5 +1,9 @@
 package lokavidya.iitb.com.lvcreate.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -33,24 +38,43 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     @Override
     public void onBindViewHolder(@NonNull ProjectRecyclerAdapter.MyViewHolder holder, int position) {
 
+        final int IMG_THUMB_WIDTH = 180;
+        final int IMG_THUMB_HEIGHT = 180;
+
         if (data != null && !data.isEmpty()) {
             ProjectItem currentItem = data.get(position);
+
+            // Create thumbnail from video path
+            Bitmap videoThumb = ThumbnailUtils.createVideoThumbnail(
+                    currentItem.getItemFilePath(),
+                    MediaStore.Video.Thumbnails.MINI_KIND);
+
+            // Crop the thumbnails
+            Bitmap croppedBitmap = cropImage(videoThumb);
+
+            holder.videoThumb.setImageBitmap(croppedBitmap);
 
             //holder.itemThumb.setImageBitmap(currentItem.getItemThumb());
             if (currentItem.getItemIsAudio()) {
 
                 // Hide the Video thumbnail views
-                holder.itemVideoThumb.setVisibility(View.GONE);
-                holder.itemVideoDeleteBtn.setVisibility(View.GONE);
+                holder.videoThumb.setVisibility(View.GONE);
+                holder.videoDeleteBtn.setVisibility(View.GONE);
                 // Show the Image-Audio thumbnails
-                holder.itemImageThumb.setVisibility(View.VISIBLE);
-                holder.itemAudioThumb.setVisibility(View.VISIBLE);
-                holder.itemImageDeleteBtn.setVisibility(View.VISIBLE);
+                holder.imageThumb.setVisibility(View.VISIBLE);
+                holder.audioThumb.setVisibility(View.VISIBLE);
+                holder.imageDeleteBtn.setVisibility(View.VISIBLE);
+
+                // Create thumbnail from image path
+                Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
+                        currentItem.getItemFilePath()),
+                        IMG_THUMB_WIDTH,
+                        IMG_THUMB_HEIGHT);
 
                 // Set the image thumbnail
-                //holder.itemImageThumb.setImageBitmap(currentItem.getItemThumb());
+                holder.imageThumb.setImageBitmap(imageThumb);
             } else {
-                //holder.itemVideoThumb.setImageBitmap(currentItem.getItemThumb());
+                // Do Nothing
             }
         }
 
@@ -61,21 +85,60 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
         return data.size();
     }
 
+    private Bitmap cropImage(Bitmap ogBitmap) {
+
+        Bitmap croppedImage;
+
+        int width = ogBitmap.getWidth();
+        int height = ogBitmap.getHeight();
+
+        // Get the 4:3 aspect ratio to compare with Bitmap ratio
+        float aspectRatio = 4f / 3f;
+        float bitmapRatio;
+
+        if (width >= height) {
+            // this means bitmap is horizontally oriented
+            bitmapRatio = (float) width / (float) height;
+
+            if (bitmapRatio == aspectRatio) {
+                // If the Bitmap is 4:3 don't crop
+                croppedImage = ogBitmap;
+            } else {
+                croppedImage = Bitmap.createBitmap(ogBitmap, (width / 2 - height - 2), 0, height, height);
+            }
+
+        } else {
+            // this means bitmap is vertically oriented
+            bitmapRatio = (float) height / (float) width;
+            if (bitmapRatio == aspectRatio) {
+                croppedImage = ogBitmap;
+            } else {
+                croppedImage = Bitmap.createBitmap(ogBitmap, 0, (height / 2 - width / 2), width, width);
+            }
+        }
+
+        return croppedImage;
+    }
+
     class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView itemVideoThumb;
-        ImageView itemImageThumb;
-        ImageView itemAudioThumb;
-        Button itemVideoDeleteBtn;
-        Button itemImageDeleteBtn;
+        ImageView videoThumb;
+        ImageView imageThumb;
+        ImageView audioThumb;
+        Button videoDeleteBtn;
+        Button imageDeleteBtn;
+        TextView fileSizeText;
+        TextView fileDurationText;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            itemVideoThumb = itemView.findViewById(R.id.item_video_thumb);
-            itemImageThumb = itemView.findViewById(R.id.item_img_thumb);
-            itemAudioThumb = itemView.findViewById(R.id.item_audio_thumb);
-            itemImageDeleteBtn = itemView.findViewById(R.id.btn_delete_image);
-            itemVideoDeleteBtn = itemView.findViewById(R.id.btn_delete_video);
+            videoThumb = itemView.findViewById(R.id.item_video_thumb);
+            imageThumb = itemView.findViewById(R.id.item_img_thumb);
+            audioThumb = itemView.findViewById(R.id.item_audio_thumb);
+            imageDeleteBtn = itemView.findViewById(R.id.btn_delete_image);
+            videoDeleteBtn = itemView.findViewById(R.id.btn_delete_video);
+            fileSizeText = itemView.findViewById(R.id.txt_file_size);
+            fileDurationText = itemView.findViewById(R.id.txt_file_duration);
         }
     }
 }
