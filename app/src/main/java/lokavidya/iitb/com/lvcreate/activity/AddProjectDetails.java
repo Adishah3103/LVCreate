@@ -50,7 +50,9 @@ public class AddProjectDetails extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        projectId = intent.getLongExtra("projectId", -1);
+        projectId = intent.getLongExtra("pid", -1);
+
+        mDb = ProjectDb.getsInstance(getApplicationContext());
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
@@ -58,6 +60,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
                 if (projectId != -1) {
                     // Trying to get the data back from Database
+
                     List<ProjectItem> list = mDb.projectItemDao().loadItemsByProjectId(projectId);
 
                     for (int j = 0; j < list.size(); j++) {

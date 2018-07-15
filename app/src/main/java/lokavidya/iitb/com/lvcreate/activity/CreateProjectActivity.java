@@ -139,7 +139,11 @@ public class CreateProjectActivity extends AppCompatActivity {
 
                     ProjectItem currentItem = list.get(i);
 
+                    Log.i("projectId12", String.valueOf(projectId));
+
                     currentItem.setItemProjectId(projectId);
+
+                    Log.i("projectId13", String.valueOf(projectId));
 
                     // Order will start from 1
                     currentItem.setOrder(i + 1);
@@ -151,9 +155,9 @@ public class CreateProjectActivity extends AppCompatActivity {
             }
         });
 
-        Intent i = new Intent(this, AddProjectDetails.class);
-        intent.putExtra("projectId", projectId);
-        startActivity(i);
+        Intent intentDetails = new Intent(this, AddProjectDetails.class);
+        intentDetails.putExtra("pid", projectId);
+        startActivity(intentDetails);
 
     }
 
