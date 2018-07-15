@@ -118,6 +118,12 @@ public class DashboardActivity extends AppCompatActivity
 
     }
 
+    public void ongoingProj(View v) {
+        Intent intent = new Intent(this, OngoingProjects.class);
+        startActivity(intent);
+
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

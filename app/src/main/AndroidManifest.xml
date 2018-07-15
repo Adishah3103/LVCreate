@@ -65,6 +65,9 @@
         </provider>
 
         <activity android:name=".activity.AddProjectDetails" />
+        <activity android:name=".activity.OngoingProjects" />
+        <activity android:name=".activity.PreviewProjects" />
+        <activity android:name=".activity.PublishedProjects"></activity>
     </application>
 
 </manifest>
