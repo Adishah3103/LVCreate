@@ -402,32 +402,40 @@ public class AddProjectDetails extends AppCompatActivity {
 
         //Master.showProgressDialog(getApplicationContext(), "Converting and Copying Project files");
 
-        for (int i = 0; i < list.size(); i++) {
+        // Execute query to load items with project ID
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
 
-            ProjectItem currentItem = list.get(i);
+                for (int i = 0; i < list.size(); i++) {
 
-            if (currentItem.isOriginal()) {
+                    ProjectItem currentItem = list.get(i);
 
-                if (currentItem.getItemIsAudio()) {
+                    if (currentItem.isOriginal()) {
 
-                    if (currentItem.getItemFilePath().contains(".jpg") ||
-                            currentItem.getItemFilePath().contains(".JPG")) {
+                        if (currentItem.getItemIsAudio()) {
 
-                        Log.i("Path", projectPath + "/"
-                                + Master.IMAGES_FOLDER
-                                + "/" + projectTitle + "." + currentItem.getOrder() + ".png");
+                            if (currentItem.getItemFilePath().contains(".jpg") ||
+                                    currentItem.getItemFilePath().contains(".JPG")) {
 
-                        convertImage(currentItem.getItemFilePath(),
-                                projectPath + "/"
+                                Log.i("Path", projectPath + "/"
                                         + Master.IMAGES_FOLDER
                                         + "/" + projectTitle + "." + currentItem.getOrder() + ".png");
 
+                                convertImage(currentItem.getItemFilePath(),
+                                        projectPath + "/"
+                                                + Master.IMAGES_FOLDER
+                                                + "/" + projectTitle + "." + currentItem.getOrder() + ".png");
+
+                            }
+
+                        }
                     }
 
                 }
-            }
 
-        }
+            }
+        });
 
         //Master.dismissProgressDialog();
 
