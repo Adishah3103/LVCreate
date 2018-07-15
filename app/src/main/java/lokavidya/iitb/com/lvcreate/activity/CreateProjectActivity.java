@@ -35,6 +35,7 @@ import lokavidya.iitb.com.lvcreate.adapter.ProjectRecyclerAdapter;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
 import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
+import lokavidya.iitb.com.lvcreate.util.AppExecutors;
 
 public class CreateProjectActivity extends AppCompatActivity {
 
@@ -54,6 +55,8 @@ public class CreateProjectActivity extends AppCompatActivity {
     Intent intent;
     Project currentProject;
     private String title = "";
+    long projectId;
+    ProjectDb mDb;
 
     //permission status https://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
@@ -98,7 +101,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
         // We restrict the DB access on this Activity.
         // Using both the table queries here.
-        ProjectDb mDb = ProjectDb.getsInstance(getApplicationContext());
+        mDb = ProjectDb.getsInstance(getApplicationContext());
 
         if (savedInstanceState == null) {
 
@@ -117,13 +120,46 @@ public class CreateProjectActivity extends AppCompatActivity {
                     "English"
             );
 
-            long projectId = mDb.projectDao().insertItem(currentProject);
+            projectId = mDb.projectDao().insertItem(currentProject);
 
             Log.i(LOG_TAG + " DB",
                     "Project added in database, ID: " + String.valueOf(projectId));
 
         }
 
+    }
+
+
+    public void addDetails(View v) {
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // We first need to set the Order and ProjectId of all items
+                for (int i = 0; i < list.size(); i++) {
+
+                    ProjectItem currentItem = list.get(i);
+
+                    currentItem.setItemProjectId(projectId);
+
+                    // Order will start from 1
+                    currentItem.setOrder(i + 1);
+
+                    // Start storing items in database
+                    mDb.projectItemDao().insertItem(currentItem);
+
+                    // Trying to get the data back from Database
+                    /*List<ProjectItem> temp = mDb.projectItemDao().loadItemsByProjectId(projectId);
+                    for (int j = 0; j < temp.size(); j++) {
+                        Log.i("DBRetrieve", temp.get(j).getItemFilePath());
+                    }*/
+
+                }
+            }
+        });
+
+        Intent i = new Intent(this, AddProjectDetails.class);
+        startActivity(i);
 
     }
 
@@ -234,14 +270,6 @@ public class CreateProjectActivity extends AppCompatActivity {
                 .pickFile(this, REQUEST_PICK_AUDIO);
     }
 
-
-    public void addDetails(View v) {
-
-        Intent i = new Intent(this, AddProjectDetails.class);
-        startActivity(i);
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -274,21 +302,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
         }
 
-        // PICK_AUDIO code
-        if (requestCode == REQUEST_PICK_AUDIO && resultCode == RESULT_OK && data != null) {
-            audioPaths = new ArrayList<>();
-            audioPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
-
-            Log.i("Audio Paths", audioPaths.get(audioPaths.size() - 1));
-
-            // Get the last added Image from list
-            ProjectItem lastImage = list.get(list.size() - 1);
-            lastImage.setItemAudioPath(audioPaths.get(audioPaths.size() - 1));
-
-            // Update the adapter to reflect the changes
-            adapter.notifyDataSetChanged();
-        }
-
+        // IMAGE_CAPTURE Code
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
             File file = new File(cameraIntentImgPath);
@@ -310,6 +324,20 @@ public class CreateProjectActivity extends AppCompatActivity {
             }
         }
 
+        // PICK_AUDIO code
+        if (requestCode == REQUEST_PICK_AUDIO && resultCode == RESULT_OK && data != null) {
+            audioPaths = new ArrayList<>();
+            audioPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+
+            Log.i("Audio Paths", audioPaths.get(audioPaths.size() - 1));
+
+            // Get the last added Image from list
+            ProjectItem lastImage = list.get(list.size() - 1);
+            lastImage.setItemAudioPath(audioPaths.get(audioPaths.size() - 1));
+
+            // Update the adapter to reflect the changes
+            adapter.notifyDataSetChanged();
+        }
 
         // PICK_VIDEO code
         if (requestCode == REQUEST_PICK_VIDEO && resultCode == RESULT_OK && data != null) {
@@ -322,11 +350,11 @@ public class CreateProjectActivity extends AppCompatActivity {
                 list.add(new ProjectItem(
                         0,
                         videoPaths.get(i),
-                        24324,
+                        00,
                         false,
-                        "asdsad",
-                        3244,
-                        324234,
+                        "N/A",
+                        00,
+                        00,
                         1));
 
                 // Update the adapter to reflect the changes
@@ -352,6 +380,35 @@ public class CreateProjectActivity extends AppCompatActivity {
         cameraIntentImgPath = image.getAbsolutePath();
 
         return image;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        Log.d("AAD", "restored the state");
+        // Check whether we're recreating a previously destroyed instance
+        if (savedInstanceState != null) {
+
+            // Restore value of members from saved state
+            title = savedInstanceState.getString("title");
+        } else {
+
+            // Initialize members with default values for a new instance
+            title = intent.getStringExtra("title");
+            title = title.substring(0, 1).toUpperCase() + title.substring(1);
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+
+        Log.d("AAD", "saved the state");
+        savedInstanceState.putString("title", getIntent().getStringExtra("title"));
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+
     }
 
     private void askForStoragePermission() {
@@ -409,35 +466,6 @@ public class CreateProjectActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = permissionStatus.edit();
         editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE, true);
         editor.commit();
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-
-        Log.d("AAD", "restored the state");
-        // Check whether we're recreating a previously destroyed instance
-        if (savedInstanceState != null) {
-
-            // Restore value of members from saved state
-            title = savedInstanceState.getString("title");
-        } else {
-
-            // Initialize members with default values for a new instance
-            title = intent.getStringExtra("title");
-            title = title.substring(0, 1).toUpperCase() + title.substring(1);
-        }
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
-
-        Log.d("AAD", "saved the state");
-        savedInstanceState.putString("title", getIntent().getStringExtra("title"));
-
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
 
     }
 }

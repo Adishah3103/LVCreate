@@ -29,6 +29,9 @@ public interface ProjectItemDao {
     @Query("SELECT * FROM project_item_table WHERE _id = :id")
     ProjectItem loadItemById(int id);
 
+    @Query("SELECT * FROM project_item_table WHERE item_project_id = :projectId")
+    List<ProjectItem> loadItemsByProjectId(long projectId);
+
     @Query("DELETE FROM project_item_table WHERE _id = :id")
     abstract void deleteItemById(int id);
 

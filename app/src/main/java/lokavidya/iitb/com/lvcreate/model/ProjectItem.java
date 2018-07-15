@@ -13,7 +13,7 @@ public class ProjectItem {
     private int id;
 
     @ColumnInfo(name = "item_project_id")
-    private int itemProjectId;
+    private long itemProjectId;
 
     @ColumnInfo(name = "item_file_path")
     private String itemFilePath;
@@ -36,7 +36,7 @@ public class ProjectItem {
     private int order;
 
     @Ignore
-    public ProjectItem(int id, int itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order) {
+    public ProjectItem(int id, long itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order) {
         this.id = id;
         this.itemProjectId = itemProjectId;
         this.itemFilePath = itemFilePath;
@@ -48,7 +48,7 @@ public class ProjectItem {
         this.order = order;
     }
 
-    public ProjectItem(int itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order) {
+    public ProjectItem(long itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order) {
         this.itemProjectId = itemProjectId;
         this.itemFilePath = itemFilePath;
         this.itemFileSize = itemFileSize;
@@ -67,11 +67,11 @@ public class ProjectItem {
         this.id = id;
     }
 
-    public int getItemProjectId() {
+    public long getItemProjectId() {
         return itemProjectId;
     }
 
-    public void setItemProjectId(int itemProjectId) {
+    public void setItemProjectId(long itemProjectId) {
         this.itemProjectId = itemProjectId;
     }
 
