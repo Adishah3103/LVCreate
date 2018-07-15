@@ -59,21 +59,6 @@
             tools:layout_editor_absoluteX="104dp"
             tools:layout_editor_absoluteY="165dp" />
 
-        <Button
-            android:id="@+id/btn_add_audio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:drawableTop="@drawable/ic_audio"
-            android:onClick="addAudio"
-            android:paddingBottom="10dp"
-            android:paddingTop="@dimen/margin_5_dp"
-            android:text="Add Audio"
-            android:textSize="12sp"
-            android:visibility="gone"
-            tools:layout_editor_absoluteX="60dp"
-            tools:layout_editor_absoluteY="197dp" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

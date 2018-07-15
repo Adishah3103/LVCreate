@@ -38,6 +38,8 @@ import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 
 public class CreateProjectActivity extends AppCompatActivity {
 
+    public static final String LOG_TAG = CreateProjectActivity.class.getSimpleName();
+
     // Request codes for File intents
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int REQUEST_PICK_IMAGE = 2;
@@ -117,6 +119,9 @@ public class CreateProjectActivity extends AppCompatActivity {
 
             long projectId = mDb.projectDao().insertItem(currentProject);
 
+            Log.i(LOG_TAG + " DB",
+                    "Project added in database, ID: " + String.valueOf(projectId));
+
         }
 
 
@@ -180,9 +185,10 @@ public class CreateProjectActivity extends AppCompatActivity {
                     //You already have the permission, just go ahead.
                     ArrayList<String> filePaths = null;
 
-                    FilePickerBuilder.getInstance().setMaxCount(50)
+                    FilePickerBuilder.getInstance().setMaxCount(1)
                             .setSelectedFiles(filePaths)
                             .setActivityTheme(R.style.LibAppTheme)
+                            .setActivityTitle("Select an Image")
                             .enableImagePicker(true)
                             .enableVideoPicker(false)
                             .pickPhoto(CreateProjectActivity.this, REQUEST_PICK_IMAGE);
@@ -199,23 +205,27 @@ public class CreateProjectActivity extends AppCompatActivity {
     public void addVideo(View view) {
         ArrayList<String> filePaths = null;
 
-        FilePickerBuilder.getInstance().setMaxCount(50)
+        FilePickerBuilder.getInstance().setMaxCount(1)
                 .setSelectedFiles(filePaths)
                 .setActivityTheme(R.style.LibAppTheme)
+                .setActivityTitle("Select a Video")
                 .enableVideoPicker(true)
                 .enableImagePicker(false)
                 .pickPhoto(CreateProjectActivity.this, REQUEST_PICK_VIDEO);
     }
 
-    public void addAudio(View view) {
+    public void addAudio() {
 
         ArrayList<String> filePaths = null;
 
         String[] mp3 = {".mp3"};
         String[] aac = {".aac"};
-        FilePickerBuilder.getInstance()
-                .addFileSupport("MP3", mp3, R.drawable.ic_camera)
-                .addFileSupport("AAC", aac, R.drawable.ic_camera)
+        String[] wav = {".wav"};
+        FilePickerBuilder.getInstance().setMaxCount(1)
+                .addFileSupport("MP3", mp3, R.drawable.ic_audio)
+                .addFileSupport("AAC", aac, R.drawable.ic_audio)
+                .addFileSupport("WAV", wav, R.drawable.ic_audio)
+                .setActivityTitle("Select Audio for Image")
                 .setSelectedFiles(filePaths)
                 .setActivityTheme(R.style.LibAppTheme)
                 .enableImagePicker(false)
@@ -246,23 +256,60 @@ public class CreateProjectActivity extends AppCompatActivity {
             photoPaths = new ArrayList<>();
             photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
 
-            for (int i = 0; i < photoPaths.size(); i++) {
-                Log.i("Photo Paths", photoPaths.get(i));
+
+            Log.i("Photo Paths", photoPaths.get(photoPaths.size() - 1));
+
+            // Create an item and keep the Audio File Path and File size null or dummy
+            list.add(new ProjectItem(
+                    0,
+                    photoPaths.get(photoPaths.size() - 1),
+                    00,
+                    true,
+                    "N/A",
+                    00,
+                    00,
+                    1));
+
+            addAudio();
+
+        }
+
+        // PICK_AUDIO code
+        if (requestCode == REQUEST_PICK_AUDIO && resultCode == RESULT_OK && data != null) {
+            audioPaths = new ArrayList<>();
+            audioPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+
+            Log.i("Audio Paths", audioPaths.get(audioPaths.size() - 1));
+
+            // Get the last added Image from list
+            ProjectItem lastImage = list.get(list.size() - 1);
+            lastImage.setItemAudioPath(audioPaths.get(audioPaths.size() - 1));
+
+            // Update the adapter to reflect the changes
+            adapter.notifyDataSetChanged();
+        }
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
+            File file = new File(cameraIntentImgPath);
+            if (file.exists()) {
 
                 list.add(new ProjectItem(
                         0,
-                        photoPaths.get(i),
-                        24324,
+                        cameraIntentImgPath,
+                        00,
                         true,
-                        "asdsad",
-                        325325,
-                        324324,
+                        "N/A",
+                        00,
+                        00,
                         1));
 
-                // Update the adapter to reflect the changes
-                adapter.notifyDataSetChanged();
+                addAudio();
+
+                cameraIntentImgPath = null;
             }
         }
+
 
         // PICK_VIDEO code
         if (requestCode == REQUEST_PICK_VIDEO && resultCode == RESULT_OK && data != null) {
@@ -288,37 +335,6 @@ public class CreateProjectActivity extends AppCompatActivity {
             }
         }
 
-        // PICK_AUDIO code
-        if (requestCode == REQUEST_PICK_AUDIO && resultCode == RESULT_OK && data != null) {
-            audioPaths = new ArrayList<>();
-            audioPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
-
-            for (int i = 0; i < audioPaths.size(); i++) {
-                Log.i("Audio Paths", audioPaths.get(i));
-            }
-        }
-        Log.i("Result Code", String.valueOf(resultCode));
-
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-
-            File file = new File(cameraIntentImgPath);
-            if (file.exists()) {
-
-                list.add(new ProjectItem(
-                        0,
-                        cameraIntentImgPath,
-                        24324,
-                        true,
-                        "asdsad",
-                        3244,
-                        324234,
-                        1));
-
-                adapter.notifyDataSetChanged();
-
-                cameraIntentImgPath = null;
-            }
-        }
     }
 
     // Boilerplate methods starts from here
