@@ -126,7 +126,6 @@ public class CreateProjectActivity extends AppCompatActivity {
                     "Project added in database, ID: " + String.valueOf(projectId));
 
         }
-
     }
 
 
@@ -148,17 +147,12 @@ public class CreateProjectActivity extends AppCompatActivity {
                     // Start storing items in database
                     mDb.projectItemDao().insertItem(currentItem);
 
-                    // Trying to get the data back from Database
-                    /*List<ProjectItem> temp = mDb.projectItemDao().loadItemsByProjectId(projectId);
-                    for (int j = 0; j < temp.size(); j++) {
-                        Log.i("DBRetrieve", temp.get(j).getItemFilePath());
-                    }*/
-
                 }
             }
         });
 
         Intent i = new Intent(this, AddProjectDetails.class);
+        intent.putExtra("projectId", projectId);
         startActivity(i);
 
     }
