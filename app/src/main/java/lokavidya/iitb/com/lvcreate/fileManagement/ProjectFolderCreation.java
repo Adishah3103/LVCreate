@@ -7,7 +7,7 @@ import java.io.File;
 
 public class ProjectFolderCreation {
 
-    public boolean createFolderStructure(Context context, String folderName) {
+    public static boolean createFolderStructure(Context context, String folderName) {
 
         boolean status = true;
 
@@ -43,7 +43,7 @@ public class ProjectFolderCreation {
     }
 
 
-    public boolean createFolder(File folderDirectory) {
+    public static boolean createFolder(File folderDirectory) {
         if (!folderDirectory.exists()) {
             if (!folderDirectory.mkdirs()) {
                 Log.e("AAD", "folder creation failed");

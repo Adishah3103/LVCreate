@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ import droidninja.filepicker.FilePickerConst;
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.adapter.ProjectRecyclerAdapter;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
+import lokavidya.iitb.com.lvcreate.fileManagement.ProjectFolderCreation;
 import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 import lokavidya.iitb.com.lvcreate.util.AppExecutors;
@@ -112,18 +114,33 @@ public class CreateProjectActivity extends AppCompatActivity {
              * Use that for further queries
              * */
 
-            currentProject = new Project(
-                    title,
-                    null,
-                    00,
-                    00,
-                    "English"
-            );
+            // Execute query to load items with project ID
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
 
-            projectId = mDb.projectDao().insertItem(currentProject);
+                    currentProject = new Project(
+                            title,
+                            null,
+                            00,
+                            00,
+                            "English"
+                    );
 
-            Log.i(LOG_TAG + " DB",
-                    "Project added in database, ID: " + String.valueOf(projectId));
+                    projectId = mDb.projectDao().insertItem(currentProject);
+
+                    Log.i(LOG_TAG + " DB",
+                            "Project added in database, ID: " + String.valueOf(projectId));
+
+                    if (askForStoragePermission()) {
+                        // Create the folder structure with as title as name
+                        ProjectFolderCreation.createFolderStructure(getApplicationContext(), title);
+                    }
+
+                }
+            });
+
+
 
         }
     }
@@ -364,6 +381,22 @@ public class CreateProjectActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // User clicked "Discard" button, navigate to parent activity.
+                        NavUtils.navigateUpFromSameTask(CreateProjectActivity.this);
+                    }
+                };
+        // Show a dialog that notifies the user they have unsaved changes
+        showUnsavedChangesDialog(discardButtonClickListener);
+
+        //super.onBackPressed();
+    }
+
     // Boilerplate methods starts from here
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -471,5 +504,31 @@ public class CreateProjectActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Show a dialog that warns the user there are unsaved changes that will be lost
+     * if they continue leaving the editor.
+     */
+    private void showUnsavedChangesDialog(
+            DialogInterface.OnClickListener discardButtonClickListener) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Discard your changes and quit editing?");
+        builder.setPositiveButton("Discard", discardButtonClickListener);
+        builder.setNegativeButton("Keep Editing", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Keep editing" button, so dismiss the dialog
+                // and continue editing the item.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
