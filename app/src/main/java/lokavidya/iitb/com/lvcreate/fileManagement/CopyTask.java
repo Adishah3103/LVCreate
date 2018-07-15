@@ -28,7 +28,7 @@ public class CopyTask extends AsyncTask<Void, Void, Void> /* Params, Progress, R
     protected void onPreExecute() {
         log("got the copy task!" + fileName);
         if (isFirstTask) {
-            Master.showProgressDialog(context, "Copying...");
+            Master.showProgressDialog(context, "Copying files");
         }
 
     }
@@ -37,8 +37,7 @@ public class CopyTask extends AsyncTask<Void, Void, Void> /* Params, Progress, R
     protected Void doInBackground(Void... params) {
 
         log("started copying: " + fileName);
-        ManageFile fm = new ManageFile();
-        fm.copyFile(inputPath, outputPath);
+        ManageFile.copyFile(inputPath, outputPath);
 
         return null;
     }

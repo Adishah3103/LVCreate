@@ -27,6 +27,7 @@ import java.util.List;
 
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
+import lokavidya.iitb.com.lvcreate.fileManagement.ManageFile;
 import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 import lokavidya.iitb.com.lvcreate.util.AppExecutors;
@@ -410,26 +411,44 @@ public class AddProjectDetails extends AppCompatActivity {
                 for (int i = 0; i < list.size(); i++) {
 
                     ProjectItem currentItem = list.get(i);
+                    String destFilePath;
 
                     if (currentItem.isOriginal()) {
 
                         if (currentItem.getItemIsAudio()) {
 
+                            destFilePath = projectPath + "/"
+                                    + Master.IMAGES_FOLDER
+                                    + "/" + projectTitle + "." + currentItem.getOrder() + ".png";
+
                             if (currentItem.getItemFilePath().contains(".jpg") ||
-                                    currentItem.getItemFilePath().contains(".JPG")) {
+                                    currentItem.getItemFilePath().contains(".JPG") ||
+                                    currentItem.getItemFilePath().contains(".JPEG") ||
+                                    currentItem.getItemFilePath().contains(".jpeg")) {
 
-                                Log.i("Path", projectPath + "/"
-                                        + Master.IMAGES_FOLDER
-                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".png");
+                                Log.i("Path", destFilePath);
 
-                                convertImage(currentItem.getItemFilePath(),
-                                        projectPath + "/"
-                                                + Master.IMAGES_FOLDER
-                                                + "/" + projectTitle + "." + currentItem.getOrder() + ".png");
+                                convertImage(currentItem.getItemFilePath(), destFilePath);
 
+                                // Setting file path
+                                currentItem.setItemFilePath(destFilePath);
+
+                                //TODO: Do Audio Conversion
+
+                            } else if (currentItem.getItemFilePath().contains(".png") ||
+                                    currentItem.getItemFilePath().contains(".PNG")) {
+                                ManageFile.copyFile(currentItem.getItemFilePath(),
+                                        destFilePath);
                             }
 
+
+                        } else {
+                            //TODO: Copy Video to Project Folder
                         }
+
+                        currentItem.setOriginal(false);
+                        // Update all paths in database
+                        mDb.projectItemDao().updateItem(currentItem);
                     }
 
                 }

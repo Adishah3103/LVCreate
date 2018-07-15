@@ -11,7 +11,7 @@ import java.io.OutputStream;
 
 public class ManageFile {
 
-    public void copyFile(String inputFileFullPath, String outputFileFullPath) {
+    public static void copyFile(String inputFileFullPath, String outputFileFullPath) {
 
         InputStream in = null;
         OutputStream out = null;
@@ -59,14 +59,14 @@ public class ManageFile {
     }
 
 
-    public void moveFile(String inputFileFullPath, String outputFileFullPath) {
+    public static void moveFile(String inputFileFullPath, String outputFileFullPath) {
 
         copyFile(inputFileFullPath, outputFileFullPath);
         deleteFile(inputFileFullPath);
     }
 
 
-    public void deleteFile(String fileFullPath) {
+    public static void deleteFile(String fileFullPath) {
 
         try {
             // delete the original file

@@ -38,6 +38,7 @@ import lokavidya.iitb.com.lvcreate.fileManagement.ProjectFolderCreation;
 import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 import lokavidya.iitb.com.lvcreate.util.AppExecutors;
+import lokavidya.iitb.com.lvcreate.util.Master;
 
 public class CreateProjectActivity extends AppCompatActivity {
 
@@ -83,7 +84,7 @@ public class CreateProjectActivity extends AppCompatActivity {
         } else {
             // Initialize members with default values for a new instance
             title = intent.getStringExtra("title");
-            title = title.substring(0, 1).toUpperCase() + title.substring(1);
+            title = (title.substring(0, 1).toUpperCase() + title.substring(1));
         }
 
         //set the title as the project name on toolbar
@@ -169,10 +170,12 @@ public class CreateProjectActivity extends AppCompatActivity {
         });
 
         Intent intentDetails = new Intent(this, AddProjectDetails.class);
+
         intentDetails.putExtra("pid", projectId);
         intentDetails.putExtra("projectPath",
-                getExternalFilesDir("Projects").getAbsolutePath() + "/" + title);
-        Log.i("Path", getExternalFilesDir("Projects").getAbsolutePath() + "/" + title);
+                getExternalFilesDir(Master.ALL_PROJECTS_FOLDER).getAbsolutePath() + "/" + title);
+
+
         startActivity(intentDetails);
 
     }
