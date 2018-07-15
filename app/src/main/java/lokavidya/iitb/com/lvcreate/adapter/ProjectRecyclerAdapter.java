@@ -131,7 +131,7 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
                 // If the Bitmap is 4:3 don't crop
                 croppedImage = ogBitmap;
             } else {
-                croppedImage = Bitmap.createBitmap(ogBitmap, (width / 2 - height - 2), 0, height, height);
+                croppedImage = Bitmap.createBitmap(ogBitmap, (width / 2 - height / 2), 0, height, height);
             }
 
         } else {
