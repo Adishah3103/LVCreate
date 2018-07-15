@@ -44,7 +44,6 @@ public class CreateProjectActivity extends AppCompatActivity {
     public static final int REQUEST_PICK_VIDEO = 3;
     public static final int REQUEST_PICK_AUDIO = 4;
 
-
     // Global fields
     RecyclerView projectItemList;
     ProjectRecyclerAdapter adapter;
@@ -119,7 +118,6 @@ public class CreateProjectActivity extends AppCompatActivity {
             long projectId = mDb.projectDao().insertItem(currentProject);
 
         }
-
 
 
     }

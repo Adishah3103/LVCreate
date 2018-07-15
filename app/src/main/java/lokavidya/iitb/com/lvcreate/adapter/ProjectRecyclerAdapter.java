@@ -44,6 +44,10 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
         if (data != null && !data.isEmpty()) {
             ProjectItem currentItem = data.get(position);
 
+            // Store the position of item in Delete buttons
+            holder.videoDeleteBtn.setTag(position);
+            holder.imageDeleteBtn.setTag(position);
+
             //holder.itemThumb.setImageBitmap(currentItem.getItemThumb());
             if (currentItem.getItemIsAudio()) {
 
@@ -68,7 +72,6 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
                 Bitmap videoThumb = ThumbnailUtils.createVideoThumbnail(
                         currentItem.getItemFilePath(),
                         MediaStore.Video.Thumbnails.MINI_KIND);
-
                 // Crop the thumbnails
                 Bitmap croppedBitmap = cropImage(videoThumb);
 
@@ -76,11 +79,37 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
             }
         }
 
+        holder.videoDeleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Retrieve the stored position and delete the entry
+                removeAt(Integer.parseInt(v.getTag().toString()));
+
+            }
+        });
+
+        holder.imageDeleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Retrieve the stored position and delete the entry
+                removeAt(Integer.parseInt(v.getTag().toString()));
+
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    private void removeAt(int position) {
+        data.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, data.size());
     }
 
     private Bitmap cropImage(Bitmap ogBitmap) {
