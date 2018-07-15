@@ -290,7 +290,8 @@ public class CreateProjectActivity extends AppCompatActivity {
                     "N/A",
                     00,
                     00,
-                    1));
+                    1,
+                    false));
 
             addAudio();
 
@@ -310,7 +311,8 @@ public class CreateProjectActivity extends AppCompatActivity {
                         "N/A",
                         00,
                         00,
-                        1));
+                        1,
+                        false));
 
                 addAudio();
 
@@ -349,7 +351,8 @@ public class CreateProjectActivity extends AppCompatActivity {
                         "N/A",
                         00,
                         00,
-                        1));
+                        1,
+                        false));
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();

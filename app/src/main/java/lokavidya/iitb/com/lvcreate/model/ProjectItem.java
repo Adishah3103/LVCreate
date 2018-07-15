@@ -35,8 +35,11 @@ public class ProjectItem {
 
     private int order;
 
+    @ColumnInfo(name = "is_original")
+    private boolean isOriginal;
+
     @Ignore
-    public ProjectItem(int id, long itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order) {
+    public ProjectItem(int id, long itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order, boolean isOriginal) {
         this.id = id;
         this.itemProjectId = itemProjectId;
         this.itemFilePath = itemFilePath;
@@ -46,9 +49,10 @@ public class ProjectItem {
         this.itemAudioFileSize = itemAudioFileSize;
         this.itemFileDuration = itemFileDuration;
         this.order = order;
+        this.isOriginal = isOriginal;
     }
 
-    public ProjectItem(long itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order) {
+    public ProjectItem(long itemProjectId, String itemFilePath, long itemFileSize, Boolean itemIsAudio, String itemAudioPath, long itemAudioFileSize, long itemFileDuration, int order, boolean isOriginal) {
         this.itemProjectId = itemProjectId;
         this.itemFilePath = itemFilePath;
         this.itemFileSize = itemFileSize;
@@ -57,6 +61,7 @@ public class ProjectItem {
         this.itemAudioFileSize = itemAudioFileSize;
         this.itemFileDuration = itemFileDuration;
         this.order = order;
+        this.isOriginal = isOriginal;
     }
 
     public int getId() {
@@ -129,5 +134,13 @@ public class ProjectItem {
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public boolean isOriginal() {
+        return isOriginal;
+    }
+
+    public void setOriginal(boolean original) {
+        isOriginal = original;
     }
 }

@@ -68,9 +68,10 @@ public class AddProjectDetails extends AppCompatActivity {
             }
         });
 
-        final Spinner videolang = findViewById(R.id.video_lang);
+
+        final Spinner videoLang = findViewById(R.id.video_lang);
         final Spinner channel = findViewById(R.id.channel);
-        final Spinner subchannel = findViewById(R.id.subchannel);
+        final Spinner subChannel = findViewById(R.id.subchannel);
 
 
         String[] video = new String[]{
@@ -138,9 +139,9 @@ public class AddProjectDetails extends AppCompatActivity {
             }
         };
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        videolang.setAdapter(spinnerArrayAdapter);
+        videoLang.setAdapter(spinnerArrayAdapter);
 
-        videolang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        videoLang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItemText = (String) parent.getItemAtPosition(position);
@@ -344,9 +345,9 @@ public class AddProjectDetails extends AppCompatActivity {
             }
         };
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        subchannel.setAdapter(spinnerArrayAdapter3);
+        subChannel.setAdapter(spinnerArrayAdapter3);
 
-        subchannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        subChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItemText = (String) parent.getItemAtPosition(position);
