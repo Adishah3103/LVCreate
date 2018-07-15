@@ -105,41 +105,41 @@ public class CreateProjectActivity extends AppCompatActivity {
         // Using both the table queries here.
         mDb = ProjectDb.getsInstance(getApplicationContext());
 
-        if (savedInstanceState == null) {
+        if (askForStoragePermission()) {
+            if (savedInstanceState == null) {
 
-            /**
-             * Whenever you create new object of "Project' you will get project Id that
-             * starts with 0, do not use it.
-             * insertItem returns the ProjectId (long) which is actually stored in the database.
-             * Use that for further queries
-             * */
+                /**
+                 * Whenever you create new object of "Project' you will get project Id that
+                 * starts with 0, do not use it.
+                 * insertItem returns the ProjectId (long) which is actually stored in the database.
+                 * Use that for further queries
+                 * */
 
-            // Execute query to load items with project ID
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
+                // Execute query to load items with project ID
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    currentProject = new Project(
-                            title,
-                            null,
-                            00,
-                            00,
-                            "English"
-                    );
+                        currentProject = new Project(
+                                title,
+                                null,
+                                00,
+                                00,
+                                "English"
+                        );
 
-                    projectId = mDb.projectDao().insertItem(currentProject);
+                        projectId = mDb.projectDao().insertItem(currentProject);
 
-                    Log.i(LOG_TAG + " DB",
-                            "Project added in database, ID: " + String.valueOf(projectId));
+                        Log.i(LOG_TAG + " DB",
+                                "Project added in database, ID: " + String.valueOf(projectId));
 
-                    if (askForStoragePermission()) {
                         // Create the folder structure with as title as name
                         ProjectFolderCreation.createFolderStructure(getApplicationContext(), title);
                     }
 
-                }
-            });
 
+                });
+            }
 
 
         }
@@ -156,11 +156,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
                     ProjectItem currentItem = list.get(i);
 
-                    Log.i("projectId12", String.valueOf(projectId));
-
                     currentItem.setItemProjectId(projectId);
-
-                    Log.i("projectId13", String.valueOf(projectId));
 
                     // Order will start from 1
                     currentItem.setOrder(i + 1);
@@ -174,12 +170,15 @@ public class CreateProjectActivity extends AppCompatActivity {
 
         Intent intentDetails = new Intent(this, AddProjectDetails.class);
         intentDetails.putExtra("pid", projectId);
+        intentDetails.putExtra("projectPath",
+                getExternalFilesDir("Projects").getAbsolutePath() + "/" + title);
+        Log.i("Path", getExternalFilesDir("Projects").getAbsolutePath() + "/" + title);
         startActivity(intentDetails);
 
     }
 
     public void addImage(View view) {
-        
+
         if (askForStoragePermission()) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(CreateProjectActivity.this);
             View mView = getLayoutInflater().inflate(R.layout.add_image_layout, null);
@@ -310,7 +309,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                     00,
                     00,
                     1,
-                    false));
+                    true));
 
             addAudio();
 
@@ -331,7 +330,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                         00,
                         00,
                         1,
-                        false));
+                        true));
 
                 addAudio();
 
@@ -371,7 +370,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                         00,
                         00,
                         1,
-                        false));
+                        true));
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();

@@ -31,6 +31,6 @@ public interface ProjectDao {
     void deleteItem(Project projectEntry);
 
     @Query("SELECT * FROM project_table WHERE _id = :id")
-    Project loadItemById(int id);
+    Project loadItemById(long id);
 
 }
