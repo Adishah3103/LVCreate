@@ -7,45 +7,58 @@ import java.io.File;
 
 public class ProjectFolderCreation {
 
-    public boolean createFolderStructure(Context context, String projectFolderName) {
+    public boolean createFolderStructure(Context context, String folderName) {
 
-        boolean status = false;
+        boolean status = true;
 
         try {
             String directoryPath = context.getExternalFilesDir("Projects").getAbsolutePath();
             Log.d("AAD", "Project folder : " + directoryPath);
 
-            String imagesFolderPath = "/" + projectFolderName + "/images/";
-            String videosFolderPath = "/" + projectFolderName + "/videos/";
-            String audioFolderPath = "/" + projectFolderName + "/audio/";
+            String imagesFolderPath = "images";
+            String videosFolderPath = "videos";
+            String audioFolderPath = "audio";
 
             File dir;
 
-            dir = new File(directoryPath + "/" + projectFolderName + "/");
-            createFolder(dir);
+            dir = new File(directoryPath, folderName);
+            status &= createFolder(dir);
 
-            dir = new File(directoryPath + imagesFolderPath);
-            createFolder(dir);
+            String projectFolder = directoryPath + "/" + folderName;
 
-            dir = new File(directoryPath + videosFolderPath);
-            createFolder(dir);
+            dir = new File(projectFolder, imagesFolderPath);
+            status &= createFolder(dir);
 
-            dir = new File(directoryPath + audioFolderPath);
-            createFolder(dir);
-            status = true;
+            dir = new File(projectFolder, videosFolderPath);
+            status &= createFolder(dir);
+
+            dir = new File(projectFolder, audioFolderPath);
+            status &= createFolder(dir);
+
         } catch (Exception e) {
             Log.e("AAD", "Error in making folders");
-            status = false;
+            status &= false;
         }
         return status;
     }
 
 
-    public void createFolder(File folderDirectory) {
+    public boolean createFolder(File folderDirectory) {
         if (!folderDirectory.exists()) {
-            Log.d("AAD", "created folder");
-            folderDirectory.mkdir();
+            if (!folderDirectory.mkdirs()) {
+                Log.e("AAD", "folder creation failed");
+                return false;
+            } else {
+                Log.d("AAD", "created folder");
+                return true;
+            }
+
         }
+        return false;
+    }
+
+    public void deleteFolder() {
+
     }
 
 }
