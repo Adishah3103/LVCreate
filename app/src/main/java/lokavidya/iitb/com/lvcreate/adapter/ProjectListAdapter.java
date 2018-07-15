@@ -1,7 +1,10 @@
 package lokavidya.iitb.com.lvcreate.adapter;
 
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +16,13 @@ import java.util.List;
 
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.model.Project;
+import lokavidya.iitb.com.lvcreate.util.AppExecutors;
+import lokavidya.iitb.com.lvcreate.util.CloudStorage;
 
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.MyViewHolder> {
 
     private List<Project> data;
+    String fileUrl = null;
 
     public ProjectListAdapter(List<Project> data) {
         this.data = data;
@@ -46,6 +52,36 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             @Override
             public void onClick(View v) {
 
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // Add your zipping code here
+
+                        /**
+                         * Code to upload the zip
+                         * **/
+
+                        // This is the input path for the .zip you created
+                        Uri baseUri = Uri.parse(String.valueOf(Environment.getExternalStorageDirectory()) + "/Sounds.zip");
+
+                        try {
+                            // We get Url in fileUrl
+                            fileUrl = CloudStorage.uploadFile(context,  // Get context here
+                                    "lvcms-development-testing",
+                                    "test11.zip",  // Name of the .zip on the Bucket
+                                    baseUri);
+
+                            Log.i("Upload", fileUrl);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+                });
 
             }
         });

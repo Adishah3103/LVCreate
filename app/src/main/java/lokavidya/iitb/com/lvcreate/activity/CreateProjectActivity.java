@@ -32,7 +32,7 @@ import java.util.Date;
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 import lokavidya.iitb.com.lvcreate.R;
-import lokavidya.iitb.com.lvcreate.adapter.ProjectRecyclerAdapter;
+import lokavidya.iitb.com.lvcreate.adapter.ProjectItemRecyclerAdapter;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
 import lokavidya.iitb.com.lvcreate.fileManagement.ManageFolder;
 import lokavidya.iitb.com.lvcreate.model.Project;
@@ -52,7 +52,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
     // Global fields
     RecyclerView projectItemList;
-    ProjectRecyclerAdapter adapter;
+    ProjectItemRecyclerAdapter adapter;
     ArrayList<ProjectItem> list = new ArrayList<>();
     String cameraIntentImgPath;
     Intent intent;
@@ -98,7 +98,7 @@ public class CreateProjectActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
 
         // Set up RecyclerView
-        adapter = new ProjectRecyclerAdapter(list);
+        adapter = new ProjectItemRecyclerAdapter(list);
         projectItemList.setAdapter(adapter);
         projectItemList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -126,7 +126,8 @@ public class CreateProjectActivity extends AppCompatActivity {
                                 null,
                                 00,
                                 00,
-                                "English"
+                                "English",
+                                00
                         );
 
                         projectId = mDb.projectDao().insertItem(currentProject);
