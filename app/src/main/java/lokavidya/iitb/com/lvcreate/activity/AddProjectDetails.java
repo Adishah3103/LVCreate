@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cafe.adriel.androidaudioconverter.AndroidAudioConverter;
+import cafe.adriel.androidaudioconverter.callback.IConvertCallback;
+import cafe.adriel.androidaudioconverter.model.AudioFormat;
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
 import lokavidya.iitb.com.lvcreate.fileManagement.ManageFile;
@@ -87,8 +90,6 @@ public class AddProjectDetails extends AppCompatActivity {
                     currentProject = mDb.projectDao().loadItemById(projectId);
                     projectTitle = currentProject.getTitle();
                 }
-
-
             }
         });
 
@@ -401,7 +402,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
     public void saveProject(View view) {
 
-        //Master.showProgressDialog(getApplicationContext(), "Converting and Copying Project files");
+        //Master.showProgressDialog(getApplicationContext(), "Converting & Copying..");
 
         // Execute query to load items with project ID
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -433,7 +434,12 @@ public class AddProjectDetails extends AppCompatActivity {
                                 // Setting file path
                                 currentItem.setItemFilePath(destFilePath);
 
-                                //TODO: Do Audio Conversion
+                                // Audio Conversion and move
+                                String destAudioPath = projectPath + "/"
+                                        + Master.AUDIOS_FOLDER
+                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
+
+                                convertAudio(currentItem.getItemAudioPath(), destAudioPath);
 
                             } else if (currentItem.getItemFilePath().contains(".png") ||
                                     currentItem.getItemFilePath().contains(".PNG")) {
@@ -443,7 +449,11 @@ public class AddProjectDetails extends AppCompatActivity {
 
 
                         } else {
-                            //TODO: Copy Video to Project Folder
+                            destFilePath = projectPath + "/"
+                                    + Master.VIDEOS_FOLDER
+                                    + "/" + projectTitle + "." + currentItem.getOrder() + ".mp4";
+                            // Copy Video to Project Folder
+                            ManageFile.copyFile(currentItem.getItemFilePath(), destFilePath);
                         }
 
                         currentItem.setOriginal(false);
@@ -484,8 +494,31 @@ public class AddProjectDetails extends AppCompatActivity {
         } else {
             Log.i("Conversion", "Photo Converting is unsuccessful.");
         }
+    }
 
+    public void convertAudio(String sourcePath, final String destinationPath) {
 
+        File sourceFile = new File(sourcePath);
+
+        IConvertCallback callback = new IConvertCallback() {
+            @Override
+            public void onSuccess(File convertedFile) {
+                // So fast? Love it!
+                Log.i("Audio Conversion", convertedFile.getAbsolutePath());
+                ManageFile.moveFile(convertedFile.getAbsolutePath(), destinationPath);
+            }
+
+            @Override
+            public void onFailure(Exception error) {
+                // Oops! Something went wrong
+                error.printStackTrace();
+            }
+        };
+        AndroidAudioConverter.with(this)
+                .setFile(sourceFile) // Your current audio file
+                .setFormat(AudioFormat.WAV) // Your desired audio format
+                .setCallback(callback) // A callback to know when conversion is finished
+                .convert(); // Start conversion
     }
 
 }
