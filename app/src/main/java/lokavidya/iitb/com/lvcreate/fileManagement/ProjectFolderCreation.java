@@ -5,6 +5,8 @@ import android.util.Log;
 
 import java.io.File;
 
+import lokavidya.iitb.com.lvcreate.util.Master;
+
 public class ProjectFolderCreation {
 
     public static boolean createFolderStructure(Context context, String folderName) {
@@ -12,12 +14,8 @@ public class ProjectFolderCreation {
         boolean status = true;
 
         try {
-            String directoryPath = context.getExternalFilesDir("Projects").getAbsolutePath();
+            String directoryPath = context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER).getAbsolutePath();
             Log.d("AAD", "Project folder : " + directoryPath);
-
-            String imagesFolderPath = "images";
-            String videosFolderPath = "videos";
-            String audioFolderPath = "audio";
 
             File dir;
 
@@ -26,13 +24,13 @@ public class ProjectFolderCreation {
 
             String projectFolder = directoryPath + "/" + folderName;
 
-            dir = new File(projectFolder, imagesFolderPath);
+            dir = new File(projectFolder, Master.IMAGES_FOLDER);
             status &= createFolder(dir);
 
-            dir = new File(projectFolder, videosFolderPath);
+            dir = new File(projectFolder, Master.VIDEOS_FOLDER);
             status &= createFolder(dir);
 
-            dir = new File(projectFolder, audioFolderPath);
+            dir = new File(projectFolder, Master.AUDIOS_FOLDER);
             status &= createFolder(dir);
 
         } catch (Exception e) {
@@ -57,8 +55,40 @@ public class ProjectFolderCreation {
         return false;
     }
 
-    public void deleteFolder() {
+    public static boolean removeFolder(String folderPath) {
 
+        File directory;
+
+        try {
+            directory = new File(folderPath);
+
+            if (!directory.exists())
+                return true;
+            if (!directory.isDirectory())
+                return false;
+
+            String[] list = directory.list();
+
+            // Some JVMs return null for File.list() when the
+            // directory is empty.
+            if (list != null) {
+                for (int i = 0; i < list.length; i++) {
+                    File entry = new File(directory, list[i]);
+
+                    if (entry.isDirectory()) {
+                        if (!removeFolder(entry.getPath()))
+                            return false;
+                    } else {
+                        if (!entry.delete())
+                            return false;
+                    }
+                }
+            }
+            return directory.delete();
+        } catch (Exception e) {
+            Log.e("AAD", "Deletion failed");
+            e.printStackTrace();
+        }
+        return false;
     }
-
 }
