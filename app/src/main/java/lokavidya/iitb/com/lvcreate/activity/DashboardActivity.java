@@ -179,6 +179,7 @@ public class DashboardActivity extends AppCompatActivity
 
                 if (!projectName.getText().toString().isEmpty()) {
 
+                    // Get the project name string and pass it with intent
                     String name = projectName.getText().toString();
 
                     Toast.makeText(getApplicationContext(), "Project Created Successfully", Toast.LENGTH_SHORT).show();

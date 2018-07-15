@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,6 +33,7 @@ import droidninja.filepicker.FilePickerConst;
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.adapter.ProjectRecyclerAdapter;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
+import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 
 public class CreateProjectActivity extends AppCompatActivity {
@@ -44,8 +44,6 @@ public class CreateProjectActivity extends AppCompatActivity {
     public static final int REQUEST_PICK_VIDEO = 3;
     public static final int REQUEST_PICK_AUDIO = 4;
 
-    public static final int IMG_THUMB_WIDTH = 180;
-    public static final int IMG_THUMB_HEIGHT = 180;
 
     // Global fields
     RecyclerView projectItemList;
@@ -53,13 +51,14 @@ public class CreateProjectActivity extends AppCompatActivity {
     ArrayList<ProjectItem> list = new ArrayList<>();
     String cameraIntentImgPath;
     Intent intent;
+    Project currentProject;
+    private String title = "";
 
     //permission status https://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     private boolean sentToSettings = false;
     private SharedPreferences permissionStatus;
-    private String title = "";
 
 
     @Override
@@ -71,14 +70,11 @@ public class CreateProjectActivity extends AppCompatActivity {
 
         intent = getIntent();
 
-
         // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null) {
-
             // Restore value of members from saved state
             title = savedInstanceState.getString("title");
         } else {
-
             // Initialize members with default values for a new instance
             title = intent.getStringExtra("title");
             title = title.substring(0, 1).toUpperCase() + title.substring(1);
@@ -99,8 +95,32 @@ public class CreateProjectActivity extends AppCompatActivity {
         projectItemList.setAdapter(adapter);
         projectItemList.setLayoutManager(new LinearLayoutManager(this));
 
-
+        // We restrict the DB access on this Activity.
+        // Using both the table queries here.
         ProjectDb mDb = ProjectDb.getsInstance(getApplicationContext());
+
+        if (savedInstanceState == null) {
+
+            /**
+             * Whenever you create new object of "Project' you will get project Id that
+             * starts with 0, do not use it.
+             * insertItem returns the ProjectId (long) which is actually stored in the database.
+             * Use that for further queries
+             * */
+
+            currentProject = new Project(
+                    title,
+                    null,
+                    00,
+                    00,
+                    "English"
+            );
+
+            long projectId = mDb.projectDao().insertItem(currentProject);
+
+        }
+
+
 
     }
 
@@ -206,6 +226,14 @@ public class CreateProjectActivity extends AppCompatActivity {
                 .pickFile(this, REQUEST_PICK_AUDIO);
     }
 
+
+    public void addDetails(View v) {
+
+        Intent i = new Intent(this, AddProjectDetails.class);
+        startActivity(i);
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -296,42 +324,6 @@ public class CreateProjectActivity extends AppCompatActivity {
     }
 
     // Boilerplate methods starts from here
-
-    private Bitmap cropImage(Bitmap ogBitmap) {
-
-        Bitmap croppedImage;
-
-        int width = ogBitmap.getWidth();
-        int height = ogBitmap.getHeight();
-
-        // Get the 4:3 aspect ratio to compare with Bitmap ratio
-        float aspectRatio = 4f / 3f;
-        float bitmapRatio;
-
-        if (width >= height) {
-            // this means bitmap is horizontally oriented
-            bitmapRatio = (float) width / (float) height;
-
-            if (bitmapRatio == aspectRatio) {
-                // If the Bitmap is 4:3 don't crop
-                croppedImage = ogBitmap;
-            } else {
-                croppedImage = Bitmap.createBitmap(ogBitmap, (width / 2 - height - 2), 0, height, height);
-            }
-
-        } else {
-            // this means bitmap is vertically oriented
-            bitmapRatio = (float) height / (float) width;
-            if (bitmapRatio == aspectRatio) {
-                croppedImage = ogBitmap;
-            } else {
-                croppedImage = Bitmap.createBitmap(ogBitmap, 0, (height / 2 - width / 2), width, width);
-            }
-        }
-
-        return croppedImage;
-    }
-
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -403,13 +395,6 @@ public class CreateProjectActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = permissionStatus.edit();
         editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE, true);
         editor.commit();
-
-    }
-
-
-    public void addDetails(View v) {
-        Intent i = new Intent(this, AddProjectDetails.class);
-        startActivity(i);
 
     }
 

@@ -17,8 +17,12 @@ public interface ProjectDao {
     @Query("SELECT * FROM project_table ORDER BY _id ASC")
     List<Project> loadAllProject();
 
+    /**
+     * insertItem returns the ProjectId (long) which is actually stored in the database.
+     * Use that for further queries
+     */
     @Insert
-    void insertItem(Project projectEntry);
+    long insertItem(Project projectEntry);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateItem(Project projectEntry);
