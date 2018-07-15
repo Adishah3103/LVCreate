@@ -34,7 +34,7 @@ import droidninja.filepicker.FilePickerConst;
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.adapter.ProjectRecyclerAdapter;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
-import lokavidya.iitb.com.lvcreate.fileManagement.ProjectFolderCreation;
+import lokavidya.iitb.com.lvcreate.fileManagement.ManageFolder;
 import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 import lokavidya.iitb.com.lvcreate.util.AppExecutors;
@@ -135,7 +135,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                                 "Project added in database, ID: " + String.valueOf(projectId));
 
                         // Create the folder structure with as title as name
-                        ProjectFolderCreation.createFolderStructure(getApplicationContext(), title);
+                        ManageFolder.createFolderStructure(getApplicationContext(), title);
                     }
 
 
