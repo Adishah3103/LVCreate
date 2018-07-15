@@ -110,6 +110,10 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
         data.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, data.size());
+
+        for (int i = position; i < data.size(); i++) {
+            data.get(i).setOriginal(true);
+        }
     }
 
     private Bitmap cropImage(Bitmap ogBitmap) {

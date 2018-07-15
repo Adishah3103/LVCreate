@@ -6,9 +6,6 @@ import android.net.Uri;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class Master {
 
@@ -62,7 +59,6 @@ public class Master {
 
     }
 
-
     private static ProgressDialog pDialog;
 
     private static String currentProjectName;
@@ -77,11 +73,12 @@ public class Master {
         Master.currentProjectName = currentProjectName;
     }
 
-    public static String AUTH_USERNAME = "lv@cse.iitb.ac.in", AUTH_PASSWORD = "password";
+    public static final String IMAGES_FOLDER = "images";
+    public static final String AUDIOS_FOLDER = "audio";
+    public static final String VIDEOS_FOLDER = "videos";
+    public static final String ALL_PROJECTS_FOLDER = "Projects";
 
-    public static List<String> imageNames = new ArrayList<>();
-    public static List<String> audioNames = new ArrayList<>();
-    public static List<String> videosNames = new ArrayList<>();
+    public static String AUTH_USERNAME = "lv@cse.iitb.ac.in", AUTH_PASSWORD = "password";
 
     public static void showProgressDialog(Context context, String message) {
         if (pDialog != null && pDialog.isShowing())

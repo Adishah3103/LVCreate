@@ -2,6 +2,8 @@ package lokavidya.iitb.com.lvcreate.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,14 +19,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cafe.adriel.androidaudioconverter.AndroidAudioConverter;
+import cafe.adriel.androidaudioconverter.callback.IConvertCallback;
+import cafe.adriel.androidaudioconverter.model.AudioFormat;
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
+import lokavidya.iitb.com.lvcreate.fileManagement.ManageFile;
+import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 import lokavidya.iitb.com.lvcreate.util.AppExecutors;
+import lokavidya.iitb.com.lvcreate.util.Master;
 
 public class AddProjectDetails extends AppCompatActivity {
 
@@ -32,8 +42,14 @@ public class AddProjectDetails extends AppCompatActivity {
     public List<String> channelList;
     public List<String> subChannelList;
 
-    long projectId;
     ProjectDb mDb;
+    List<ProjectItem> list;
+
+    Project currentProject;
+    long projectId;
+    String projectPath;
+    String projectTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +65,15 @@ public class AddProjectDetails extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        // Get the project ID from intent
         Intent intent = getIntent();
         projectId = intent.getLongExtra("pid", -1);
+        projectPath = intent.getStringExtra("projectPath");
 
+        // Get database instance
         mDb = ProjectDb.getsInstance(getApplicationContext());
 
+        // Execute query to load items with project ID
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -61,13 +81,15 @@ public class AddProjectDetails extends AppCompatActivity {
                 if (projectId != -1) {
                     // Trying to get the data back from Database
 
-                    List<ProjectItem> list = mDb.projectItemDao().loadItemsByProjectId(projectId);
+                    list = mDb.projectItemDao().loadItemsByProjectId(projectId);
 
                     for (int j = 0; j < list.size(); j++) {
                         Log.i("DBRetrieve", list.get(j).getItemFilePath());
                     }
-                }
 
+                    currentProject = mDb.projectDao().loadItemById(projectId);
+                    projectTitle = currentProject.getTitle();
+                }
             }
         });
 
@@ -377,4 +399,126 @@ public class AddProjectDetails extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    public void saveProject(View view) {
+
+        //Master.showProgressDialog(getApplicationContext(), "Converting & Copying..");
+
+        // Execute query to load items with project ID
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                for (int i = 0; i < list.size(); i++) {
+
+                    ProjectItem currentItem = list.get(i);
+                    String destFilePath;
+
+                    if (currentItem.isOriginal()) {
+
+                        if (currentItem.getItemIsAudio()) {
+
+                            destFilePath = projectPath + "/"
+                                    + Master.IMAGES_FOLDER
+                                    + "/" + projectTitle + "." + currentItem.getOrder() + ".png";
+
+                            if (currentItem.getItemFilePath().contains(".jpg") ||
+                                    currentItem.getItemFilePath().contains(".JPG") ||
+                                    currentItem.getItemFilePath().contains(".JPEG") ||
+                                    currentItem.getItemFilePath().contains(".jpeg")) {
+
+                                Log.i("Path", destFilePath);
+
+                                convertImage(currentItem.getItemFilePath(), destFilePath);
+
+                                // Setting file path
+                                currentItem.setItemFilePath(destFilePath);
+
+                                // Audio Conversion and move
+                                String destAudioPath = projectPath + "/"
+                                        + Master.AUDIOS_FOLDER
+                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
+
+                                convertAudio(currentItem.getItemAudioPath(), destAudioPath);
+
+                            } else if (currentItem.getItemFilePath().contains(".png") ||
+                                    currentItem.getItemFilePath().contains(".PNG")) {
+                                ManageFile.copyFile(currentItem.getItemFilePath(),
+                                        destFilePath);
+                            }
+
+
+                        } else {
+                            destFilePath = projectPath + "/"
+                                    + Master.VIDEOS_FOLDER
+                                    + "/" + projectTitle + "." + currentItem.getOrder() + ".mp4";
+                            // Copy Video to Project Folder
+                            ManageFile.copyFile(currentItem.getItemFilePath(), destFilePath);
+                        }
+
+                        currentItem.setOriginal(false);
+                        // Update all paths in database
+                        mDb.projectItemDao().updateItem(currentItem);
+                    }
+
+                }
+
+            }
+        });
+
+        //Master.dismissProgressDialog();
+
+    }
+
+    public void convertImage(String sourcePath, String destinationPath) {
+
+        boolean success = false;
+
+        Bitmap bmp = BitmapFactory.decodeFile(sourcePath);
+        File convertedImage = new File(destinationPath);
+
+        try {
+
+            FileOutputStream outStream = new FileOutputStream(convertedImage);
+            success = bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+
+            outStream.flush();
+            outStream.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (success) {
+            Log.i("Conversion", "Photo Converting is successful.");
+        } else {
+            Log.i("Conversion", "Photo Converting is unsuccessful.");
+        }
+    }
+
+    public void convertAudio(String sourcePath, final String destinationPath) {
+
+        File sourceFile = new File(sourcePath);
+
+        IConvertCallback callback = new IConvertCallback() {
+            @Override
+            public void onSuccess(File convertedFile) {
+                // So fast? Love it!
+                Log.i("Audio Conversion", convertedFile.getAbsolutePath());
+                ManageFile.moveFile(convertedFile.getAbsolutePath(), destinationPath);
+            }
+
+            @Override
+            public void onFailure(Exception error) {
+                // Oops! Something went wrong
+                error.printStackTrace();
+            }
+        };
+        AndroidAudioConverter.with(this)
+                .setFile(sourceFile) // Your current audio file
+                .setFormat(AudioFormat.WAV) // Your desired audio format
+                .setCallback(callback) // A callback to know when conversion is finished
+                .convert(); // Start conversion
+    }
+
 }

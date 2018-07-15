@@ -10,7 +10,7 @@ public class Project {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    private int id;
+    private long id;
 
     private String title;
 
@@ -26,7 +26,7 @@ public class Project {
     private String projectLanguage;
 
     @Ignore
-    public Project(int id, String title, String desc, int channedId, int subChannedId, String projectLanguage) {
+    public Project(long id, String title, String desc, int channedId, int subChannedId, String projectLanguage) {
         this.id = id;
         this.title = title;
         this.desc = desc;
@@ -43,11 +43,11 @@ public class Project {
         this.projectLanguage = projectLanguage;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

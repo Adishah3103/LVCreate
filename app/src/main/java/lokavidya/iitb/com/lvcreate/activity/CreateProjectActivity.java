@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,9 +34,11 @@ import droidninja.filepicker.FilePickerConst;
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.adapter.ProjectRecyclerAdapter;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
+import lokavidya.iitb.com.lvcreate.fileManagement.ManageFolder;
 import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 import lokavidya.iitb.com.lvcreate.util.AppExecutors;
+import lokavidya.iitb.com.lvcreate.util.Master;
 
 public class CreateProjectActivity extends AppCompatActivity {
 
@@ -81,7 +84,7 @@ public class CreateProjectActivity extends AppCompatActivity {
         } else {
             // Initialize members with default values for a new instance
             title = intent.getStringExtra("title");
-            title = title.substring(0, 1).toUpperCase() + title.substring(1);
+            title = (title.substring(0, 1).toUpperCase() + title.substring(1));
         }
 
         //set the title as the project name on toolbar
@@ -103,27 +106,42 @@ public class CreateProjectActivity extends AppCompatActivity {
         // Using both the table queries here.
         mDb = ProjectDb.getsInstance(getApplicationContext());
 
-        if (savedInstanceState == null) {
+        if (askForStoragePermission()) {
+            if (savedInstanceState == null) {
 
-            /**
-             * Whenever you create new object of "Project' you will get project Id that
-             * starts with 0, do not use it.
-             * insertItem returns the ProjectId (long) which is actually stored in the database.
-             * Use that for further queries
-             * */
+                /**
+                 * Whenever you create new object of "Project' you will get project Id that
+                 * starts with 0, do not use it.
+                 * insertItem returns the ProjectId (long) which is actually stored in the database.
+                 * Use that for further queries
+                 * */
 
-            currentProject = new Project(
-                    title,
-                    null,
-                    00,
-                    00,
-                    "English"
-            );
+                // Execute query to load items with project ID
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
 
-            projectId = mDb.projectDao().insertItem(currentProject);
+                        currentProject = new Project(
+                                title,
+                                null,
+                                00,
+                                00,
+                                "English"
+                        );
 
-            Log.i(LOG_TAG + " DB",
-                    "Project added in database, ID: " + String.valueOf(projectId));
+                        projectId = mDb.projectDao().insertItem(currentProject);
+
+                        Log.i(LOG_TAG + " DB",
+                                "Project added in database, ID: " + String.valueOf(projectId));
+
+                        // Create the folder structure with as title as name
+                        ManageFolder.createFolderStructure(getApplicationContext(), title);
+                    }
+
+
+                });
+            }
+
 
         }
     }
@@ -139,11 +157,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
                     ProjectItem currentItem = list.get(i);
 
-                    Log.i("projectId12", String.valueOf(projectId));
-
                     currentItem.setItemProjectId(projectId);
-
-                    Log.i("projectId13", String.valueOf(projectId));
 
                     // Order will start from 1
                     currentItem.setOrder(i + 1);
@@ -156,13 +170,18 @@ public class CreateProjectActivity extends AppCompatActivity {
         });
 
         Intent intentDetails = new Intent(this, AddProjectDetails.class);
+
         intentDetails.putExtra("pid", projectId);
+        intentDetails.putExtra("projectPath",
+                getExternalFilesDir(Master.ALL_PROJECTS_FOLDER).getAbsolutePath() + "/" + title);
+
+
         startActivity(intentDetails);
 
     }
 
     public void addImage(View view) {
-        
+
         if (askForStoragePermission()) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(CreateProjectActivity.this);
             View mView = getLayoutInflater().inflate(R.layout.add_image_layout, null);
@@ -293,7 +312,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                     00,
                     00,
                     1,
-                    false));
+                    true));
 
             addAudio();
 
@@ -314,7 +333,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                         00,
                         00,
                         1,
-                        false));
+                        true));
 
                 addAudio();
 
@@ -354,7 +373,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                         00,
                         00,
                         1,
-                        false));
+                        true));
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();
@@ -362,6 +381,22 @@ public class CreateProjectActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // User clicked "Discard" button, navigate to parent activity.
+                        NavUtils.navigateUpFromSameTask(CreateProjectActivity.this);
+                    }
+                };
+        // Show a dialog that notifies the user they have unsaved changes
+        showUnsavedChangesDialog(discardButtonClickListener);
+
+        //super.onBackPressed();
     }
 
     // Boilerplate methods starts from here
@@ -471,5 +506,31 @@ public class CreateProjectActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Show a dialog that warns the user there are unsaved changes that will be lost
+     * if they continue leaving the editor.
+     */
+    private void showUnsavedChangesDialog(
+            DialogInterface.OnClickListener discardButtonClickListener) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Discard your changes and quit editing?");
+        builder.setPositiveButton("Discard", discardButtonClickListener);
+        builder.setNegativeButton("Keep Editing", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Keep editing" button, so dismiss the dialog
+                // and continue editing the item.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
