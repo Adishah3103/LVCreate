@@ -18,17 +18,17 @@ import java.util.List;
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 
-public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecyclerAdapter.MyViewHolder> {
+public class ProjectItemRecyclerAdapter extends RecyclerView.Adapter<ProjectItemRecyclerAdapter.MyViewHolder> {
 
     // Global fields
     private List<ProjectItem> data;
 
-    public ProjectRecyclerAdapter(List<ProjectItem> data) {
+    public ProjectItemRecyclerAdapter(List<ProjectItem> data) {
         this.data = data;
     }
     @NonNull
     @Override
-    public ProjectRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProjectItemRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.project_recycler_item, parent, false);
 
@@ -36,7 +36,7 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProjectRecyclerAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProjectItemRecyclerAdapter.MyViewHolder holder, int position) {
 
         final int IMG_THUMB_WIDTH = 180;
         final int IMG_THUMB_HEIGHT = 180;

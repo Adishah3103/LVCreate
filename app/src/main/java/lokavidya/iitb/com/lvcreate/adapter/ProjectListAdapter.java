@@ -1,26 +1,30 @@
 package lokavidya.iitb.com.lvcreate.adapter;
 
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import lokavidya.iitb.com.lvcreate.R;
-import lokavidya.iitb.com.lvcreate.model.ProjectList;
-
-/**
- * Created by Aditya on 16-07-2018.
- */
+import lokavidya.iitb.com.lvcreate.model.Project;
+import lokavidya.iitb.com.lvcreate.util.AppExecutors;
+import lokavidya.iitb.com.lvcreate.util.CloudStorage;
 
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.MyViewHolder> {
-   private List<ProjectList> data;
 
-    public ProjectListAdapter(List<ProjectList> data) {
+    private List<Project> data;
+    String fileUrl = null;
+
+    public ProjectListAdapter(List<Project> data) {
         this.data = data;
     }
 
@@ -28,7 +32,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.project_card, parent, false);
+                .inflate(R.layout.project_ongoing_recycler, parent, false);
 
         return new MyViewHolder(view);
     }
@@ -36,8 +40,51 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProjectListAdapter.MyViewHolder holder, int position) {
 
-        ProjectList currentItem = data.get(position);
+        Project currentItem = data.get(position);
 
+        holder.projectName.setText(currentItem.getTitle());
+
+        // Store the position of item in buttons
+        holder.projectDelete.setTag(position);
+        holder.projectUpload.setTag(position);
+
+        holder.projectUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // Add your zipping code here
+
+                        /**
+                         * Code to upload the zip
+                         * **/
+
+                        // This is the input path for the .zip you created
+                        Uri baseUri = Uri.parse(String.valueOf(Environment.getExternalStorageDirectory()) + "/Sounds.zip");
+
+                        try {
+                            // We get Url in fileUrl
+                            fileUrl = CloudStorage.uploadFile(context,  // Get context here
+                                    "lvcms-development-testing",
+                                    "test11.zip",  // Name of the .zip on the Bucket
+                                    baseUri);
+
+                            Log.i("Upload", fileUrl);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+                });
+
+            }
+        });
 
     }
 
@@ -45,18 +92,23 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public int getItemCount() {
         return data.size();
     }
+
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView project_name;
-        TextView duration;
-        ImageView imgURL;
+        TextView projectName;
+        TextView prjectDuration;
+        ImageView projectThumbnail;
+        Button projectUpload;
+        Button projectDelete;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            project_name = itemView.findViewById(R.id.project_name);
-            duration = itemView.findViewById(R.id.duration);
-            imgURL = itemView.findViewById(R.id.image_top_left);
+            projectName = itemView.findViewById(R.id.project_name);
+            prjectDuration = itemView.findViewById(R.id.project_duration);
+            projectThumbnail = itemView.findViewById(R.id.img_project_thumb);
+            projectUpload = itemView.findViewById(R.id.btn_upload_project);
+            projectDelete = itemView.findViewById(R.id.btn_delete_project);
 
         }
     }

@@ -466,6 +466,8 @@ public class AddProjectDetails extends AppCompatActivity {
             }
         });
 
+        Toast.makeText(this, "Convert and Copy Successful", Toast.LENGTH_SHORT).show();
+
         //Master.dismissProgressDialog();
 
     }

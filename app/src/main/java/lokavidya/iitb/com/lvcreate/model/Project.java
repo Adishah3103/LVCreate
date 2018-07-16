@@ -25,22 +25,27 @@ public class Project {
     @ColumnInfo(name = "project_lang")
     private String projectLanguage;
 
+    @ColumnInfo(name = "total_duration")
+    private long totalDuration;
+
     @Ignore
-    public Project(long id, String title, String desc, int channedId, int subChannedId, String projectLanguage) {
+    public Project(long id, String title, String desc, int channedId, int subChannedId, String projectLanguage, long totalDuration) {
         this.id = id;
         this.title = title;
         this.desc = desc;
         this.channedId = channedId;
         this.subChannedId = subChannedId;
         this.projectLanguage = projectLanguage;
+        this.totalDuration = totalDuration;
     }
 
-    public Project(String title, String desc, int channedId, int subChannedId, String projectLanguage) {
+    public Project(String title, String desc, int channedId, int subChannedId, String projectLanguage, long totalDuration) {
         this.title = title;
         this.desc = desc;
         this.channedId = channedId;
         this.subChannedId = subChannedId;
         this.projectLanguage = projectLanguage;
+        this.totalDuration = totalDuration;
     }
 
     public long getId() {
@@ -89,5 +94,13 @@ public class Project {
 
     public void setProjectLanguage(String projectLanguage) {
         this.projectLanguage = projectLanguage;
+    }
+
+    public long getTotalDuration() {
+        return totalDuration;
+    }
+
+    public void setTotalDuration(long totalDuration) {
+        this.totalDuration = totalDuration;
     }
 }
