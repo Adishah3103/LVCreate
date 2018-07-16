@@ -25,27 +25,27 @@ public class Project {
     @ColumnInfo(name = "project_lang")
     private String projectLanguage;
 
-    @ColumnInfo(name = "total_duration")
-    private long totalDuration;
+    @ColumnInfo(name = "first_file_thumb")
+    private String firstFileThumb;
 
     @Ignore
-    public Project(long id, String title, String desc, int channedId, int subChannedId, String projectLanguage, long totalDuration) {
+    public Project(long id, String title, String desc, int channedId, int subChannedId, String projectLanguage, String firstFileThumb) {
         this.id = id;
         this.title = title;
         this.desc = desc;
         this.channedId = channedId;
         this.subChannedId = subChannedId;
         this.projectLanguage = projectLanguage;
-        this.totalDuration = totalDuration;
+        this.firstFileThumb = firstFileThumb;
     }
 
-    public Project(String title, String desc, int channedId, int subChannedId, String projectLanguage, long totalDuration) {
+    public Project(String title, String desc, int channedId, int subChannedId, String projectLanguage, String firstFileThumb) {
         this.title = title;
         this.desc = desc;
         this.channedId = channedId;
         this.subChannedId = subChannedId;
         this.projectLanguage = projectLanguage;
-        this.totalDuration = totalDuration;
+        this.firstFileThumb = firstFileThumb;
     }
 
     public long getId() {
@@ -96,11 +96,11 @@ public class Project {
         this.projectLanguage = projectLanguage;
     }
 
-    public long getTotalDuration() {
-        return totalDuration;
+    public String getFirstFileThumb() {
+        return firstFileThumb;
     }
 
-    public void setTotalDuration(long totalDuration) {
-        this.totalDuration = totalDuration;
+    public void setFirstFileThumb(String firstFileThumb) {
+        this.firstFileThumb = firstFileThumb;
     }
 }

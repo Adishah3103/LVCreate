@@ -414,7 +414,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
         // Save project description in database
         projectDesc = editProjectDesc.getText().toString();
-        if (!projectDesc.isEmpty() && !projectDesc.equals(null)) {
+        if (!projectDesc.equals(" ")) {
             currentProject.setDesc(projectDesc);
             mDb.projectDao().updateItem(currentProject);
         }
@@ -506,6 +506,11 @@ public class AddProjectDetails extends AppCompatActivity {
                             mDb.projectItemDao().updateItem(currentItem);
                         }
                     }
+
+                    // Use the first file to generate thumbnail of project
+                    currentProject.setFirstFileThumb(list.get(0).getItemFilePath());
+                    mDb.projectDao().updateItem(currentProject);
+
                 }
             });
         }
