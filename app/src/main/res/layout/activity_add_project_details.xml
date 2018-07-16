@@ -1,158 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    android:fillViewport="true"
-    >
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="lokavidya.iitb.com.lvcreate.activity.AddProjectDetails">
-
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar1"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_scrollFlags="scroll|enterAlways"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="lokavidya.iitb.com.lvcreate.activity.AddProjectDetails">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar1"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp">
+
+            <EditText
+                android:id="@+id/txt_project_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="Title of Project"
+                android:inputType="textPersonName"
+                android:maxLength="15"
+                android:textColor="@color/brick_color" />
+        </android.support.design.widget.TextInputLayout>
 
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
 
-    <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/txt_project_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
+                android:ems="10"
+                android:hint="Description of Video"
+                android:inputType="textMultiLine"
+                android:maxLength="150" />
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        </android.support.design.widget.TextInputLayout>
 
-        >
+        <TextView
+            android:id="@+id/label_video_lang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="25dp"
+            android:text="Video Language" />
 
-
-    <EditText
-        android:id="@+id/project_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-        android:ems="10"
-        android:maxLength="15"
-        android:hint="Title of Project"
-        android:inputType="textPersonName"
-      />
-    </android.support.design.widget.TextInputLayout>
-
-
-    <android.support.design.widget.TextInputLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        >
-
-    <EditText
-        android:id="@+id/video_descrip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description of Video"
-        android:layout_marginEnd="50dp"
-        android:maxLength="150"
-        android:layout_marginStart="50dp"
-
-        android:ems="10"
-        android:inputType="textMultiLine"
-         />
-
-    </android.support.design.widget.TextInputLayout>
+        <Spinner
+            android:id="@+id/spin_vid_lang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Video Language"
-        android:layout_marginEnd="50dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="60dp"
-        />
+        <TextView
+            android:id="@+id/label_channel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="25dp"
+            android:text="Channel" />
 
+        <Spinner
+            android:id="@+id/spin_channel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp" />
 
-    <Spinner
-        android:id="@+id/video_lang"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
+        <TextView
+            android:id="@+id/label_sub_channel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="25dp"
+            android:text="Sub Channel" />
 
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        <Spinner
+            android:id="@+id/spin_sub_channel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp" />
 
+        <Button
+            android:id="@+id/btn_save_project"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/brick_btn_bg"
+            android:onClick="saveProject"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Save"
+            android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Channel"
-        android:layout_marginEnd="50dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="60dp"
-        />
-
-    <Spinner
-        android:id="@+id/channel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-
-         />
-
-
-    <TextView
-        android:id="@+id/text_lv_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sub Channel"
-        android:layout_marginEnd="50dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="60dp"
-        />
-
-    <Spinner
-        android:id="@+id/subchannel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-
-         />
-
-    <Button
-        android:id="@+id/btn_save_project"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-
-        android:layout_marginTop="35dp"
-        android:background="@drawable/brick_btn_bg"
-        android:onClick="saveProject"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-
-        android:text="Save"
-        android:textColor="@color/white" />
-
-
-
-</LinearLayout>
-
+    </LinearLayout>
 
 </ScrollView>
 

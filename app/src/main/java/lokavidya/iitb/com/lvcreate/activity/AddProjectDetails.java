@@ -52,6 +52,13 @@ public class AddProjectDetails extends AppCompatActivity {
     long projectId;
     String projectPath;
     String projectTitle;
+    String projectDesc;
+
+    EditText editProjectTitle;
+    EditText editProjectDesc;
+    Spinner spinVideoLang;
+    Spinner spinChannel;
+    Spinner spinSubChannel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +85,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
             currentProject = mDb.projectDao().loadItemById(projectId);
             projectTitle = currentProject.getTitle();
+            projectDesc = currentProject.getDesc();
 
             // Execute query to load items with project ID
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -89,9 +97,17 @@ public class AddProjectDetails extends AppCompatActivity {
             });
         }
 
-        final Spinner videoLang = findViewById(R.id.video_lang);
-        final Spinner channel = findViewById(R.id.channel);
-        final Spinner subChannel = findViewById(R.id.subchannel);
+        editProjectTitle = findViewById(R.id.txt_project_title);
+        editProjectDesc = findViewById(R.id.txt_project_desc);
+        spinVideoLang = findViewById(R.id.spin_vid_lang);
+        spinChannel = findViewById(R.id.spin_channel);
+        spinSubChannel = findViewById(R.id.spin_sub_channel);
+
+        // Setup the title onto EditText
+        editProjectTitle.setText(projectTitle);
+        if (!projectDesc.equals(" "))
+            editProjectDesc.setText(projectDesc);
+
 
 
         String[] video = new String[]{
@@ -159,9 +175,9 @@ public class AddProjectDetails extends AppCompatActivity {
             }
         };
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        videoLang.setAdapter(spinnerArrayAdapter);
+        spinVideoLang.setAdapter(spinnerArrayAdapter);
 
-        videoLang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinVideoLang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItemText = (String) parent.getItemAtPosition(position);
@@ -209,9 +225,9 @@ public class AddProjectDetails extends AppCompatActivity {
             }
         };
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        channel.setAdapter(spinnerArrayAdapter2);
+        spinChannel.setAdapter(spinnerArrayAdapter2);
 
-        channel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItemText = (String) parent.getItemAtPosition(position);
@@ -228,22 +244,21 @@ public class AddProjectDetails extends AppCompatActivity {
                     final AlertDialog dialog = mBuilder.create();
 
                     final EditText channelName = mView.findViewById(R.id.channel_title);
-                    final EditText channeldescription = mView.findViewById(R.id.channel_descrip);
+                    final EditText channelDesc = mView.findViewById(R.id.channel_descrip);
                     Button add = mView.findViewById(R.id.add);
 
-                    final Spinner channellang = mView.findViewById(R.id.channel_lang);
+                    final Spinner channelLang = mView.findViewById(R.id.channel_lang);
 
                     String[] lang = new String[]{
-                            "Choose channel language",
+                            "Choose spinChannel language",
                             "English",
                             "Hindi"
-
                     };
 
-                    final List<String> channellanglist = new ArrayList<>(Arrays.asList(lang));
+                    final List<String> channelLangList = new ArrayList<>(Arrays.asList(lang));
 
                     final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                            AddProjectDetails.this, R.layout.spinner_layout, channellanglist) {
+                            AddProjectDetails.this, R.layout.spinner_layout, channelLangList) {
                         @Override
                         public boolean isEnabled(int position) {
                             if (position == 0) {
@@ -270,9 +285,9 @@ public class AddProjectDetails extends AppCompatActivity {
                         }
                     };
                     spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
-                    channellang.setAdapter(spinnerArrayAdapter);
+                    channelLang.setAdapter(spinnerArrayAdapter);
 
-                    channellang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    channelLang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             String selectedItemText = (String) parent.getItemAtPosition(position);
@@ -284,8 +299,6 @@ public class AddProjectDetails extends AppCompatActivity {
                                         (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
                                         .show();
                             }
-
-
                         }
 
                         @Override
@@ -299,7 +312,7 @@ public class AddProjectDetails extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
 
-                            if (channelName.getText().toString() != null && channeldescription.getText().toString() != null) {
+                            if (channelName.getText().toString() != null && channelDesc.getText().toString() != null) {
 
                                 String newchannel = channelName.getText().toString();
                                 channelList.add(newchannel);
@@ -309,14 +322,10 @@ public class AddProjectDetails extends AppCompatActivity {
 
                                 Toast.makeText(getApplicationContext(), "Please enter all details", Toast.LENGTH_SHORT).show();
                             }
-
-
                         }
                     });
 
-
                     dialog.show();
-
 
                 }
 
@@ -363,9 +372,9 @@ public class AddProjectDetails extends AppCompatActivity {
             }
         };
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        subChannel.setAdapter(spinnerArrayAdapter3);
+        spinSubChannel.setAdapter(spinnerArrayAdapter3);
 
-        subChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinSubChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItemText = (String) parent.getItemAtPosition(position);
@@ -402,6 +411,13 @@ public class AddProjectDetails extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
+
+        // Save project description in database
+        projectDesc = editProjectDesc.getText().toString();
+        if (!projectDesc.isEmpty() && !projectDesc.equals(null)) {
+            currentProject.setDesc(projectDesc);
+            mDb.projectDao().updateItem(currentProject);
+        }
 
         // Execute query to load items with project ID
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
