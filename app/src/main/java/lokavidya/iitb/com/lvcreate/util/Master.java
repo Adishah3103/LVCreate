@@ -77,6 +77,7 @@ public class Master {
     public static final String AUDIOS_FOLDER = "audio";
     public static final String VIDEOS_FOLDER = "videos";
     public static final String ALL_PROJECTS_FOLDER = "Projects";
+    public static final String ALL_ZIPS_FOLDER = "Zips";
 
     public static String AUTH_USERNAME = "lv@cse.iitb.ac.in", AUTH_PASSWORD = "password";
 

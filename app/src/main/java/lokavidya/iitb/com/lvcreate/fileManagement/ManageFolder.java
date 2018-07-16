@@ -16,8 +16,12 @@ public class ManageFolder {
         try {
             String directoryPath = context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER).getAbsolutePath();
             Log.d("AAD", "Project folder : " + directoryPath);
+            String zipDirectoryPath = context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER).getAbsolutePath();
 
             File dir;
+
+            dir = new File(zipDirectoryPath);
+            status &= createFolder(dir);
 
             dir = new File(directoryPath, folderName);
             status &= createFolder(dir);
