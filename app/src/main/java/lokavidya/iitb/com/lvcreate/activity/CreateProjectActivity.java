@@ -149,35 +149,38 @@ public class CreateProjectActivity extends AppCompatActivity {
 
     public void addDetails(View v) {
 
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                // We first need to set the Order and ProjectId of all items
-                for (int i = 0; i < list.size(); i++) {
+        if (list.size() > 0) {
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // We first need to set the Order and ProjectId of all items
+                    for (int i = 0; i < list.size(); i++) {
 
-                    ProjectItem currentItem = list.get(i);
+                        ProjectItem currentItem = list.get(i);
 
-                    currentItem.setItemProjectId(projectId);
+                        currentItem.setItemProjectId(projectId);
 
-                    // Order will start from 1
-                    currentItem.setOrder(i + 1);
+                        // Order will start from 1
+                        currentItem.setOrder(i + 1);
 
-                    // Start storing items in database
-                    mDb.projectItemDao().insertItem(currentItem);
+                        // Start storing items in database
+                        mDb.projectItemDao().insertItem(currentItem);
 
+                    }
                 }
-            }
-        });
+            });
 
-        Intent intentDetails = new Intent(this, AddProjectDetails.class);
+            Intent intentDetails = new Intent(this, AddProjectDetails.class);
 
-        intentDetails.putExtra("pid", projectId);
-        intentDetails.putExtra("projectPath",
-                getExternalFilesDir(Master.ALL_PROJECTS_FOLDER).getAbsolutePath() + "/" + title);
+            intentDetails.putExtra("pid", projectId);
+            intentDetails.putExtra("projectPath",
+                    getExternalFilesDir(Master.ALL_PROJECTS_FOLDER).getAbsolutePath() + "/" + title);
 
 
-        startActivity(intentDetails);
-
+            startActivity(intentDetails);
+        } else {
+            Toast.makeText(this, "Please add atleast one item", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void addImage(View view) {
@@ -389,6 +392,15 @@ public class CreateProjectActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        //delete the empty folders now as discarded
+                        ManageFolder.removeFolder(getExternalFilesDir(
+                                Master.ALL_PROJECTS_FOLDER).getAbsolutePath() + "/" + title + "/");
+                        mDb.projectDao().deleteItemById(projectId);
+                        Log.i(LOG_TAG + " DB",
+                                "Project discarded, ID: " + String.valueOf(projectId) +
+                                        ", Name : " + String.valueOf(currentProject.getTitle()));
+
                         // User clicked "Discard" button, navigate to parent activity.
                         NavUtils.navigateUpFromSameTask(CreateProjectActivity.this);
                     }

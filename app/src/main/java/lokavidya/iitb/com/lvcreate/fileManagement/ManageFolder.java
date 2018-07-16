@@ -51,7 +51,7 @@ public class ManageFolder {
                 Log.e("AAD", "folder creation failed");
                 return false;
             } else {
-                Log.d("AAD", "created folder");
+                Log.d("AAD", "created folder " + folderDirectory.getName());
                 return true;
             }
 
@@ -90,6 +90,7 @@ public class ManageFolder {
                     }
                 }
             }
+            Log.d("AAD", "Deleting folder " + directory.getName());
             return directory.delete();
         } catch (Exception e) {
             Log.e("AAD", "Deletion failed");

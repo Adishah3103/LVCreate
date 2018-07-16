@@ -393,7 +393,6 @@ public class AddProjectDetails extends AppCompatActivity {
 
             }
         });
-
     }
 
     @Override

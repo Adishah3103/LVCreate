@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:maxLines="1"
             app:layout_constraintStart_toEndOf="@+id/img_project_thumb"
             app:layout_constraintTop_toBottomOf="@+id/project_name" />
 
@@ -42,8 +43,8 @@
             android:id="@+id/btn_upload_project"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/brick_btn_bg"
             android:text="Upload"
             android:textColor="@color/white"
