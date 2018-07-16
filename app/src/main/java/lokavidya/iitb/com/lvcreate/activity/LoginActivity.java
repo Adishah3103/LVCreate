@@ -96,8 +96,9 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
 
                 // Use Temporary login credentials as:
                 // Mobile: 1234 Pass: 1234
-                if (mobile.equals("1234") && pass.equals("1234")) {
-                    requestLogin(mobile, pass);
+                if ((mobile.equals("1234") && pass.equals("1234"))
+                        || (mobile.equals("918273645") && pass.equals("admintest"))) {
+                    requestLogin("Admin", pass);
                 }
 
                 if (mobile.length() == 10) {
@@ -116,19 +117,7 @@ public class LoginActivity extends FragmentActivity implements View.OnClickListe
                 Intent intent = new Intent(this, SignUpActivity.class);
                 startActivity(intent);
                 break;
-            /*case R.id.skipbutton:
-                check = 3;
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-                sharedPreferences.edit().putBoolean("Skip", true).apply();
-                Intent i = new Intent(this, DashboardActivity.class);
 
-                if (weHavePermissionToReadContacts()) {
-                    startActivity(i);
-                    finish();
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            MY_REQUEST_CODE3);
-                }*/
         }
     }
 

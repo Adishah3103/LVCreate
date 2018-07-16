@@ -1,6 +1,7 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -41,6 +42,8 @@ public class AddProjectDetails extends AppCompatActivity {
     public List<String> videoLangList;
     public List<String> channelList;
     public List<String> subChannelList;
+
+    ProgressDialog progressDialog;
 
     ProjectDb mDb;
     List<ProjectItem> list;
@@ -392,7 +395,13 @@ public class AddProjectDetails extends AppCompatActivity {
 
     public void saveProject(View view) {
 
-        //Master.showProgressDialog(getApplicationContext(), "Converting & Copying..");
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
+        progressDialog = new ProgressDialog(AddProjectDetails.this);
+        progressDialog.setMessage("Converting & Copying..");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         // Execute query to load items with project ID
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -435,6 +444,9 @@ public class AddProjectDetails extends AppCompatActivity {
                             convertAudio(currentItem.getItemAudioPath(), destAudioPath);
 
                             if (i == list.size() - 1) {
+                                if (progressDialog != null && progressDialog.isShowing())
+                                    progressDialog.dismiss();
+
                                 Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 getApplicationContext().startActivity(intent);
@@ -450,6 +462,9 @@ public class AddProjectDetails extends AppCompatActivity {
 
 
                             if (i == list.size() - 1) {
+                                if (progressDialog != null && progressDialog.isShowing())
+                                    progressDialog.dismiss();
+
                                 Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 getApplicationContext().startActivity(intent);
@@ -467,9 +482,6 @@ public class AddProjectDetails extends AppCompatActivity {
                 }
             }
         });
-
-        Toast.makeText(this, "Convert and Copy Successful", Toast.LENGTH_SHORT).show();
-        //Master.dismissProgressDialog();
 
     }
 

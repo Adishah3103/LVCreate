@@ -1,5 +1,6 @@
 package lokavidya.iitb.com.lvcreate.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -26,6 +27,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     private List<Project> data;
     private Context context;
     String fileUrl = null;
+    ProgressDialog progressDialog;
 
     public ProjectListAdapter(Context context, List<Project> data) {
 
@@ -58,32 +60,40 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             @Override
             public void onClick(View v) {
 
+                if (progressDialog != null && progressDialog.isShowing())
+                    progressDialog.dismiss();
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setMessage("Uploading Project..");
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
 
                         // Add your zipping code here
-//                        Master.showProgressDialog(context,"Zipping Files...");
                         String projectFolderPath = context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
                                 .getAbsolutePath() + "/" + currentItem.getTitle() + "/";
                         String zipPath = context.getExternalFilesDir(Master.ALL_ZIPS_FOLDER)
                                 .getAbsolutePath() + "/" + currentItem.getTitle() + ".zip";
 
-                        Log.d("AAD", "folder path :" + projectFolderPath);
-                        Log.d("AAD", "ouput path :" + zipPath);
+                        Log.d("AAD", "Project Folder path :" + projectFolderPath);
+                        Log.d("AAD", "Zip path :" + zipPath);
 
                         ManageZip mz = new ManageZip();
                         mz.zipFileAtPath(projectFolderPath, zipPath);
+
+                        Log.d("AAD", "Zipping done");
+
                         /**
                          * Code to upload the zip
                          * **/
-
-                        Log.d("AAD", "Zipping done");
                         Log.d("AAD", "Starting uploading");
-//                        Master.showProgressDialog(context,"Uploading Project Zip...");
 
                         // This is the input path for the .zip you created
-//                        Uri baseUri = Uri.parse(String.valueOf(Environment.getExternalStorageDirectory()) + "/Sounds.zip");
+                        //Uri baseUri = Uri.parse(String.valueOf(Environment.getExternalStorageDirectory()) + "/Sounds.zip");
+
                         Uri baseUri = Uri.parse(zipPath);
                         try {
                             // We get Url in fileUrl
@@ -98,10 +108,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                             e.printStackTrace();
                         }
 
+                        progressDialog.dismiss();
+
                     }
 
 
                 });
+
 
             }
         });
