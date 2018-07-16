@@ -44,12 +44,11 @@ public class AddProjectDetails extends AppCompatActivity {
 
     ProjectDb mDb;
     List<ProjectItem> list;
-
     Project currentProject;
+
     long projectId;
     String projectPath;
     String projectTitle;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,7 @@ public class AddProjectDetails extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Add Project Details ");
+        getSupportActionBar().setTitle("Add Project Details");
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,27 +71,20 @@ public class AddProjectDetails extends AppCompatActivity {
 
         // Get database instance
         mDb = ProjectDb.getsInstance(getApplicationContext());
+        if (projectId != -1) {
 
-        // Execute query to load items with project ID
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
+            currentProject = mDb.projectDao().loadItemById(projectId);
+            projectTitle = currentProject.getTitle();
 
-                if (projectId != -1) {
-                    // Trying to get the data back from Database
-
+            // Execute query to load items with project ID
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // Get the data back from Database
                     list = mDb.projectItemDao().loadItemsByProjectId(projectId);
-
-                    for (int j = 0; j < list.size(); j++) {
-                        Log.i("DBRetrieve", list.get(j).getItemFilePath());
-                    }
-
-                    currentProject = mDb.projectDao().loadItemById(projectId);
-                    projectTitle = currentProject.getTitle();
                 }
-            }
-        });
-
+            });
+        }
 
         final Spinner videoLang = findViewById(R.id.video_lang);
         final Spinner channel = findViewById(R.id.channel);
@@ -178,8 +170,6 @@ public class AddProjectDetails extends AppCompatActivity {
                             (getApplicationContext(), "Selected : " + selectedItemText, Toast.LENGTH_SHORT)
                             .show();
                 }
-
-
             }
 
             @Override
@@ -431,21 +421,12 @@ public class AddProjectDetails extends AppCompatActivity {
 
                                 convertImage(currentItem.getItemFilePath(), destFilePath);
 
-                                // Setting file path
-                                currentItem.setItemFilePath(destFilePath);
-
-//                                // Audio Conversion and move
-//                                String destAudioPath = projectPath + "/"
-//                                        + Master.AUDIOS_FOLDER
-//                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
-//
-//                                convertAudio(currentItem.getItemAudioPath(), destAudioPath);
-
                             } else if (currentItem.getItemFilePath().contains(".png") ||
                                     currentItem.getItemFilePath().contains(".PNG")) {
                                 ManageFile.copyFile(currentItem.getItemFilePath(),
                                         destFilePath);
                             }
+
                             // Audio Conversion and move
                             String destAudioPath = projectPath + "/"
                                     + Master.AUDIOS_FOLDER
@@ -453,6 +434,12 @@ public class AddProjectDetails extends AppCompatActivity {
 
                             convertAudio(currentItem.getItemAudioPath(), destAudioPath);
 
+                            if (i == list.size() - 1) {
+                                Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getApplicationContext().startActivity(intent);
+                                finish();
+                            }
 
                         } else {
                             destFilePath = projectPath + "/"
@@ -460,28 +447,28 @@ public class AddProjectDetails extends AppCompatActivity {
                                     + "/" + projectTitle + "." + currentItem.getOrder() + ".mp4";
                             // Copy Video to Project Folder
                             ManageFile.copyFile(currentItem.getItemFilePath(), destFilePath);
+
+
+                            if (i == list.size() - 1) {
+                                Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getApplicationContext().startActivity(intent);
+                                finish();
+                            }
                         }
 
+                        // Setting file path
+                        currentItem.setItemFilePath(destFilePath);
                         currentItem.setOriginal(false);
+
                         // Update all paths in database
                         mDb.projectItemDao().updateItem(currentItem);
                     }
-
                 }
-
-                Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getApplicationContext().startActivity(intent);
-                finish();
-
             }
         });
 
         Toast.makeText(this, "Convert and Copy Successful", Toast.LENGTH_SHORT).show();
-
-//        Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
-//        startActivity(intent);
-//        finish();
         //Master.dismissProgressDialog();
 
     }
@@ -512,29 +499,38 @@ public class AddProjectDetails extends AppCompatActivity {
         }
     }
 
-    public void convertAudio(String sourcePath, final String destinationPath) {
+    public void convertAudio(final String sourcePath, final String destinationPath) {
 
-        File sourceFile = new File(sourcePath);
-
-        IConvertCallback callback = new IConvertCallback() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
-            public void onSuccess(File convertedFile) {
-                // So fast? Love it!
-                Log.i("Audio Conversion", convertedFile.getAbsolutePath());
-                ManageFile.moveFile(convertedFile.getAbsolutePath(), destinationPath);
-            }
+            public void run() {
 
-            @Override
-            public void onFailure(Exception error) {
-                // Oops! Something went wrong
-                error.printStackTrace();
+                File sourceFile = new File(sourcePath);
+
+                IConvertCallback callback = new IConvertCallback() {
+                    @Override
+                    public void onSuccess(File convertedFile) {
+                        // So fast? Love it!
+                        Log.i("Audio Conversion", convertedFile.getAbsolutePath());
+                        ManageFile.moveFile(convertedFile.getAbsolutePath(), destinationPath);
+                    }
+
+                    @Override
+                    public void onFailure(Exception error) {
+                        // Oops! Something went wrong
+                        error.printStackTrace();
+                    }
+                };
+                AndroidAudioConverter.with(getApplicationContext())
+                        .setFile(sourceFile) // Your current audio file
+                        .setFormat(AudioFormat.WAV) // Your desired audio format
+                        .setCallback(callback) // A callback to know when conversion is finished
+                        .convert(); // Start conversion
+
             }
-        };
-        AndroidAudioConverter.with(this)
-                .setFile(sourceFile) // Your current audio file
-                .setFormat(AudioFormat.WAV) // Your desired audio format
-                .setCallback(callback) // A callback to know when conversion is finished
-                .convert(); // Start conversion
+        });
+
     }
+
 
 }

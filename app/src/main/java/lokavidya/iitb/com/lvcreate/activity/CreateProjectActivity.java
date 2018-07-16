@@ -84,7 +84,7 @@ public class CreateProjectActivity extends AppCompatActivity {
         } else {
             // Initialize members with default values for a new instance
             title = intent.getStringExtra("title");
-            title = (title.substring(0, 1).toUpperCase() + title.substring(1));
+            title = title.substring(0, 1).toUpperCase() + title.substring(1);
         }
 
         //set the title as the project name on toolbar
@@ -106,45 +106,44 @@ public class CreateProjectActivity extends AppCompatActivity {
         // Using both the table queries here.
         mDb = ProjectDb.getsInstance(getApplicationContext());
 
-        if (askForStoragePermission()) {
-            if (savedInstanceState == null) {
+        askForStoragePermission();
 
-                /**
-                 * Whenever you create new object of "Project' you will get project Id that
-                 * starts with 0, do not use it.
-                 * insertItem returns the ProjectId (long) which is actually stored in the database.
-                 * Use that for further queries
-                 * */
+        if (savedInstanceState == null) {
 
-                // Execute query to load items with project ID
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
+            /**
+             * Whenever you create new object of "Project' you will get project Id that
+             * starts with 0, do not use it.
+             * insertItem returns the ProjectId (long) which is actually stored in the database.
+             * Use that for further queries
+             * */
 
-                        currentProject = new Project(
-                                title,
-                                null,
-                                00,
-                                00,
-                                "English",
-                                00
-                        );
+            // Execute query to load items with project ID
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
 
-                        projectId = mDb.projectDao().insertItem(currentProject);
+                    currentProject = new Project(
+                            title,
+                            null,
+                            00,
+                            00,
+                            "English",
+                            00
+                    );
 
-                        Log.i(LOG_TAG + " DB",
-                                "Project added in database, ID: " + String.valueOf(projectId));
+                    projectId = mDb.projectDao().insertItem(currentProject);
 
-                        // Create the folder structure with as title as name
-                        ManageFolder.createFolderStructure(getApplicationContext(), title);
-                    }
+                    Log.i(LOG_TAG + " DB",
+                            "Project added in database, ID: " + String.valueOf(projectId));
 
-
-                });
-            }
+                    // Create the folder structure with as title as name
+                    ManageFolder.createFolderStructure(getApplicationContext(), title);
+                }
 
 
+            });
         }
+
     }
 
 
