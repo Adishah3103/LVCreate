@@ -53,7 +53,11 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.CreateProjectActivity" />
+        <activity android:name=".activity.CreateProjectActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.OngoingProjects" />
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
