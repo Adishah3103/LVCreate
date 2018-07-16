@@ -33,4 +33,7 @@ public interface ProjectDao {
     @Query("SELECT * FROM project_table WHERE _id = :id")
     Project loadItemById(long id);
 
+    @Query("DELETE FROM project_table WHERE _id = :id")
+    void deleteItemById(long id);
+
 }
