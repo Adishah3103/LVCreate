@@ -419,85 +419,96 @@ public class AddProjectDetails extends AppCompatActivity {
             mDb.projectDao().updateItem(currentProject);
         }
 
-        // Execute query to load items with project ID
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
+        // Null check to save empty project
+        if (list.isEmpty()) {
 
-                for (int i = 0; i < list.size(); i++) {
+            Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(intent);
+            finish();
 
-                    ProjectItem currentItem = list.get(i);
-                    String destFilePath;
+        } else {
 
-                    if (currentItem.isOriginal()) {
+            // Execute query to load items with project ID
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
 
-                        if (currentItem.getItemIsAudio()) {
+                    for (int i = 0; i < list.size(); i++) {
 
-                            destFilePath = projectPath + "/"
-                                    + Master.IMAGES_FOLDER
-                                    + "/" + projectTitle + "." + currentItem.getOrder() + ".png";
+                        ProjectItem currentItem = list.get(i);
+                        String destFilePath;
 
-                            if (currentItem.getItemFilePath().contains(".jpg") ||
-                                    currentItem.getItemFilePath().contains(".JPG") ||
-                                    currentItem.getItemFilePath().contains(".JPEG") ||
-                                    currentItem.getItemFilePath().contains(".jpeg")) {
+                        if (currentItem.isOriginal()) {
 
-                                Log.i("Path", destFilePath);
+                            if (currentItem.getItemIsAudio()) {
 
-                                convertImage(currentItem.getItemFilePath(), destFilePath);
+                                destFilePath = projectPath + "/"
+                                        + Master.IMAGES_FOLDER
+                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".png";
 
-                            } else if (currentItem.getItemFilePath().contains(".png") ||
-                                    currentItem.getItemFilePath().contains(".PNG")) {
-                                ManageFile.copyFile(currentItem.getItemFilePath(),
-                                        destFilePath);
+                                if (currentItem.getItemFilePath().contains(".jpg") ||
+                                        currentItem.getItemFilePath().contains(".JPG") ||
+                                        currentItem.getItemFilePath().contains(".JPEG") ||
+                                        currentItem.getItemFilePath().contains(".jpeg")) {
+
+                                    Log.i("Path", destFilePath);
+
+                                    convertImage(currentItem.getItemFilePath(), destFilePath);
+
+                                } else if (currentItem.getItemFilePath().contains(".png") ||
+                                        currentItem.getItemFilePath().contains(".PNG")) {
+                                    ManageFile.copyFile(currentItem.getItemFilePath(),
+                                            destFilePath);
+                                }
+
+                                // Audio Conversion and move
+                                String destAudioPath = projectPath + "/"
+                                        + Master.AUDIOS_FOLDER
+                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
+
+                                convertAudio(currentItem.getItemAudioPath(), destAudioPath);
+
+                                if (i == list.size() - 1) {
+                                    if (progressDialog != null && progressDialog.isShowing())
+                                        progressDialog.dismiss();
+
+                                    Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getApplicationContext().startActivity(intent);
+                                    finish();
+                                }
+
+                            } else {
+                                destFilePath = projectPath + "/"
+                                        + Master.VIDEOS_FOLDER
+                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".mp4";
+                                // Copy Video to Project Folder
+                                ManageFile.copyFile(currentItem.getItemFilePath(), destFilePath);
+
+
+                                if (i == list.size() - 1) {
+                                    if (progressDialog != null && progressDialog.isShowing())
+                                        progressDialog.dismiss();
+
+                                    Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getApplicationContext().startActivity(intent);
+                                    finish();
+                                }
                             }
 
-                            // Audio Conversion and move
-                            String destAudioPath = projectPath + "/"
-                                    + Master.AUDIOS_FOLDER
-                                    + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
+                            // Setting file path
+                            currentItem.setItemFilePath(destFilePath);
+                            currentItem.setOriginal(false);
 
-                            convertAudio(currentItem.getItemAudioPath(), destAudioPath);
-
-                            if (i == list.size() - 1) {
-                                if (progressDialog != null && progressDialog.isShowing())
-                                    progressDialog.dismiss();
-
-                                Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                getApplicationContext().startActivity(intent);
-                                finish();
-                            }
-
-                        } else {
-                            destFilePath = projectPath + "/"
-                                    + Master.VIDEOS_FOLDER
-                                    + "/" + projectTitle + "." + currentItem.getOrder() + ".mp4";
-                            // Copy Video to Project Folder
-                            ManageFile.copyFile(currentItem.getItemFilePath(), destFilePath);
-
-
-                            if (i == list.size() - 1) {
-                                if (progressDialog != null && progressDialog.isShowing())
-                                    progressDialog.dismiss();
-
-                                Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                getApplicationContext().startActivity(intent);
-                                finish();
-                            }
+                            // Update all paths in database
+                            mDb.projectItemDao().updateItem(currentItem);
                         }
-
-                        // Setting file path
-                        currentItem.setItemFilePath(destFilePath);
-                        currentItem.setOriginal(false);
-
-                        // Update all paths in database
-                        mDb.projectItemDao().updateItem(currentItem);
                     }
                 }
-            }
-        });
+            });
+        }
 
     }
 
