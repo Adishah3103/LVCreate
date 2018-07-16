@@ -124,11 +124,11 @@ public class CreateProjectActivity extends AppCompatActivity {
 
                     currentProject = new Project(
                             title,
+                            " ",
+                            00,
+                            00,
                             null,
-                            00,
-                            00,
-                            "English",
-                            00
+                            " "
                     );
 
                     projectId = mDb.projectDao().insertItem(currentProject);

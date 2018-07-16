@@ -1,7 +1,12 @@
 package lokavidya.iitb.com.lvcreate.adapter;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +21,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import lokavidya.iitb.com.lvcreate.R;
+import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
 import lokavidya.iitb.com.lvcreate.fileManagement.ManageZip;
 import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.util.AppExecutors;
@@ -28,6 +34,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     private Context context;
     String fileUrl = null;
     ProgressDialog progressDialog;
+
+    final int IMG_THUMB_WIDTH = 180;
+    final int IMG_THUMB_HEIGHT = 180;
 
     public ProjectListAdapter(Context context, List<Project> data) {
 
@@ -46,14 +55,29 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProjectListAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ProjectListAdapter.MyViewHolder holder, int position) {
 
         final Project currentItem = data.get(position);
 
         holder.projectName.setText(currentItem.getTitle());
 
+        if (!currentItem.getFirstFileThumb().equals(" ")) {
+            // Create thumbnail from image path
+            Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
+                    currentItem.getFirstFileThumb()),
+                    IMG_THUMB_WIDTH,
+                    IMG_THUMB_HEIGHT);
+
+            holder.projectThumbnail.setImageBitmap(imageThumb);
+        }
+
+        if (!currentItem.getDesc().equals(" ")) {
+            holder.prjectDesc.setText(currentItem.getDesc());
+        }
+
         // Store the position of item in buttons
-        holder.projectDelete.setTag(position);
+        holder.projectDelete.setTag(R.id.item_number, position);
+        holder.projectDelete.setTag(R.id.project_id, currentItem.getId());
         holder.projectUpload.setTag(position);
 
         holder.projectUpload.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +145,44 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             }
         });
 
+        holder.projectDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Delete project?");
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked the "Delete" button, so delete the project.
+                        removeAt((Integer) holder.projectDelete.getTag(R.id.item_number));
+
+                        ProjectDb mDb = ProjectDb.getsInstance(context);
+
+                        // Delete the Project entry
+                        mDb.projectDao()
+                                .deleteItemById((Long) holder.projectDelete.getTag(R.id.project_id));
+                        // Delete all the items in it
+                        mDb.projectItemDao()
+                                .deleteItemsByProjectId((Long) holder.projectDelete.getTag(R.id.project_id));
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked the "Cancel" button, so dismiss the dialog
+                        // and continue editing the item.
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+                // Create and show the AlertDialog
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+            }
+        });
+
     }
 
     @Override
@@ -128,10 +190,16 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         return data.size();
     }
 
+    private void removeAt(int position) {
+        data.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, data.size());
+    }
+
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView projectName;
-        TextView prjectDuration;
+        TextView prjectDesc;
         ImageView projectThumbnail;
         Button projectUpload;
         Button projectDelete;
@@ -140,7 +208,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             super(itemView);
 
             projectName = itemView.findViewById(R.id.project_name);
-            prjectDuration = itemView.findViewById(R.id.project_duration);
+            prjectDesc = itemView.findViewById(R.id.project_desc);
             projectThumbnail = itemView.findViewById(R.id.img_project_thumb);
             projectUpload = itemView.findViewById(R.id.btn_upload_project);
             projectDelete = itemView.findViewById(R.id.btn_delete_project);

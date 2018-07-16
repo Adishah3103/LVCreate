@@ -36,6 +36,6 @@ public interface ProjectItemDao {
     abstract void deleteItemById(int id);
 
     @Query("DELETE FROM project_item_table WHERE item_project_id = :projectId")
-    abstract void deleteItemsByProjectId(int projectId);
+    abstract void deleteItemsByProjectId(long projectId);
 
 }
