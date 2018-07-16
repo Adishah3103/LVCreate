@@ -72,6 +72,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                     @Override
                     public void run() {
 
+                        progressDialog.setMessage("Packing contents..");
                         // Add your zipping code here
                         String projectFolderPath = context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
                                 .getAbsolutePath() + "/" + currentItem.getTitle() + "/";
@@ -94,11 +95,12 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                         // This is the input path for the .zip you created
                         //Uri baseUri = Uri.parse(String.valueOf(Environment.getExternalStorageDirectory()) + "/Sounds.zip");
 
+                        progressDialog.setMessage("Uploading Project...");
                         Uri baseUri = Uri.parse(zipPath);
                         try {
                             // We get Url in fileUrl
                             fileUrl = CloudStorage.uploadFile(context,  // Get context here
-                                    "lvcms-development-testing",
+                                    "lvcms-development-testing", "zips/" +
                                     currentItem.getTitle() + ".zip",  // Name of the .zip on the Bucket
                                     baseUri);
 

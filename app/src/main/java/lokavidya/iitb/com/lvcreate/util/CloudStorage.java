@@ -46,7 +46,7 @@ public class CloudStorage {
         StorageObject obj;
 
         try {
-            String contentType = URLConnection.guessContentTypeFromStream(stream);
+            String contentType = URLConnection.guessContentTypeFromName(uri.getPath());
             InputStreamContent content = new InputStreamContent(contentType, stream);
 
             Storage.Objects.Insert insert = storage.objects().insert(bucketName, null, content);
