@@ -71,7 +71,7 @@ public class ManageFile {
         try {
             // delete the original file
             new File(fileFullPath).delete();
-            Log.d("File Delete : ", "Deleted old file successfully");
+            Log.d("File Delete ", "Deleted old file successfully");
 
         } catch (Exception e) {
             Log.e("File Delete Crash ", e.getMessage());

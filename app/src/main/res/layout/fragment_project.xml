@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ongoing_projects"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="30dp"
+        android:onClick="ongoingProj"
         app:cardCornerRadius="7dp"
-
-        card_view:cardElevation="4dp"
-       >
+        card_view:cardElevation="4dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -52,9 +49,9 @@
                 android:id="@+id/textView11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="45dp"
-
                 android:layout_marginRight="@dimen/margin_10_dp"
+
+                android:paddingLeft="45dp"
                 android:text="Consists of projects that need to be uploaded to make video"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />

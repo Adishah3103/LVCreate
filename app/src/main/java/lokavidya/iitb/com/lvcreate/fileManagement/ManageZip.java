@@ -15,13 +15,13 @@ import java.util.zip.ZipOutputStream;
 //https://stackoverflow.com/questions/6683600/zip-compress-a-folder-full-of-files-on-android
 public class ManageZip {
 
-    public boolean zipFileAtPath(String sourceFolderPath, String locationFolderPath) {
+    public boolean zipFileAtPath(String sourceFolderPath, String locationFilePath) {
         final int BUFFER = 4096;
 
         File sourceFile = new File(sourceFolderPath);
         try {
             BufferedInputStream origin = null;
-            FileOutputStream dest = new FileOutputStream(locationFolderPath);
+            FileOutputStream dest = new FileOutputStream(locationFilePath);
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
                     dest));
             if (sourceFile.isDirectory()) {
@@ -48,6 +48,7 @@ public class ManageZip {
             }
             out.close();
         } catch (Exception e) {
+            Log.e("AAD", "Zip fail");
             e.printStackTrace();
             return false;
         }

@@ -49,7 +49,7 @@ public class OngoingProjects extends AppCompatActivity {
 
         List<Project> data = mDb.projectDao().loadAllProject();
 
-        adapter = new ProjectListAdapter(data);
+        adapter = new ProjectListAdapter(OngoingProjects.this, data);
         projectlist.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         projectlist.setAdapter(adapter);
 

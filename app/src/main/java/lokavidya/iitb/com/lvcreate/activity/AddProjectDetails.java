@@ -434,18 +434,24 @@ public class AddProjectDetails extends AppCompatActivity {
                                 // Setting file path
                                 currentItem.setItemFilePath(destFilePath);
 
-                                // Audio Conversion and move
-                                String destAudioPath = projectPath + "/"
-                                        + Master.AUDIOS_FOLDER
-                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
-
-                                convertAudio(currentItem.getItemAudioPath(), destAudioPath);
+//                                // Audio Conversion and move
+//                                String destAudioPath = projectPath + "/"
+//                                        + Master.AUDIOS_FOLDER
+//                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
+//
+//                                convertAudio(currentItem.getItemAudioPath(), destAudioPath);
 
                             } else if (currentItem.getItemFilePath().contains(".png") ||
                                     currentItem.getItemFilePath().contains(".PNG")) {
                                 ManageFile.copyFile(currentItem.getItemFilePath(),
                                         destFilePath);
                             }
+                            // Audio Conversion and move
+                            String destAudioPath = projectPath + "/"
+                                    + Master.AUDIOS_FOLDER
+                                    + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
+
+                            convertAudio(currentItem.getItemAudioPath(), destAudioPath);
 
 
                         } else {
@@ -463,11 +469,19 @@ public class AddProjectDetails extends AppCompatActivity {
 
                 }
 
+                Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(intent);
+                finish();
+
             }
         });
 
         Toast.makeText(this, "Convert and Copy Successful", Toast.LENGTH_SHORT).show();
 
+//        Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+//        startActivity(intent);
+//        finish();
         //Master.dismissProgressDialog();
 
     }
