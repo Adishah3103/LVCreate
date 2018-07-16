@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class FileDataRetrieval {
 
 
-    public long getFileSizeInKB(String filePath) {
+    public static long getFileSizeInKB(String filePath) {
 
         long fileSizeInBytes = 0;
 
@@ -33,7 +33,7 @@ public class FileDataRetrieval {
     }
 
 
-    public String getFormattedFileSize(long sizeInKB) {
+    public static String getFormattedFileSize(long sizeInKB) {
 
         String displaySize = "";
         double m = sizeInKB / 1024.0;
@@ -56,7 +56,7 @@ public class FileDataRetrieval {
     }
 
 
-    public long getFileDurationInSeconds(String filePath) {
+    public static long getFileDurationInSeconds(String filePath) {
 
         long timeInMilliseconds = 0;
 
@@ -83,7 +83,7 @@ public class FileDataRetrieval {
 
 
     @SuppressLint("DefaultLocale")
-    public String getFormattedFileDuration(long timeInSeconds) {
+    public static String getFormattedFileDuration(long timeInSeconds) {
         return String.format("%02d:%02d",
                 TimeUnit.SECONDS.toMinutes(timeInSeconds),
                 timeInSeconds - TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(timeInSeconds))

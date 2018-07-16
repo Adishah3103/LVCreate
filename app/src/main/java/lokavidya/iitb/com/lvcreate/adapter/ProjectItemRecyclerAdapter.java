@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import lokavidya.iitb.com.lvcreate.R;
+import lokavidya.iitb.com.lvcreate.fileManagement.FileDataRetrieval;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
 
 public class ProjectItemRecyclerAdapter extends RecyclerView.Adapter<ProjectItemRecyclerAdapter.MyViewHolder> {
@@ -40,6 +41,9 @@ public class ProjectItemRecyclerAdapter extends RecyclerView.Adapter<ProjectItem
 
         final int IMG_THUMB_WIDTH = 180;
         final int IMG_THUMB_HEIGHT = 180;
+
+        long fileSizeInKB = 0;
+        long fileDurationInSeconds = 0;
 
         if (data != null && !data.isEmpty()) {
             ProjectItem currentItem = data.get(position);
@@ -67,6 +71,12 @@ public class ProjectItemRecyclerAdapter extends RecyclerView.Adapter<ProjectItem
 
                 // Set the image thumbnail
                 holder.imageThumb.setImageBitmap(imageThumb);
+
+                //Calculating file size and duration
+                fileSizeInKB += FileDataRetrieval.getFileSizeInKB(currentItem.getItemFilePath());
+                fileSizeInKB += FileDataRetrieval.getFileSizeInKB(currentItem.getItemAudioPath());
+                fileDurationInSeconds += FileDataRetrieval.getFileDurationInSeconds(currentItem.getItemAudioPath());
+
             } else {
                 // Create thumbnail from video path
                 Bitmap videoThumb = ThumbnailUtils.createVideoThumbnail(
@@ -76,7 +86,14 @@ public class ProjectItemRecyclerAdapter extends RecyclerView.Adapter<ProjectItem
                 Bitmap croppedBitmap = cropImage(videoThumb);
 
                 holder.videoThumb.setImageBitmap(croppedBitmap);
+
+                //Calculating file size and duration
+                fileSizeInKB += FileDataRetrieval.getFileSizeInKB(currentItem.getItemFilePath());
+                fileDurationInSeconds += FileDataRetrieval.getFileDurationInSeconds(currentItem.getItemFilePath());
             }
+
+            holder.fileDurationText.setText(FileDataRetrieval.getFormattedFileDuration(fileDurationInSeconds));
+            holder.fileSizeText.setText(FileDataRetrieval.getFormattedFileSize(fileSizeInKB));
         }
 
         holder.videoDeleteBtn.setOnClickListener(new View.OnClickListener() {
