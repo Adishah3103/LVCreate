@@ -39,7 +39,8 @@
                 android:hint="Title of Project"
                 android:inputType="textPersonName"
                 android:maxLength="15"
-                android:textColor="@color/brick_color" />
+                android:textColor="@color/edit_text_login_color"
+                tools:text="FirstProject" />
         </android.support.design.widget.TextInputLayout>
 
 

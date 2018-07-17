@@ -67,12 +67,6 @@ public class AddProjectDetails extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Add Project Details");
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         // Get the project ID from intent
         Intent intent = getIntent();
@@ -102,6 +96,203 @@ public class AddProjectDetails extends AppCompatActivity {
         spinVideoLang = findViewById(R.id.spin_vid_lang);
         spinChannel = findViewById(R.id.spin_channel);
         spinSubChannel = findViewById(R.id.spin_sub_channel);
+
+        //calling makeUI to generate Ui from boilerplate
+        makeUI();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    public void saveProject(View view) {
+
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
+        progressDialog = new ProgressDialog(AddProjectDetails.this);
+        progressDialog.setMessage("Converting & Copying..");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        // Save project description in database
+        projectDesc = editProjectDesc.getText().toString();
+        if (!projectDesc.equals(" ")) {
+            currentProject.setDesc(projectDesc);
+            mDb.projectDao().updateItem(currentProject);
+        }
+
+        // Null check to save empty project
+        if (list.isEmpty()) {
+
+            Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+            getApplicationContext().startActivity(intent);
+            finish();
+
+        } else {
+
+            // Execute query to load items with project ID
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    for (int i = 0; i < list.size(); i++) {
+
+                        ProjectItem currentItem = list.get(i);
+                        String destFilePath;
+
+                        if (currentItem.isOriginal()) {
+
+                            if (currentItem.getItemIsAudio()) {
+
+                                destFilePath = projectPath + "/"
+                                        + Master.IMAGES_FOLDER
+                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".png";
+
+                                if (currentItem.getItemFilePath().contains(".jpg") ||
+                                        currentItem.getItemFilePath().contains(".JPG") ||
+                                        currentItem.getItemFilePath().contains(".JPEG") ||
+                                        currentItem.getItemFilePath().contains(".jpeg")) {
+
+                                    Log.i("Path", destFilePath);
+
+                                    convertImage(currentItem.getItemFilePath(), destFilePath);
+
+                                } else if (currentItem.getItemFilePath().contains(".png") ||
+                                        currentItem.getItemFilePath().contains(".PNG")) {
+                                    ManageFile.copyFile(currentItem.getItemFilePath(),
+                                            destFilePath);
+                                }
+
+                                // Audio Conversion and move
+                                String destAudioPath = projectPath + "/"
+                                        + Master.AUDIOS_FOLDER
+                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
+
+                                convertAudio(currentItem.getItemAudioPath(), destAudioPath);
+
+                                if (i == list.size() - 1) {
+                                    if (progressDialog != null && progressDialog.isShowing())
+                                        progressDialog.dismiss();
+
+                                    Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getApplicationContext().startActivity(intent);
+                                    finish();
+                                }
+
+                            } else {
+                                destFilePath = projectPath + "/"
+                                        + Master.VIDEOS_FOLDER
+                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".mp4";
+                                // Copy Video to Project Folder
+                                ManageFile.copyFile(currentItem.getItemFilePath(), destFilePath);
+
+
+                                if (i == list.size() - 1) {
+                                    if (progressDialog != null && progressDialog.isShowing())
+                                        progressDialog.dismiss();
+
+                                    Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getApplicationContext().startActivity(intent);
+                                    finish();
+                                }
+                            }
+
+                            // Setting file path
+                            currentItem.setItemFilePath(destFilePath);
+                            currentItem.setOriginal(false);
+
+                            // Update all paths in database
+                            mDb.projectItemDao().updateItem(currentItem);
+                        }
+                    }
+
+                    // Use the first file to generate thumbnail of project
+                    currentProject.setFirstFileThumb(list.get(0).getItemFilePath());
+                    mDb.projectDao().updateItem(currentProject);
+
+
+                }
+            });
+
+            // Send broadcast to finish the Create Project
+            Intent finishCreateProject = new Intent("finish_activity");
+            sendBroadcast(finishCreateProject);
+        }
+
+    }
+
+    public void convertImage(String sourcePath, String destinationPath) {
+
+        boolean success = false;
+
+        Bitmap bmp = BitmapFactory.decodeFile(sourcePath);
+        File convertedImage = new File(destinationPath);
+
+        try {
+
+            FileOutputStream outStream = new FileOutputStream(convertedImage);
+            success = bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+
+            outStream.flush();
+            outStream.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (success) {
+            Log.i("Conversion", "Photo Converting is successful.");
+        } else {
+            Log.i("Conversion", "Photo Converting is unsuccessful.");
+        }
+    }
+
+    public void convertAudio(final String sourcePath, final String destinationPath) {
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                File sourceFile = new File(sourcePath);
+
+                IConvertCallback callback = new IConvertCallback() {
+                    @Override
+                    public void onSuccess(File convertedFile) {
+                        // So fast? Love it!
+                        Log.i("Audio Conversion", convertedFile.getAbsolutePath());
+                        ManageFile.moveFile(convertedFile.getAbsolutePath(), destinationPath);
+                    }
+
+                    @Override
+                    public void onFailure(Exception error) {
+                        // Oops! Something went wrong
+                        error.printStackTrace();
+                    }
+                };
+                AndroidAudioConverter.with(getApplicationContext())
+                        .setFile(sourceFile) // Your current audio file
+                        .setFormat(AudioFormat.WAV) // Your desired audio format
+                        .setCallback(callback) // A callback to know when conversion is finished
+                        .convert(); // Start conversion
+
+            }
+        });
+
+    }
+
+    public void makeUI() {
+
+        getSupportActionBar().setTitle("Add Project Details");
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         // Setup the title onto EditText
         editProjectTitle.setText(projectTitle);
@@ -393,192 +584,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
             }
         });
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    public void saveProject(View view) {
-
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-        progressDialog = new ProgressDialog(AddProjectDetails.this);
-        progressDialog.setMessage("Converting & Copying..");
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-
-        // Save project description in database
-        projectDesc = editProjectDesc.getText().toString();
-        if (!projectDesc.equals(" ")) {
-            currentProject.setDesc(projectDesc);
-            mDb.projectDao().updateItem(currentProject);
-        }
-
-        // Null check to save empty project
-        if (list.isEmpty()) {
-
-            Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getApplicationContext().startActivity(intent);
-            finish();
-
-        } else {
-
-            // Execute query to load items with project ID
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-
-                    for (int i = 0; i < list.size(); i++) {
-
-                        ProjectItem currentItem = list.get(i);
-                        String destFilePath;
-
-                        if (currentItem.isOriginal()) {
-
-                            if (currentItem.getItemIsAudio()) {
-
-                                destFilePath = projectPath + "/"
-                                        + Master.IMAGES_FOLDER
-                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".png";
-
-                                if (currentItem.getItemFilePath().contains(".jpg") ||
-                                        currentItem.getItemFilePath().contains(".JPG") ||
-                                        currentItem.getItemFilePath().contains(".JPEG") ||
-                                        currentItem.getItemFilePath().contains(".jpeg")) {
-
-                                    Log.i("Path", destFilePath);
-
-                                    convertImage(currentItem.getItemFilePath(), destFilePath);
-
-                                } else if (currentItem.getItemFilePath().contains(".png") ||
-                                        currentItem.getItemFilePath().contains(".PNG")) {
-                                    ManageFile.copyFile(currentItem.getItemFilePath(),
-                                            destFilePath);
-                                }
-
-                                // Audio Conversion and move
-                                String destAudioPath = projectPath + "/"
-                                        + Master.AUDIOS_FOLDER
-                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".wav";
-
-                                convertAudio(currentItem.getItemAudioPath(), destAudioPath);
-
-                                if (i == list.size() - 1) {
-                                    if (progressDialog != null && progressDialog.isShowing())
-                                        progressDialog.dismiss();
-
-                                    Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    getApplicationContext().startActivity(intent);
-                                    finish();
-                                }
-
-                            } else {
-                                destFilePath = projectPath + "/"
-                                        + Master.VIDEOS_FOLDER
-                                        + "/" + projectTitle + "." + currentItem.getOrder() + ".mp4";
-                                // Copy Video to Project Folder
-                                ManageFile.copyFile(currentItem.getItemFilePath(), destFilePath);
-
-
-                                if (i == list.size() - 1) {
-                                    if (progressDialog != null && progressDialog.isShowing())
-                                        progressDialog.dismiss();
-
-                                    Intent intent = new Intent(AddProjectDetails.this, OngoingProjects.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    getApplicationContext().startActivity(intent);
-                                    finish();
-                                }
-                            }
-
-                            // Setting file path
-                            currentItem.setItemFilePath(destFilePath);
-                            currentItem.setOriginal(false);
-
-                            // Update all paths in database
-                            mDb.projectItemDao().updateItem(currentItem);
-                        }
-                    }
-
-                    // Use the first file to generate thumbnail of project
-                    currentProject.setFirstFileThumb(list.get(0).getItemFilePath());
-                    mDb.projectDao().updateItem(currentProject);
-
-
-                }
-            });
-
-            // Send broadcast to finish the Create Project
-            Intent finishCreateProject = new Intent("finish_activity");
-            sendBroadcast(finishCreateProject);
-        }
 
     }
-
-    public void convertImage(String sourcePath, String destinationPath) {
-
-        boolean success = false;
-
-        Bitmap bmp = BitmapFactory.decodeFile(sourcePath);
-        File convertedImage = new File(destinationPath);
-
-        try {
-
-            FileOutputStream outStream = new FileOutputStream(convertedImage);
-            success = bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-
-            outStream.flush();
-            outStream.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (success) {
-            Log.i("Conversion", "Photo Converting is successful.");
-        } else {
-            Log.i("Conversion", "Photo Converting is unsuccessful.");
-        }
-    }
-
-    public void convertAudio(final String sourcePath, final String destinationPath) {
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-
-                File sourceFile = new File(sourcePath);
-
-                IConvertCallback callback = new IConvertCallback() {
-                    @Override
-                    public void onSuccess(File convertedFile) {
-                        // So fast? Love it!
-                        Log.i("Audio Conversion", convertedFile.getAbsolutePath());
-                        ManageFile.moveFile(convertedFile.getAbsolutePath(), destinationPath);
-                    }
-
-                    @Override
-                    public void onFailure(Exception error) {
-                        // Oops! Something went wrong
-                        error.printStackTrace();
-                    }
-                };
-                AndroidAudioConverter.with(getApplicationContext())
-                        .setFile(sourceFile) // Your current audio file
-                        .setFormat(AudioFormat.WAV) // Your desired audio format
-                        .setCallback(callback) // A callback to know when conversion is finished
-                        .convert(); // Start conversion
-
-            }
-        });
-
-    }
-
 
 }
