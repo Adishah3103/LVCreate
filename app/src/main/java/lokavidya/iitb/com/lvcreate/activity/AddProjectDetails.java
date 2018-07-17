@@ -108,7 +108,7 @@ public class AddProjectDetails extends AppCompatActivity {
         if (!projectDesc.equals(" "))
             editProjectDesc.setText(projectDesc);
 
-
+        editProjectDesc.requestFocus();
 
         String[] video = new String[]{
                 "Choose video language",
