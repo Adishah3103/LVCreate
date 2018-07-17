@@ -510,8 +510,13 @@ public class AddProjectDetails extends AppCompatActivity {
                     currentProject.setFirstFileThumb(list.get(0).getItemFilePath());
                     mDb.projectDao().updateItem(currentProject);
 
+
                 }
             });
+
+            // Send broadcast to finish the Create Project
+            Intent finishCreateProject = new Intent("finish_activity");
+            sendBroadcast(finishCreateProject);
         }
 
     }

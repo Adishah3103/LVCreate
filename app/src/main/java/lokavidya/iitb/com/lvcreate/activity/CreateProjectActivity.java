@@ -2,8 +2,11 @@ package lokavidya.iitb.com.lvcreate.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -143,6 +146,9 @@ public class CreateProjectActivity extends AppCompatActivity {
 
             });
         }
+
+        // To finish this activity remotely
+        setupFinishBroadcast();
 
     }
 
@@ -544,5 +550,23 @@ public class CreateProjectActivity extends AppCompatActivity {
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+
+    private void setupFinishBroadcast() {
+
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals("finish_activity")) {
+                    finish();
+                    // DO WHATEVER YOU WANT.
+                }
+            }
+        };
+        registerReceiver(broadcastReceiver, new IntentFilter("finish_activity"));
+
     }
 }

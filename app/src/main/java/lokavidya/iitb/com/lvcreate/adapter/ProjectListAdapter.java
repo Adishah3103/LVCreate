@@ -22,6 +22,7 @@ import java.util.List;
 
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
+import lokavidya.iitb.com.lvcreate.fileManagement.ManageFolder;
 import lokavidya.iitb.com.lvcreate.fileManagement.ManageZip;
 import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.util.AppExecutors;
@@ -32,8 +33,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private List<Project> data;
     private Context context;
+    Project currentItem;
     String fileUrl = null;
     ProgressDialog progressDialog;
+    ProjectDb mDb;
 
     final int IMG_THUMB_WIDTH = 180;
     final int IMG_THUMB_HEIGHT = 180;
@@ -57,7 +60,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     @Override
     public void onBindViewHolder(@NonNull final ProjectListAdapter.MyViewHolder holder, int position) {
 
-        final Project currentItem = data.get(position);
+        currentItem = data.get(position);
 
         holder.projectName.setText(currentItem.getTitle());
 
@@ -75,9 +78,11 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             holder.prjectDesc.setText(currentItem.getDesc());
         }
 
-        // Store the position of item in buttons
+        // Store the tags of project in buttons
         holder.projectDelete.setTag(R.id.item_number, position);
         holder.projectDelete.setTag(R.id.project_id, currentItem.getId());
+        holder.projectDelete.setTag(R.id.project_title, currentItem.getTitle());
+
         holder.projectUpload.setTag(position);
 
         holder.projectUpload.setOnClickListener(new View.OnClickListener() {
@@ -153,17 +158,40 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                 builder.setMessage("Delete project?");
                 builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
+                        if (progressDialog != null && progressDialog.isShowing())
+                            progressDialog.dismiss();
+                        progressDialog = new ProgressDialog(context);
+                        progressDialog.setMessage("Uploading Project..");
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+
                         // User clicked the "Delete" button, so delete the project.
                         removeAt((Integer) holder.projectDelete.getTag(R.id.item_number));
 
-                        ProjectDb mDb = ProjectDb.getsInstance(context);
+                        mDb = ProjectDb.getsInstance(context);
 
-                        // Delete the Project entry
-                        mDb.projectDao()
-                                .deleteItemById((Long) holder.projectDelete.getTag(R.id.project_id));
-                        // Delete all the items in it
-                        mDb.projectItemDao()
-                                .deleteItemsByProjectId((Long) holder.projectDelete.getTag(R.id.project_id));
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                // Delete the Project entry
+                                mDb.projectDao()
+                                        .deleteItemById((Long) holder.projectDelete.getTag(R.id.project_id));
+                                // Delete all the items in it
+                                mDb.projectItemDao()
+                                        .deleteItemsByProjectId((Long) holder.projectDelete.getTag(R.id.project_id));
+
+                                ManageFolder.removeFolder(context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
+                                        .getAbsolutePath() + "/"
+                                        + holder.projectDelete.getTag(R.id.project_title));
+
+                                progressDialog.dismiss();
+                            }
+
+                        });
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
