@@ -61,6 +61,7 @@ public class CreateProjectActivity extends AppCompatActivity {
     Intent intent;
     Project currentProject;
     private String title = "";
+    Boolean isProjectExist;
     long projectId;
     ProjectDb mDb;
 
@@ -79,18 +80,18 @@ public class CreateProjectActivity extends AppCompatActivity {
         permissionStatus = getSharedPreferences("permissionStatus", MODE_PRIVATE);
 
         intent = getIntent();
+        isProjectExist = intent.getBooleanExtra("isProjectExist", false);
 
         // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null) {
             // Restore value of members from saved state
-            title = savedInstanceState.getString("title");
+            title = savedInstanceState.getString("projectTitle");
         } else {
             // Initialize members with default values for a new instance
-            title = intent.getStringExtra("title");
+            title = intent.getStringExtra("projectTitle");
             title = title.substring(0, 1).toUpperCase() + title.substring(1);
+            projectId = intent.getLongExtra("projectId", -1);
         }
-
-        //set the title as the project name on toolbar
 
         // Find views
         Toolbar toolBar = findViewById(R.id.toolbar);
@@ -111,7 +112,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
         askForStoragePermission();
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && !isProjectExist) {
 
             /**
              * Whenever you create new object of "Project' you will get project Id that
@@ -145,6 +146,32 @@ public class CreateProjectActivity extends AppCompatActivity {
 
 
             });
+
+        } else if (isProjectExist) {
+
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (projectId != -1) {
+                        currentProject = mDb.projectDao().loadItemById(projectId);
+
+                        list = (ArrayList<ProjectItem>) mDb.projectItemDao().loadItemsByProjectId(projectId);
+
+                        Log.i("pathh", list.get(0).getItemFilePath());
+
+                        // Set up RecyclerView
+                        adapter = new ProjectItemRecyclerAdapter(list);
+                        projectItemList.setAdapter(adapter);
+                        projectItemList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                        adapter.notifyDataSetChanged();
+
+                    }
+
+                }
+            });
+
         }
 
         // To finish this activity remotely
@@ -185,7 +212,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
             startActivity(intentDetails);
         } else {
-            Toast.makeText(this, "Please add atleast one item", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please add at least one item", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -456,7 +483,7 @@ public class CreateProjectActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle savedInstanceState) {
 
         Log.d("AAD", "saved the state");
-        savedInstanceState.putString("title", getIntent().getStringExtra("title"));
+        savedInstanceState.putString("title", getIntent().getStringExtra("projectTitle"));
 
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
