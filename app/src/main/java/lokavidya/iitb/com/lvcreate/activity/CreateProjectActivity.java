@@ -426,13 +426,16 @@ public class CreateProjectActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        //delete the empty folders now as discarded
-                        ManageFolder.removeFolder(getExternalFilesDir(
-                                Master.ALL_PROJECTS_FOLDER).getAbsolutePath() + "/" + title + "/");
-                        mDb.projectDao().deleteItemById(projectId);
-                        Log.i(LOG_TAG + " DB",
-                                "Project discarded, ID: " + String.valueOf(projectId) +
-                                        ", Name : " + String.valueOf(currentProject.getTitle()));
+                        if (!isProjectExist) {
+
+                            //delete the empty folders now as discarded
+                            ManageFolder.removeFolder(getExternalFilesDir(
+                                    Master.ALL_PROJECTS_FOLDER).getAbsolutePath() + "/" + title + "/");
+                            mDb.projectDao().deleteItemById(projectId);
+                            Log.i(LOG_TAG + " DB",
+                                    "Project discarded, ID: " + String.valueOf(projectId) +
+                                            ", Name : " + String.valueOf(currentProject.getTitle()));
+                        }
 
                         // User clicked "Discard" button, navigate to parent activity.
                         NavUtils.navigateUpFromSameTask(CreateProjectActivity.this);
