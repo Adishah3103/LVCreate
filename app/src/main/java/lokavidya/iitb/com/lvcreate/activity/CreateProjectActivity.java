@@ -220,7 +220,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
         if (askForStoragePermission()) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(CreateProjectActivity.this);
-            View mView = getLayoutInflater().inflate(R.layout.add_image_layout, null);
+            View mView = getLayoutInflater().inflate(R.layout.layout_add_image, null);
             mBuilder.setView(mView);
 
             TextView clickPhoto = mView.findViewById(R.id.click_photo);

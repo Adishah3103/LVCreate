@@ -170,8 +170,8 @@ public class DashboardActivity extends AppCompatActivity
 
     void createProjectDialog() {
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DashboardActivity.this, R.style.CustomAlertDialog);
-        View mView = getLayoutInflater().inflate(R.layout.create_dialog, null);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DashboardActivity.this, R.style.RoundAlertDialog);
+        View mView = getLayoutInflater().inflate(R.layout.layout_create_dialog, null);
 
         //bind views from dialog layout
         final EditText projectName = mView.findViewById(R.id.projectname);

@@ -55,7 +55,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.project_ongoing_recycler, parent, false);
+                .inflate(R.layout.recycler_project_ongoing, parent, false);
 
         return new MyViewHolder(view);
     }
@@ -141,6 +141,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                         }
 
                         progressDialog.dismiss();
+
+                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.RoundAlertDialog);
+                        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View mView = inflater.inflate(R.layout.layout_create_dialog, null);
 
                     }
 
