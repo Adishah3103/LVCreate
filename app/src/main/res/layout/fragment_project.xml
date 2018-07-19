@@ -9,10 +9,10 @@
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ongoing_projects"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:onClick="ongoingProj"
         app:cardCornerRadius="7dp"
         card_view:cardElevation="4dp">
@@ -22,148 +22,147 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/orange_block"
                 android:layout_width="22dp"
-                android:layout_height="match_parent"
-
+                android:layout_height="0dp"
                 android:background="@color/colorAccent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintBottom_toBottomOf="parent" />
 
             <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
+                android:id="@+id/text_ongoing_projects"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
-                android:fontFamily="sans-serif-condensed"
-                android:onClick="ongoingProj"
-                android:paddingLeft="45dp"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="20dp"
                 android:paddingTop="15dp"
                 android:text="Ongoing Projects"
                 android:textColor="@color/colorAccent"
-                android:textSize="20dp"
-                app:layout_constraintStart_toEndOf="@+id/textView5"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="20sp"
+                app:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintStart_toEndOf="@+id/orange_block" />
 
             <TextView
-                android:id="@+id/textView11"
-                android:layout_width="match_parent"
+                android:id="@+id/text_ongoing_projects_description"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_10_dp"
-
-                android:paddingLeft="45dp"
-                android:text="Consists of projects that need to be uploaded to make video"
-                app:layout_constraintStart_toEndOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
+                android:paddingBottom="@dimen/padding_15_dp"
+                android:paddingLeft="20dp"
+                android:text="consists of projects that need to be uploaded to make a video"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toEndOf="@+id/orange_block"
+                card_view:layout_constraintTop_toBottomOf="@+id/text_ongoing_projects" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/preview_projects"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
+        android:onClick="ongoingProj"
         app:cardCornerRadius="7dp"
-
-        card_view:cardElevation="4dp"
-        >
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="22dp"
-            android:layout_height="match_parent"
-            android:onClick="previewProj"
-            android:background="@color/colorAccent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:fontFamily="sans-serif-condensed"
-            android:paddingLeft="45dp"
-            android:paddingTop="15dp"
-            android:text="Preview Projects"
-            android:onClick="previewProj"
-            android:textColor="@color/colorAccent"
-            android:textSize="20dp"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="previewProj"
-            android:paddingLeft="45dp"
-            android:layout_marginRight="@dimen/margin_10_dp"
-            android:text="Consists of projects that are converted to video but left to published"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        app:cardCornerRadius="7dp"
-
-        card_view:cardElevation="4dp"
-
-        >
+        card_view:cardElevation="4dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/orange_block1"
                 android:layout_width="22dp"
-                android:layout_height="match_parent"
-
+                android:layout_height="0dp"
                 android:background="@color/colorAccent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintBottom_toBottomOf="parent" />
 
             <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
+                android:id="@+id/text_preview_projects"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="publishProj"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingLeft="45dp"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="20dp"
                 android:paddingTop="15dp"
-                android:text="Published Projects"
+                android:text="Preview Videos"
+                android:textAllCaps="false"
                 android:textColor="@color/colorAccent"
-                android:textSize="20dp"
-                app:layout_constraintStart_toEndOf="@+id/textView8"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="20sp"
+                app:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintStart_toEndOf="@+id/orange_block1" />
 
             <TextView
-                android:id="@+id/textView15"
-                android:layout_width="match_parent"
+                android:id="@+id/text_preview_projects_description"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:onClick="publishProj"
-                android:paddingLeft="45dp"
-                android:layout_marginRight="@dimen/margin_10_dp"
-                android:text="Consists of projects that have been approved and published"
-                app:layout_constraintStart_toEndOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                android:paddingBottom="@dimen/padding_15_dp"
+                android:paddingLeft="20dp"
+                android:text="consists of projects that have been converted to video and are left to be published"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toEndOf="@+id/orange_block1"
+                card_view:layout_constraintTop_toBottomOf="@+id/text_preview_projects" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/published_videos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:onClick="ongoingProj"
+        app:cardCornerRadius="7dp"
+        card_view:cardElevation="4dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/orange_block2"
+                android:layout_width="22dp"
+                android:layout_height="0dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/text_published_videos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="20dp"
+                android:paddingTop="15dp"
+                android:text="Published Videos"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                app:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintStart_toEndOf="@+id/orange_block2" />
+
+            <TextView
+                android:id="@+id/text_published_videos_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_15_dp"
+                android:paddingLeft="20dp"
+                android:text="consists of videos that have been approved and published"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toEndOf="@+id/orange_block2"
+                card_view:layout_constraintTop_toBottomOf="@+id/text_published_videos" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
