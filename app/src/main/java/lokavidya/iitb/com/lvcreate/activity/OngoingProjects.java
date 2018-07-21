@@ -21,7 +21,7 @@ public class OngoingProjects extends AppCompatActivity {
     public Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    RecyclerView projectlist;
+    RecyclerView projectList;
     ProjectListAdapter adapter;
     View rootLayout;
 
@@ -42,7 +42,7 @@ public class OngoingProjects extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        projectlist = findViewById(R.id.projectlist_recycler);
+        projectList = findViewById(R.id.projectlist_recycler);
 
         // Get database instance
         mDb = ProjectDb.getsInstance(getApplicationContext());
@@ -50,8 +50,8 @@ public class OngoingProjects extends AppCompatActivity {
         List<Project> data = mDb.projectDao().loadAllProject();
 
         adapter = new ProjectListAdapter(OngoingProjects.this, data);
-        projectlist.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        projectlist.setAdapter(adapter);
+        projectList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        projectList.setAdapter(adapter);
 
         adapter.notifyDataSetChanged();
 

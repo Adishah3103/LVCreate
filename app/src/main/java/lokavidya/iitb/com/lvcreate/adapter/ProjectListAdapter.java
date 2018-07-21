@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import lokavidya.iitb.com.lvcreate.R;
+import lokavidya.iitb.com.lvcreate.activity.CreateProjectActivity;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
 import lokavidya.iitb.com.lvcreate.fileManagement.ManageFolder;
 import lokavidya.iitb.com.lvcreate.fileManagement.ManageZip;
@@ -79,27 +82,25 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         }
 
         // Store the tags of project in buttons
-        holder.projectDelete.setTag(R.id.item_number, position);
-        holder.projectDelete.setTag(R.id.project_id, currentItem.getId());
-        holder.projectDelete.setTag(R.id.project_title, currentItem.getTitle());
-
-        holder.projectUpload.setTag(position);
+        holder.itemView.setTag(R.id.item_number, position);
+        holder.itemView.setTag(R.id.project_id, currentItem.getId());
+        holder.itemView.setTag(R.id.project_title, currentItem.getTitle());
 
         holder.projectUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (progressDialog != null && progressDialog.isShowing())
-                    progressDialog.dismiss();
-                progressDialog = new ProgressDialog(context);
-                progressDialog.setMessage("Uploading Project..");
-                progressDialog.setIndeterminate(true);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
+
+                        if (progressDialog != null && progressDialog.isShowing())
+                            progressDialog.dismiss();
+                        progressDialog = new ProgressDialog(context);
+                        progressDialog.setMessage("Uploading Project..");
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
 
                         progressDialog.setMessage("Packing contents..");
                         // Add your zipping code here
@@ -168,7 +169,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                         progressDialog.show();
 
                         // User clicked the "Delete" button, so delete the project.
-                        removeAt((Integer) holder.projectDelete.getTag(R.id.item_number));
+                        removeAt((Integer) holder.itemView.getTag(R.id.item_number));
 
                         mDb = ProjectDb.getsInstance(context);
 
@@ -178,10 +179,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
                                 // Delete the Project entry
                                 mDb.projectDao()
-                                        .deleteItemById((Long) holder.projectDelete.getTag(R.id.project_id));
+                                        .deleteItemById((Long) holder.itemView.getTag(R.id.project_id));
                                 // Delete all the items in it
                                 mDb.projectItemDao()
-                                        .deleteItemsByProjectId((Long) holder.projectDelete.getTag(R.id.project_id));
+                                        .deleteItemsByProjectId((Long) holder.itemView.getTag(R.id.project_id));
 
                                 ManageFolder.removeFolder(context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
                                         .getAbsolutePath() + "/"
@@ -211,6 +212,21 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             }
         });
 
+        holder.rootLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent openProject = new Intent(context, CreateProjectActivity.class);
+                openProject.putExtra("isProjectExist", true);
+                openProject.putExtra("projectId",
+                        (Long) holder.itemView.getTag(R.id.project_id));
+                openProject.putExtra("projectTitle",
+                        String.valueOf(holder.itemView.getTag(R.id.project_title)));
+                context.startActivity(openProject);
+
+            }
+        });
+
     }
 
     @Override
@@ -226,6 +242,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
+        CardView rootLayout;
         TextView projectName;
         TextView prjectDesc;
         ImageView projectThumbnail;
@@ -235,6 +252,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            rootLayout = itemView.findViewById(R.id.root_card_view);
             projectName = itemView.findViewById(R.id.project_name);
             prjectDesc = itemView.findViewById(R.id.project_desc);
             projectThumbnail = itemView.findViewById(R.id.img_project_thumb);

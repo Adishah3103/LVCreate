@@ -6,6 +6,7 @@ import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,7 @@ public class ProjectItemRecyclerAdapter extends RecyclerView.Adapter<ProjectItem
                 holder.audioThumb.setVisibility(View.VISIBLE);
                 holder.imageDeleteBtn.setVisibility(View.VISIBLE);
 
+                Log.i("asdasd ad", "adasdsadasd");
                 // Create thumbnail from image path
                 Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
                         currentItem.getItemFilePath()),
