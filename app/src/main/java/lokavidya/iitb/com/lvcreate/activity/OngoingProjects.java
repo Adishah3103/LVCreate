@@ -59,7 +59,7 @@ public class OngoingProjects extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        //onBackPressed();
+        onBackPressed();
         return true;
     }
 }
