@@ -1,5 +1,6 @@
 package lokavidya.iitb.com.lvcreate.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -90,19 +91,19 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             @Override
             public void onClick(View v) {
 
+
+                if (progressDialog != null && progressDialog.isShowing())
+                    progressDialog.dismiss();
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setMessage("Uploading Project...");
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
 
-                        if (progressDialog != null && progressDialog.isShowing())
-                            progressDialog.dismiss();
-                        progressDialog = new ProgressDialog(context);
-                        progressDialog.setMessage("Uploading Project..");
-                        progressDialog.setIndeterminate(true);
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();
-
-                        progressDialog.setMessage("Packing contents..");
                         // Add your zipping code here
                         String projectFolderPath = context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
                                 .getAbsolutePath() + "/" + currentItem.getTitle() + "/";
@@ -125,13 +126,12 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                         // This is the input path for the .zip you created
                         //Uri baseUri = Uri.parse(String.valueOf(Environment.getExternalStorageDirectory()) + "/Sounds.zip");
 
-                        progressDialog.setMessage("Uploading Project...");
                         Uri baseUri = Uri.parse(zipPath);
                         try {
                             // We get Url in fileUrl
                             fileUrl = CloudStorage.uploadFile(context,  // Get context here
                                     "lvcms-development-testing", "zips/" +
-                                    currentItem.getTitle() + ".zip",  // Name of the .zip on the Bucket
+                                            currentItem.getTitle() + ".zip",  // Name of the .zip on the Bucket
                                     baseUri);
 
                             Log.i("Upload", fileUrl);
@@ -142,15 +142,32 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
                         progressDialog.dismiss();
 
-                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.RoundAlertDialog);
-                        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View mView = inflater.inflate(R.layout.layout_create_dialog, null);
+                        Activity activity = (Activity) context;
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.RoundAlertDialog);
+                                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                View mView = inflater.inflate(R.layout.layout_request_sent, null);
+
+                                Button okButton = mView.findViewById(R.id.btn_ok_req_sent);
+                                mBuilder.setView(mView);
+                                final AlertDialog alertDialog = mBuilder.create();
+
+                                okButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                alertDialog.show();
+                            }
+                        });
 
                     }
 
-
                 });
-
 
             }
         });

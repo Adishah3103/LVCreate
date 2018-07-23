@@ -118,7 +118,8 @@ public class DashboardActivity extends AppCompatActivity
 
     }
 
-    public void ongoingProj(View v) {
+    public void onGoingProject(View v) {
+
         Intent intent = new Intent(this, OngoingProjects.class);
         startActivity(intent);
 
