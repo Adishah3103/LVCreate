@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -596,7 +597,7 @@ public class CreateProjectActivity extends AppCompatActivity {
                 }
             }
         };
-        registerReceiver(broadcastReceiver, new IntentFilter("finish_activity"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("finish_activity"));
 
     }
 }

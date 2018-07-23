@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -50,6 +51,7 @@ public class AddProjectDetails extends AppCompatActivity {
     Project currentProject;
 
     long projectId;
+    Boolean isProjectExist;
     String projectPath;
     String projectTitle;
     String projectDesc;
@@ -67,7 +69,6 @@ public class AddProjectDetails extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
-
         // Get the project ID from intent
         Intent intent = getIntent();
         projectId = intent.getLongExtra("pid", -1);
@@ -75,6 +76,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
         // Get database instance
         mDb = ProjectDb.getsInstance(getApplicationContext());
+
         if (projectId != -1) {
 
             currentProject = mDb.projectDao().loadItemById(projectId);
@@ -97,15 +99,10 @@ public class AddProjectDetails extends AppCompatActivity {
         spinChannel = findViewById(R.id.spin_channel);
         spinSubChannel = findViewById(R.id.spin_sub_channel);
 
-        //calling makeUI to generate Ui from boilerplate
+        // Calling makeUI to generate UI from boilerplate
         makeUI();
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 
     public void saveProject(View view) {
 
@@ -221,7 +218,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
             // Send broadcast to finish the Create Project
             Intent finishCreateProject = new Intent("finish_activity");
-            sendBroadcast(finishCreateProject);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(finishCreateProject);
         }
 
     }
@@ -585,6 +582,12 @@ public class AddProjectDetails extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }
