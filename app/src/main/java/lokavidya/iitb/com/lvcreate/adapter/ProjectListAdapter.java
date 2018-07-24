@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import lokavidya.iitb.com.lvcreate.R;
@@ -41,9 +43,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     String fileUrl = null;
     ProgressDialog progressDialog;
     ProjectDb mDb;
-
-    final int IMG_THUMB_WIDTH = 180;
-    final int IMG_THUMB_HEIGHT = 180;
+    final int IMG_THUMB_WIDTH = 80;
+    final int IMG_THUMB_HEIGHT = 80;
+    Bitmap imageThumb;
 
     public ProjectListAdapter(Context context, List<Project> data) {
 
@@ -62,20 +64,24 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ProjectListAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ProjectListAdapter.MyViewHolder holder, final int position) {
 
         currentItem = data.get(position);
 
         holder.projectName.setText(currentItem.getTitle());
 
         if (!currentItem.getFirstFileThumb().equals(" ")) {
+
             // Create thumbnail from image path
-            Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
+            imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
                     currentItem.getFirstFileThumb()),
                     IMG_THUMB_WIDTH,
                     IMG_THUMB_HEIGHT);
 
-            holder.projectThumbnail.setImageBitmap(imageThumb);
+            Glide.with(context)
+                    .load(imageThumb)
+                    .into(holder.projectThumbnail);
+
         }
 
         if (!currentItem.getDesc().equals(" ")) {
