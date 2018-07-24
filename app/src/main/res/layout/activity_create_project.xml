@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:orientation="horizontal"
         android:background="@color/colorAccent"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -30,6 +30,7 @@
             android:id="@+id/btn_add_img_audio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:drawableTop="@drawable/ic_image"
@@ -37,9 +38,8 @@
             android:paddingBottom="10dp"
             android:paddingTop="@dimen/margin_5_dp"
             android:text="Add Image / Audio"
-            android:textSize="12sp"
-            android:layout_marginRight="1dp"
             android:textColor="@color/colorAccent"
+            android:textSize="12sp"
             tools:layout_editor_absoluteX="220dp"
             tools:layout_editor_absoluteY="185dp" />
 
@@ -54,8 +54,8 @@
             android:paddingBottom="10dp"
             android:paddingTop="@dimen/margin_5_dp"
             android:text="Add Video"
-            android:textSize="12sp"
             android:textColor="@color/colorAccent"
+            android:textSize="12sp"
             tools:layout_editor_absoluteX="104dp"
             tools:layout_editor_absoluteY="165dp" />
 
@@ -65,9 +65,7 @@
         android:id="@+id/project_recycler"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintBottom_toTopOf="@+id/project_size_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
@@ -85,16 +83,31 @@
         android:textColor="@color/brick_color"
         android:textSize="@dimen/font_size_16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintBottom_toTopOf="@+id/project_size_progress_bar"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/project_size_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:max="100"
+        android:progress="10"
+        android:progressDrawable="@layout/size_progress_bar_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/project_size_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="123/1024 MB"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/project_size_progress_bar"
+        app:layout_constraintEnd_toEndOf="@+id/project_size_progress_bar"
+        app:layout_constraintStart_toStartOf="@+id/project_size_progress_bar"
+        app:layout_constraintTop_toTopOf="@+id/project_size_progress_bar" />
 
 </android.support.constraint.ConstraintLayout>
