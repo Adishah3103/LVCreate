@@ -103,7 +103,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
         toolbar.setContentInsetsRelative(0, 0);
         toolbar.setContentInsetsAbsolute(0, 0);
         final LayoutInflater layoutInflater = LayoutInflater.from(this);
-        toolbarView = layoutInflater.inflate(R.layout.back_button_layout, null);
+        toolbarView = layoutInflater.inflate(R.layout.layout_back_button, null);
         ivBack = toolbarView.findViewById(R.id.iv_back_icon);
         ivBack.setOnClickListener(this);
         if (getSupportActionBar() != null) {

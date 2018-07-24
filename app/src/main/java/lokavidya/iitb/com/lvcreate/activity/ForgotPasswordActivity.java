@@ -44,7 +44,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.forgot_password_activity);
+        setContentView(R.layout.activity_forgot_password);
 
         // Bind views here
         mEnterEmailOrPhoneNoEditText = findViewById(R.id.et_login_email_id);
@@ -92,7 +92,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         toolbar.setContentInsetsAbsolute(0, 0);
 
         final LayoutInflater layoutInflater = LayoutInflater.from(this);
-        toolbarView = layoutInflater.inflate(R.layout.back_button_layout, null);
+        toolbarView = layoutInflater.inflate(R.layout.layout_back_button, null);
 
         ivBack = toolbarView.findViewById(R.id.iv_back_icon);
         ivBack.setOnClickListener(new View.OnClickListener() {

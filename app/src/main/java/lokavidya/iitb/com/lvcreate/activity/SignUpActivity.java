@@ -36,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up_activity);
+        setContentView(R.layout.activity_sign_up);
 
         networkCommunicator = NetworkCommunicator.getInstance();
         configureToolBar();
@@ -66,7 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
         toolbar.setContentInsetsRelative(0, 0);
         toolbar.setContentInsetsAbsolute(0, 0);
         final LayoutInflater layoutInflater = LayoutInflater.from(this);
-        toolbarView = layoutInflater.inflate(R.layout.back_button_layout, null);
+        toolbarView = layoutInflater.inflate(R.layout.layout_back_button, null);
         ivBack = toolbarView.findViewById(R.id.iv_back_icon);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override

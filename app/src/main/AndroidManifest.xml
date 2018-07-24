@@ -70,7 +70,9 @@
         </provider>
 
         <activity android:name=".activity.AddProjectDetails" />
-        <activity android:name=".activity.OngoingProjects" />
+        <activity
+            android:name=".activity.OngoingProjects"
+            android:theme="@style/CustomTabLayout" />
         <activity android:name=".activity.PreviewProjects" />
         <activity android:name=".activity.PublishedProjects" />
     </application>

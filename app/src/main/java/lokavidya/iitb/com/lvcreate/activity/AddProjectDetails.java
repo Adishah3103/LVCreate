@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -50,6 +51,7 @@ public class AddProjectDetails extends AppCompatActivity {
     Project currentProject;
 
     long projectId;
+    Boolean isProjectExist;
     String projectPath;
     String projectTitle;
     String projectDesc;
@@ -67,7 +69,6 @@ public class AddProjectDetails extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
-
         // Get the project ID from intent
         Intent intent = getIntent();
         projectId = intent.getLongExtra("pid", -1);
@@ -75,6 +76,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
         // Get database instance
         mDb = ProjectDb.getsInstance(getApplicationContext());
+
         if (projectId != -1) {
 
             currentProject = mDb.projectDao().loadItemById(projectId);
@@ -97,15 +99,10 @@ public class AddProjectDetails extends AppCompatActivity {
         spinChannel = findViewById(R.id.spin_channel);
         spinSubChannel = findViewById(R.id.spin_sub_channel);
 
-        //calling makeUI to generate Ui from boilerplate
+        // Calling makeUI to generate UI from boilerplate
         makeUI();
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 
     public void saveProject(View view) {
 
@@ -221,7 +218,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
             // Send broadcast to finish the Create Project
             Intent finishCreateProject = new Intent("finish_activity");
-            sendBroadcast(finishCreateProject);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(finishCreateProject);
         }
 
     }
@@ -339,7 +336,7 @@ public class AddProjectDetails extends AppCompatActivity {
         subChannelList = new ArrayList<>(Arrays.asList(subchannnels));
 
         final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                this, R.layout.spinner_layout, videoLangList) {
+                this, R.layout.layout_spinner, videoLangList) {
             @Override
             public boolean isEnabled(int position) {
                 if (position == 0) {
@@ -365,7 +362,7 @@ public class AddProjectDetails extends AppCompatActivity {
                 return view;
             }
         };
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.layout_spinner);
         spinVideoLang.setAdapter(spinnerArrayAdapter);
 
         spinVideoLang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -389,7 +386,7 @@ public class AddProjectDetails extends AppCompatActivity {
         });
 
         final ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(
-                this, R.layout.spinner_layout, channelList) {
+                this, R.layout.layout_spinner, channelList) {
             @Override
             public boolean isEnabled(int position) {
                 if (position == 0) {
@@ -415,7 +412,7 @@ public class AddProjectDetails extends AppCompatActivity {
                 return view;
             }
         };
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.layout_spinner);
         spinChannel.setAdapter(spinnerArrayAdapter2);
 
         spinChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -429,7 +426,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
                 {
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(AddProjectDetails.this);
-                    View mView = getLayoutInflater().inflate(R.layout.new_channel, null);
+                    View mView = getLayoutInflater().inflate(R.layout.layout_new_channel, null);
 
                     mBuilder.setView(mView);
                     final AlertDialog dialog = mBuilder.create();
@@ -449,7 +446,7 @@ public class AddProjectDetails extends AppCompatActivity {
                     final List<String> channelLangList = new ArrayList<>(Arrays.asList(lang));
 
                     final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                            AddProjectDetails.this, R.layout.spinner_layout, channelLangList) {
+                            AddProjectDetails.this, R.layout.layout_spinner, channelLangList) {
                         @Override
                         public boolean isEnabled(int position) {
                             if (position == 0) {
@@ -475,7 +472,7 @@ public class AddProjectDetails extends AppCompatActivity {
                             return view;
                         }
                     };
-                    spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
+                    spinnerArrayAdapter.setDropDownViewResource(R.layout.layout_spinner);
                     channelLang.setAdapter(spinnerArrayAdapter);
 
                     channelLang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -536,7 +533,7 @@ public class AddProjectDetails extends AppCompatActivity {
 
 
         final ArrayAdapter<String> spinnerArrayAdapter3 = new ArrayAdapter<String>(
-                this, R.layout.spinner_layout, subChannelList) {
+                this, R.layout.layout_spinner, subChannelList) {
             @Override
             public boolean isEnabled(int position) {
                 if (position == 0) {
@@ -562,7 +559,7 @@ public class AddProjectDetails extends AppCompatActivity {
                 return view;
             }
         };
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.layout_spinner);
         spinSubChannel.setAdapter(spinnerArrayAdapter3);
 
         spinSubChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -585,6 +582,12 @@ public class AddProjectDetails extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

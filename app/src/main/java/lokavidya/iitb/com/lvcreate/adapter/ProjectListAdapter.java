@@ -1,5 +1,6 @@
 package lokavidya.iitb.com.lvcreate.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -40,9 +43,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     String fileUrl = null;
     ProgressDialog progressDialog;
     ProjectDb mDb;
-
-    final int IMG_THUMB_WIDTH = 180;
-    final int IMG_THUMB_HEIGHT = 180;
+    final int IMG_THUMB_WIDTH = 80;
+    final int IMG_THUMB_HEIGHT = 80;
+    Bitmap imageThumb;
 
     public ProjectListAdapter(Context context, List<Project> data) {
 
@@ -55,26 +58,30 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.project_ongoing_recycler, parent, false);
+                .inflate(R.layout.recycler_project_ongoing, parent, false);
 
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ProjectListAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ProjectListAdapter.MyViewHolder holder, final int position) {
 
         currentItem = data.get(position);
 
         holder.projectName.setText(currentItem.getTitle());
 
         if (!currentItem.getFirstFileThumb().equals(" ")) {
+
             // Create thumbnail from image path
-            Bitmap imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
+            imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
                     currentItem.getFirstFileThumb()),
                     IMG_THUMB_WIDTH,
                     IMG_THUMB_HEIGHT);
 
-            holder.projectThumbnail.setImageBitmap(imageThumb);
+            Glide.with(context)
+                    .load(imageThumb)
+                    .into(holder.projectThumbnail);
+
         }
 
         if (!currentItem.getDesc().equals(" ")) {
@@ -90,19 +97,19 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             @Override
             public void onClick(View v) {
 
+
+                if (progressDialog != null && progressDialog.isShowing())
+                    progressDialog.dismiss();
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setMessage("Uploading Project...");
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
 
-                        if (progressDialog != null && progressDialog.isShowing())
-                            progressDialog.dismiss();
-                        progressDialog = new ProgressDialog(context);
-                        progressDialog.setMessage("Uploading Project..");
-                        progressDialog.setIndeterminate(true);
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();
-
-                        progressDialog.setMessage("Packing contents..");
                         // Add your zipping code here
                         String projectFolderPath = context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
                                 .getAbsolutePath() + "/" + currentItem.getTitle() + "/";
@@ -125,13 +132,12 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                         // This is the input path for the .zip you created
                         //Uri baseUri = Uri.parse(String.valueOf(Environment.getExternalStorageDirectory()) + "/Sounds.zip");
 
-                        progressDialog.setMessage("Uploading Project...");
                         Uri baseUri = Uri.parse(zipPath);
                         try {
                             // We get Url in fileUrl
                             fileUrl = CloudStorage.uploadFile(context,  // Get context here
                                     "lvcms-development-testing", "zips/" +
-                                    currentItem.getTitle() + ".zip",  // Name of the .zip on the Bucket
+                                            currentItem.getTitle() + ".zip",  // Name of the .zip on the Bucket
                                     baseUri);
 
                             Log.i("Upload", fileUrl);
@@ -142,11 +148,32 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
                         progressDialog.dismiss();
 
+                        Activity activity = (Activity) context;
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.RoundAlertDialog);
+                                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                View mView = inflater.inflate(R.layout.layout_request_sent, null);
+
+                                Button okButton = mView.findViewById(R.id.btn_ok_req_sent);
+                                mBuilder.setView(mView);
+                                final AlertDialog alertDialog = mBuilder.create();
+
+                                okButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                alertDialog.show();
+                            }
+                        });
+
                     }
 
-
                 });
-
 
             }
         });
