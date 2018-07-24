@@ -7,28 +7,32 @@
     tools:context="lokavidya.iitb.com.lvcreate.activity.OngoingProjects">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/ongoing_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_scrollFlags="scroll|enterAlways"
         android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/ongoing_tab_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ongoing_toolbar"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/projectlist_recycler"
-        android:layout_width="match_parent"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/ongoing_viewpager"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/padding_12_dp"
-        android:layout_marginStart="@dimen/padding_12_dp"
-        android:clipToPadding="false"
-        android:paddingBottom="3dp"
+        android:layout_marginTop="@dimen/dimen_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
-        tools:listitem="@layout/recycler_project_ongoing">
+        app:layout_constraintTop_toBottomOf="@+id/ongoing_tab_layout" />
 
-    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>
