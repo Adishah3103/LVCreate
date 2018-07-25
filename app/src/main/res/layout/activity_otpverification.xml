@@ -35,8 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/margin_30_dp"
-                android:paddingRight="@dimen/margin_30_dp">
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_marginBottom="@dimen/margin_50_dp"
+                        android:layout_marginBottom="50dp"
                         android:src="@drawable/otp_verify" />
 
                     <ProgressBar
@@ -69,7 +69,7 @@
                         android:layout_centerInParent="true"
                         android:gravity="center"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/font_size_14sp" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -81,7 +81,7 @@
                     android:gravity="center_horizontal"
                     android:text="@string/otp_verify_text"
                     android:textColor="@color/brick_color"
-                    android:textSize="@dimen/font_normal" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_25_dp"
+                    android:layout_marginTop="25dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -111,7 +111,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_10_dp"
+                            android:layout_margin="@dimen/dimen_10dp"
                             android:layout_weight="1">
 
                             <EditText
@@ -119,28 +119,28 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/textview_bottom_line_gray"
-                                android:drawablePadding="@dimen/padding_10_dp"
+                                android:drawablePadding="@dimen/dimen_10dp"
                                 android:gravity="center"
                                 android:inputType="number"
                                 android:letterSpacing="0.1"
                                 android:maxLength="1"
 
-                                android:paddingBottom="@dimen/padding_10_dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:paddingEnd="0dp"
-                                android:paddingLeft="@dimen/padding_5_dp"
+                                android:paddingLeft="@dimen/dimen_5dp"
                                 android:paddingRight="0dp"
-                                android:paddingStart="@dimen/padding_5_dp"
-                                android:paddingTop="@dimen/padding_10_dp"
+                                android:paddingStart="@dimen/dimen_5dp"
+                                android:paddingTop="@dimen/dimen_10dp"
                                 android:textColor="@color/edit_text_login_color"
                                 android:textColorHint="@color/edit_text_gray_background"
-                                android:textSize="@dimen/font_size_16sp" />
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_10_dp"
+                            android:layout_margin="@dimen/dimen_10dp"
 
                             android:layout_weight="1">
 
@@ -150,27 +150,27 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/textview_bottom_line_gray"
-                                android:drawablePadding="@dimen/padding_10_dp"
+                                android:drawablePadding="@dimen/dimen_10dp"
                                 android:gravity="center"
                                 android:inputType="number"
                                 android:letterSpacing="0.1"
                                 android:maxLength="1"
-                                android:paddingBottom="@dimen/padding_10_dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:paddingEnd="0dp"
-                                android:paddingLeft="@dimen/padding_5_dp"
+                                android:paddingLeft="@dimen/dimen_5dp"
                                 android:paddingRight="0dp"
-                                android:paddingStart="@dimen/padding_5_dp"
-                                android:paddingTop="@dimen/padding_10_dp"
+                                android:paddingStart="@dimen/dimen_5dp"
+                                android:paddingTop="@dimen/dimen_10dp"
                                 android:textColor="@color/edit_text_login_color"
                                 android:textColorHint="@color/edit_text_gray_background"
-                                android:textSize="@dimen/font_size_16sp" />
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_10_dp"
+                            android:layout_margin="@dimen/dimen_10dp"
 
                             android:layout_weight="1">
 
@@ -180,27 +180,27 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/textview_bottom_line_gray"
-                                android:drawablePadding="@dimen/padding_10_dp"
+                                android:drawablePadding="@dimen/dimen_10dp"
                                 android:gravity="center"
                                 android:inputType="number"
                                 android:letterSpacing="0.1"
                                 android:maxLength="1"
-                                android:paddingBottom="@dimen/padding_10_dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:paddingEnd="0dp"
-                                android:paddingLeft="@dimen/padding_5_dp"
+                                android:paddingLeft="@dimen/dimen_5dp"
                                 android:paddingRight="0dp"
-                                android:paddingStart="@dimen/padding_5_dp"
-                                android:paddingTop="@dimen/padding_10_dp"
+                                android:paddingStart="@dimen/dimen_5dp"
+                                android:paddingTop="@dimen/dimen_10dp"
                                 android:textColor="@color/edit_text_login_color"
                                 android:textColorHint="@color/edit_text_gray_background"
-                                android:textSize="@dimen/font_size_16sp" />
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_10_dp"
+                            android:layout_margin="@dimen/dimen_10dp"
 
                             android:layout_weight="1">
 
@@ -210,20 +210,20 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/textview_bottom_line_gray"
-                                android:drawablePadding="@dimen/padding_10_dp"
+                                android:drawablePadding="@dimen/dimen_10dp"
                                 android:gravity="center"
                                 android:inputType="number"
                                 android:letterSpacing="0.1"
                                 android:maxLength="1"
-                                android:paddingBottom="@dimen/padding_10_dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
                                 android:paddingEnd="0dp"
-                                android:paddingLeft="@dimen/padding_5_dp"
+                                android:paddingLeft="@dimen/dimen_5dp"
                                 android:paddingRight="0dp"
-                                android:paddingStart="@dimen/padding_5_dp"
-                                android:paddingTop="@dimen/padding_10_dp"
+                                android:paddingStart="@dimen/dimen_5dp"
+                                android:paddingTop="@dimen/dimen_10dp"
                                 android:textColor="@color/edit_text_login_color"
                                 android:textColorHint="@color/edit_text_gray_background"
-                                android:textSize="@dimen/font_size_16sp" />
+                                android:textSize="16sp" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -234,14 +234,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8_dp"
+                    android:layout_marginTop="@dimen/dimen_8dp"
                     android:gravity="center"
                     android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/padding_5_dp"
+                        android:paddingBottom="@dimen/dimen_5dp"
                         android:text="@string/otp_validity_text"
                         android:textColor="#99666666"
                         android:textSize="13sp" />
@@ -250,7 +250,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_40_dp"
+                    android:layout_marginTop="40dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -259,15 +259,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/verify_btn_bg"
-                        android:paddingBottom="@dimen/padding_12_dp"
-                        android:paddingEnd="@dimen/padding_45_dp"
-                        android:paddingLeft="@dimen/padding_45_dp"
-                        android:paddingRight="@dimen/padding_45_dp"
-                        android:paddingStart="@dimen/padding_45_dp"
-                        android:paddingTop="@dimen/padding_12_dp"
+                        android:paddingBottom="@dimen/dimen_12dp"
+                        android:paddingEnd="45dp"
+                        android:paddingLeft="45dp"
+                        android:paddingRight="45dp"
+                        android:paddingStart="45dp"
+                        android:paddingTop="@dimen/dimen_12dp"
                         android:text="@string/verify_text"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/font_size_14sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -275,7 +275,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_30_dp"
+                    android:layout_marginTop="30dp"
                     android:gravity="center"
                     android:visibility="invisible">
 
@@ -293,7 +293,7 @@
                     android:id="@+id/ll_account_sign_up_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_35_dp"
+                    android:layout_marginBottom="@dimen/dimen_35dp"
                     android:layout_marginTop="30dp">
 
                     <LinearLayout
@@ -305,21 +305,21 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/padding_5_dp"
+                            android:paddingTop="@dimen/dimen_5dp"
                             android:text="@string/otp_screen_bottom_text"
                             android:textColor="#666666"
-                            android:textSize="@dimen/font_size_16sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/tv_otp_click_here"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_5_dp"
+                            android:layout_marginLeft="@dimen/dimen_5dp"
                             android:layout_marginStart="5dp"
-                            android:paddingTop="@dimen/padding_5_dp"
+                            android:paddingTop="@dimen/dimen_5dp"
                             android:text="@string/otp_resend_text"
                             android:textColor="#e68923"
-                            android:textSize="@dimen/font_size_16sp" />
+                            android:textSize="16sp" />
                     </LinearLayout>
 
 

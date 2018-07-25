@@ -32,7 +32,7 @@ public class ProjectItemRecyclerAdapter extends RecyclerView.Adapter<ProjectItem
     @Override
     public ProjectItemRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.project_recycler_item, parent, false);
+                .inflate(R.layout.recycler_project_item, parent, false);
 
         return new MyViewHolder(view);
     }

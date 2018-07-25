@@ -2,65 +2,89 @@ package lokavidya.iitb.com.lvcreate.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lokavidya.iitb.com.lvcreate.R;
-import lokavidya.iitb.com.lvcreate.adapter.ProjectListAdapter;
-import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
-import lokavidya.iitb.com.lvcreate.model.Project;
+import lokavidya.iitb.com.lvcreate.fragment.SavedProjectsFragment;
+import lokavidya.iitb.com.lvcreate.fragment.UploadedProjectsFragment;
 
 public class OngoingProjects extends AppCompatActivity {
 
     public Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    RecyclerView projectList;
-    ProjectListAdapter adapter;
-    View rootLayout;
-
-    ProjectDb mDb;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ongoing_projects);
-        Toolbar toolbar = findViewById(R.id.toolbar2);
+        Toolbar toolbar = findViewById(R.id.ongoing_toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Ongoing Projects ");
+        getSupportActionBar().setTitle("Ongoing Projects");
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        projectList = findViewById(R.id.projectlist_recycler);
+        viewPager = findViewById(R.id.ongoing_viewpager);
+        setupViewPager(viewPager);
 
-        // Get database instance
-        mDb = ProjectDb.getsInstance(getApplicationContext());
+        tabLayout = findViewById(R.id.ongoing_tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
-        List<Project> data = mDb.projectDao().loadAllProject();
+    }
 
-        adapter = new ProjectListAdapter(OngoingProjects.this, data);
-        projectList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        projectList.setAdapter(adapter);
-
-        adapter.notifyDataSetChanged();
-
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new SavedProjectsFragment(), "Saved");
+        adapter.addFragment(new UploadedProjectsFragment(), "Uploaded");
+        viewPager.setAdapter(adapter);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 }
 

@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="22dp"
         android:text="Mumbai, Maharashtra"
-        android:textSize="@dimen/font_size_14sp"
+        android:textSize="14sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="26dp"
 

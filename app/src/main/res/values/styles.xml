@@ -15,6 +15,23 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <!-- Styles for managing TabLayouts -->
+    <style name="CustomTabLayout" parent="CustomTabLayout.Base">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+    </style>
+
+    <style name="CustomTabLayout.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@android:color/black</item>
@@ -56,10 +73,10 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxLines">2</item>
-        <item name="android:paddingEnd">@dimen/padding_12_dp</item>
+        <item name="android:paddingEnd">@dimen/dimen_12dp</item>
         <item name="android:paddingTop">6dp</item>
-        <item name="android:paddingStart">@dimen/padding_12_dp</item>
-        <item name="android:paddingBottom">@dimen/padding_12_dp</item>
+        <item name="android:paddingStart">@dimen/dimen_12dp</item>
+        <item name="android:paddingBottom">@dimen/dimen_12dp</item>
     </style>
 
     <!-- style for Text inside Order and EditImagedialog box -->
@@ -96,8 +113,10 @@
         <item name="color_tick">@android:color/white</item>
     </style>
 
-    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="RoundAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
     </style>
+
+    <style name="SizeProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal"></style>
 
 </resources>
