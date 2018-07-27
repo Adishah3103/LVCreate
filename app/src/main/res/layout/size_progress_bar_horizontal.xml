@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <!--<item android:id="@android:id/background">
+        <shape>
+            &lt;!&ndash;<corners android:radius="5dip" />&ndash;&gt;
+            <gradient
+                android:startColor="#779d9e9d"
+                android:centerColor="#995a5d5a"
+                android:centerY="0.75"
+                android:endColor="#ff747674"
+                android:angle="270"
+                />
+        </shape>
+    </item>-->
+    <item
+        android:id="@android:id/background"
+        android:gravity="center_vertical|fill_horizontal">
+
+        <shape
+            android:shape="rectangle"
+            android:tint="?attr/colorControlNormal">
+            <!--<corners android:radius="8dp"/>-->
+            <size android:height="40dp" />
+
+            <solid android:color="#ffffff" />
+        </shape>
+    </item>
+
+    <item
+        android:id="@android:id/secondaryProgress"
+        android:gravity="center_vertical|fill_horizontal">
+
+        <scale android:scaleWidth="100%">
+
+            <shape
+                android:shape="rectangle"
+                android:tint="?attr/colorControlHighlight">
+                <!--<corners android:radius="8dp"/>-->
+                <size android:height="20dp" />
+
+                <solid android:color="#90caf9" />
+            </shape>
+        </scale>
+    </item>
+
+    <!--<item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <corners android:radius="5dip" />
+                <gradient
+                    android:startColor="#80ffd300"
+                    android:centerColor="#80ffb600"
+                    android:centerY="0.75"
+                    android:endColor="#a0ffcb00"
+                    android:angle="270"
+                    />
+            </shape>
+        </clip>
+    </item>-->
+    <item
+        android:id="@android:id/progress"
+        android:gravity="center_vertical|fill_horizontal">
+
+        <scale android:scaleWidth="100%">
+
+            <shape
+                android:shape="rectangle"
+                android:tint="?attr/colorControlActivated">
+                <!--<corners android:radius="8dp"/>-->
+                <size android:height="100dp" />
+
+                <solid android:color="@color/colorAccent" />
+            </shape>
+        </scale>
+    </item>
+    <!--<item
+        android:id="@android:id/progress"
+        >
+        <clip>
+            <shape>
+                &lt;!&ndash;<corners
+                    android:radius="5dip" />&ndash;&gt;
+                <gradient
+                    android:startColor="#33FF33"
+                    android:endColor="#008000"
+                    android:angle="270" />
+            </shape>
+        </clip>
+    </item>-->
+</layer-list>
