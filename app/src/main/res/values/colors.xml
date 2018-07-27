@@ -10,4 +10,6 @@
 
     <color name="edit_text_gray_background">#66c82c1f</color>
     <color name="edit_text_login_color">#666666</color>
+
+    <color name="text_gray">#757575</color>
 </resources>
