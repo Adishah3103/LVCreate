@@ -20,6 +20,8 @@
             android:id="@+id/navigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:elevation="16dp"
+            android:background="@android:color/white"
             app:itemIconTint="@color/bottom_nav_color"
             app:itemTextColor="@color/bottom_nav_color"
             app:menu="@menu/bottom_navigation" />
