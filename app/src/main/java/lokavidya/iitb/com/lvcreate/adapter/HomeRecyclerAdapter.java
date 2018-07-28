@@ -37,7 +37,6 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
         HomeItem currentItem = data.get(position);
 
         holder.title.setText(currentItem.getItemTitle());
-        holder.desc.setText(currentItem.getItemDesc());
 
     }
 
@@ -49,14 +48,12 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
-        TextView desc;
         ImageView img;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.home_item_title);
-            desc = itemView.findViewById(R.id.home_item_desc);
             img = itemView.findViewById(R.id.home_item_img);
 
         }
