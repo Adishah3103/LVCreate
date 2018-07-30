@@ -133,7 +133,8 @@ public class CreateProjectActivity extends AppCompatActivity {
                             00,
                             00,
                             null,
-                            " "
+                            " ",
+                            false
                     );
 
                     projectId = mDb.projectDao().insertItem(currentProject);

@@ -39,18 +39,21 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private List<Project> data;
     private Context context;
-    Project currentItem;
-    String fileUrl = null;
-    ProgressDialog progressDialog;
-    ProjectDb mDb;
-    final int IMG_THUMB_WIDTH = 80;
-    final int IMG_THUMB_HEIGHT = 80;
-    Bitmap imageThumb;
+    private final int IMG_THUMB_WIDTH = 80;
+    private final int IMG_THUMB_HEIGHT = 80;
+    // tabId = 1 (for Saved), tabId = 2 (for Uploaded)
+    Integer tabId;
+    private ProjectDb mDb;
+    private Project currentItem;
+    private String fileUrl = null;
+    private ProgressDialog progressDialog;
+    private Bitmap imageThumb;
 
-    public ProjectListAdapter(Context context, List<Project> data) {
+    public ProjectListAdapter(Context context, List<Project> data, Integer tabId) {
 
         this.context = context;
         this.data = data;
+        this.tabId = tabId;
 
     }
 
@@ -68,191 +71,217 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         currentItem = data.get(position);
 
-        holder.projectName.setText(currentItem.getTitle());
+        if ((!currentItem.getIsUploaded() && tabId == 1) ||
+                (currentItem.getIsUploaded() && tabId == 2)) {
 
-        if (!currentItem.getFirstFileThumb().equals(" ")) {
+            if (tabId == 2) {
+                holder.projectUpload.setText("Uploaded");
+                holder.projectUpload.setClickable(false);
+                holder.projectUpload.setEnabled(false);
+            }
 
-            // Create thumbnail from image path
-            imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
-                    currentItem.getFirstFileThumb()),
-                    IMG_THUMB_WIDTH,
-                    IMG_THUMB_HEIGHT);
+            holder.projectName.setText(currentItem.getTitle());
 
-            Glide.with(context)
-                    .load(imageThumb)
-                    .into(holder.projectThumbnail);
+            if (!currentItem.getFirstFileThumb().equals(" ")) {
 
-        }
+                // Create thumbnail from image path
+                imageThumb = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(
+                        currentItem.getFirstFileThumb()),
+                        IMG_THUMB_WIDTH,
+                        IMG_THUMB_HEIGHT);
 
-        if (!currentItem.getDesc().equals(" ")) {
-            holder.prjectDesc.setText(currentItem.getDesc());
-        }
+                Glide.with(context)
+                        .load(imageThumb)
+                        .into(holder.projectThumbnail);
 
-        // Store the tags of project in buttons
-        holder.itemView.setTag(R.id.item_number, position);
-        holder.itemView.setTag(R.id.project_id, currentItem.getId());
-        holder.itemView.setTag(R.id.project_title, currentItem.getTitle());
+            }
 
-        holder.projectUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            if (!currentItem.getDesc().equals(" ")) {
+                holder.projectDesc.setText(currentItem.getDesc());
+            }
 
+            // Store the tags of project in buttons
+            holder.itemView.setTag(R.id.item_number, position);
+            holder.itemView.setTag(R.id.project_id, currentItem.getId());
+            holder.itemView.setTag(R.id.project_title, currentItem.getTitle());
 
-                if (progressDialog != null && progressDialog.isShowing())
-                    progressDialog.dismiss();
-                progressDialog = new ProgressDialog(context);
-                progressDialog.setMessage("Uploading Project...");
-                progressDialog.setIndeterminate(true);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
+            holder.projectUpload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        // Add your zipping code here
-                        String projectFolderPath = context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
-                                .getAbsolutePath() + "/" + currentItem.getTitle() + "/";
-                        String zipPath = context.getExternalFilesDir(Master.ALL_ZIPS_FOLDER)
-                                .getAbsolutePath() + "/" + currentItem.getTitle() + ".zip";
-
-                        Log.d("AAD", "Project Folder path :" + projectFolderPath);
-                        Log.d("AAD", "Zip path :" + zipPath);
-
-                        ManageZip mz = new ManageZip();
-                        mz.zipFileAtPath(projectFolderPath, zipPath);
-
-                        Log.d("AAD", "Zipping done");
-
-                        /**
-                         * Code to upload the zip
-                         * **/
-                        Log.d("AAD", "Starting uploading");
-
-                        // This is the input path for the .zip you created
-                        //Uri baseUri = Uri.parse(String.valueOf(Environment.getExternalStorageDirectory()) + "/Sounds.zip");
-
-                        Uri baseUri = Uri.parse(zipPath);
-                        try {
-                            // We get Url in fileUrl
-                            fileUrl = CloudStorage.uploadFile(context,  // Get context here
-                                    "lvcms-development-testing", "zips/" +
-                                            currentItem.getTitle() + ".zip",  // Name of the .zip on the Bucket
-                                    baseUri);
-
-                            Log.i("Upload", fileUrl);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
+                    if (progressDialog != null && progressDialog.isShowing())
                         progressDialog.dismiss();
+                    progressDialog = new ProgressDialog(context);
+                    progressDialog.setMessage("Uploading Project...");
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
 
-                        Activity activity = (Activity) context;
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.RoundAlertDialog);
-                                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                View mView = inflater.inflate(R.layout.layout_request_sent, null);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
 
-                                Button okButton = mView.findViewById(R.id.btn_ok_req_sent);
-                                mBuilder.setView(mView);
-                                final AlertDialog alertDialog = mBuilder.create();
+                            // Add your zipping code here
+                            String projectFolderPath = context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
+                                    .getAbsolutePath() + "/" + currentItem.getTitle() + "/";
+                            String zipPath = context.getExternalFilesDir(Master.ALL_ZIPS_FOLDER)
+                                    .getAbsolutePath() + "/" + currentItem.getTitle() + ".zip";
 
-                                okButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        alertDialog.dismiss();
-                                    }
-                                });
+                            Log.d("AAD", "Project Folder path :" + projectFolderPath);
+                            Log.d("AAD", "Zip path :" + zipPath);
 
-                                alertDialog.show();
+                            ManageZip mz = new ManageZip();
+                            mz.zipFileAtPath(projectFolderPath, zipPath);
+
+                            Log.d("AAD", "Zipping done");
+
+                            /**
+                             * Code to upload the zip
+                             * **/
+                            Log.d("AAD", "Starting uploading");
+
+                            // This is the input path for the .zip you created
+                            //Uri baseUri = Uri.parse(String.valueOf(Environment.getExternalStorageDirectory()) + "/Sounds.zip");
+
+                            Uri baseUri = Uri.parse(zipPath);
+                            try {
+                                // We get Url in fileUrl
+                                fileUrl = CloudStorage.uploadFile(context,  // Get context here
+                                        "lvcms-development-testing", "zips/" +
+                                                currentItem.getTitle() + ".zip",  // Name of the .zip on the Bucket
+                                        baseUri);
+
+                                Log.i("Upload", fileUrl);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        });
 
-                    }
-
-                });
-
-            }
-        });
-
-        holder.projectDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Delete project?");
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        if (progressDialog != null && progressDialog.isShowing())
                             progressDialog.dismiss();
-                        progressDialog = new ProgressDialog(context);
-                        progressDialog.setMessage("Uploading Project..");
-                        progressDialog.setIndeterminate(true);
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();
 
-                        // User clicked the "Delete" button, so delete the project.
-                        removeAt((Integer) holder.itemView.getTag(R.id.item_number));
 
-                        mDb = ProjectDb.getsInstance(context);
+                            mDb = ProjectDb.getsInstance(context);
 
-                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                            @Override
-                            public void run() {
+                            currentItem = mDb.projectDao().loadItemById((Long) holder.itemView.getTag(R.id.project_id));
+                            currentItem.setIsUploaded(true);
 
-                                // Delete the Project entry
-                                mDb.projectDao()
-                                        .deleteItemById((Long) holder.itemView.getTag(R.id.project_id));
-                                // Delete all the items in it
-                                mDb.projectItemDao()
-                                        .deleteItemsByProjectId((Long) holder.itemView.getTag(R.id.project_id));
+                            mDb.projectDao().updateItem(currentItem);
 
-                                ManageFolder.removeFolder(context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
-                                        .getAbsolutePath() + "/"
-                                        + holder.projectDelete.getTag(R.id.project_title));
+                            data = mDb.projectDao().loadAllProject();
 
-                                progressDialog.dismiss();
-                            }
+                            Activity activity = (Activity) context;
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(context, R.style.RoundAlertDialog);
+                                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                    View mView = inflater.inflate(R.layout.layout_request_sent, null);
 
-                        });
+                                    Button okButton = mView.findViewById(R.id.btn_ok_req_sent);
+                                    mBuilder.setView(mView);
+                                    final AlertDialog alertDialog = mBuilder.create();
 
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked the "Cancel" button, so dismiss the dialog
-                        // and continue editing the item.
-                        if (dialog != null) {
-                            dialog.dismiss();
+                                    okButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            alertDialog.dismiss();
+                                        }
+                                    });
+
+                                    alertDialog.show();
+
+                                    notifyDataSetChanged();
+
+                                }
+                            });
+
                         }
-                    }
-                });
 
-                // Create and show the AlertDialog
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                    });
 
-            }
-        });
+                }
+            });
 
-        holder.rootLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.projectDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                Intent openProject = new Intent(context, CreateProjectActivity.class);
-                openProject.putExtra("isProjectExist", true);
-                openProject.putExtra("projectId",
-                        (Long) holder.itemView.getTag(R.id.project_id));
-                openProject.putExtra("projectTitle",
-                        String.valueOf(holder.itemView.getTag(R.id.project_title)));
-                context.startActivity(openProject);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Delete project?");
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
 
-            }
-        });
+                            if (progressDialog != null && progressDialog.isShowing())
+                                progressDialog.dismiss();
+                            progressDialog = new ProgressDialog(context);
+                            progressDialog.setMessage("Uploading Project..");
+                            progressDialog.setIndeterminate(true);
+                            progressDialog.setCancelable(false);
+                            progressDialog.show();
+
+                            // User clicked the "Delete" button, so delete the project.
+                            removeAt((Integer) holder.itemView.getTag(R.id.item_number));
+
+                            mDb = ProjectDb.getsInstance(context);
+
+                            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    // Delete the Project entry
+                                    mDb.projectDao()
+                                            .deleteItemById((Long) holder.itemView.getTag(R.id.project_id));
+                                    // Delete all the items in it
+                                    mDb.projectItemDao()
+                                            .deleteItemsByProjectId((Long) holder.itemView.getTag(R.id.project_id));
+
+                                    ManageFolder.removeFolder(context.getExternalFilesDir(Master.ALL_PROJECTS_FOLDER)
+                                            .getAbsolutePath() + "/"
+                                            + holder.projectDelete.getTag(R.id.project_title));
+
+                                    progressDialog.dismiss();
+                                }
+
+                            });
+
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked the "Cancel" button, so dismiss the dialog
+                            // and continue editing the item.
+                            if (dialog != null) {
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+
+                    // Create and show the AlertDialog
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                }
+            });
+
+            holder.rootLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent openProject = new Intent(context, CreateProjectActivity.class);
+                    openProject.putExtra("isProjectExist", true);
+                    openProject.putExtra("projectId",
+                            (Long) holder.itemView.getTag(R.id.project_id));
+                    openProject.putExtra("projectTitle",
+                            String.valueOf(holder.itemView.getTag(R.id.project_title)));
+                    context.startActivity(openProject);
+
+                }
+            });
+
+        } else {
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setLayoutParams(new ViewGroup.LayoutParams(0, 1));
+        }
 
     }
 
@@ -271,7 +300,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         CardView rootLayout;
         TextView projectName;
-        TextView prjectDesc;
+        TextView projectDesc;
         ImageView projectThumbnail;
         Button projectUpload;
         Button projectDelete;
@@ -281,7 +310,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
             rootLayout = itemView.findViewById(R.id.root_card_view);
             projectName = itemView.findViewById(R.id.project_name);
-            prjectDesc = itemView.findViewById(R.id.project_desc);
+            projectDesc = itemView.findViewById(R.id.project_desc);
             projectThumbnail = itemView.findViewById(R.id.img_project_thumb);
             projectUpload = itemView.findViewById(R.id.btn_upload_project);
             projectDelete = itemView.findViewById(R.id.btn_delete_project);

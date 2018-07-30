@@ -36,4 +36,7 @@ public interface ProjectDao {
     @Query("DELETE FROM project_table WHERE _id = :id")
     void deleteItemById(long id);
 
+    @Query("SELECT * FROM project_table WHERE is_uploaded = :isUploaded ORDER BY _id ASC")
+    List<Project> loadByBoolean(Boolean isUploaded);
+
 }

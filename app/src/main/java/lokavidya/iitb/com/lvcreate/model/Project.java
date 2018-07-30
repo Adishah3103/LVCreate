@@ -17,10 +17,10 @@ public class Project {
     private String desc;
 
     @ColumnInfo(name = "channel_id")
-    private int channedId;
+    private int channelId;
 
     @ColumnInfo(name = "sub_channel_id")
-    private int subChannedId;
+    private int subChannelId;
 
     @ColumnInfo(name = "project_lang")
     private String projectLanguage;
@@ -28,24 +28,29 @@ public class Project {
     @ColumnInfo(name = "first_file_thumb")
     private String firstFileThumb;
 
+    @ColumnInfo(name = "is_uploaded")
+    private Boolean isUploaded;
+
     @Ignore
-    public Project(long id, String title, String desc, int channedId, int subChannedId, String projectLanguage, String firstFileThumb) {
+    public Project(long id, String title, String desc, int channelId, int subChannelId, String projectLanguage, String firstFileThumb, Boolean isUploaded) {
         this.id = id;
         this.title = title;
         this.desc = desc;
-        this.channedId = channedId;
-        this.subChannedId = subChannedId;
+        this.channelId = channelId;
+        this.subChannelId = subChannelId;
         this.projectLanguage = projectLanguage;
         this.firstFileThumb = firstFileThumb;
+        this.isUploaded = isUploaded;
     }
 
-    public Project(String title, String desc, int channedId, int subChannedId, String projectLanguage, String firstFileThumb) {
+    public Project(String title, String desc, int channelId, int subChannelId, String projectLanguage, String firstFileThumb, Boolean isUploaded) {
         this.title = title;
         this.desc = desc;
-        this.channedId = channedId;
-        this.subChannedId = subChannedId;
+        this.channelId = channelId;
+        this.subChannelId = subChannelId;
         this.projectLanguage = projectLanguage;
         this.firstFileThumb = firstFileThumb;
+        this.isUploaded = isUploaded;
     }
 
     public long getId() {
@@ -72,20 +77,20 @@ public class Project {
         this.desc = desc;
     }
 
-    public int getChannedId() {
-        return channedId;
+    public int getChannelId() {
+        return channelId;
     }
 
-    public void setChannedId(int channedId) {
-        this.channedId = channedId;
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
     }
 
-    public int getSubChannedId() {
-        return subChannedId;
+    public int getSubChannelId() {
+        return subChannelId;
     }
 
-    public void setSubChannedId(int subChannedId) {
-        this.subChannedId = subChannedId;
+    public void setSubChannelId(int subChannelId) {
+        this.subChannelId = subChannelId;
     }
 
     public String getProjectLanguage() {
@@ -102,5 +107,13 @@ public class Project {
 
     public void setFirstFileThumb(String firstFileThumb) {
         this.firstFileThumb = firstFileThumb;
+    }
+
+    public Boolean getIsUploaded() {
+        return isUploaded;
+    }
+
+    public void setIsUploaded(Boolean uploaded) {
+        isUploaded = uploaded;
     }
 }

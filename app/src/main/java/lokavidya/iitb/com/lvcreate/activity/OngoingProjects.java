@@ -42,7 +42,6 @@ public class OngoingProjects extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.ongoing_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     private void setupViewPager(ViewPager viewPager) {

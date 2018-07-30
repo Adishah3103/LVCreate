@@ -64,7 +64,9 @@ public class SavedProjectsFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter = new ProjectListAdapter(getActivity(), data);
+
+                        // tabId = 1 (for Saved), tabId = 2 (for Uploaded)
+                        adapter = new ProjectListAdapter(getActivity(), data, 1);
                         savedProjectList.setLayoutManager(new LinearLayoutManager((getActivity().getApplicationContext())));
                         savedProjectList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
