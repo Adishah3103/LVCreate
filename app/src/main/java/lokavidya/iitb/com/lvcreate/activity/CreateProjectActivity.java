@@ -38,6 +38,7 @@ import droidninja.filepicker.FilePickerConst;
 import lokavidya.iitb.com.lvcreate.R;
 import lokavidya.iitb.com.lvcreate.adapter.ProjectItemRecyclerAdapter;
 import lokavidya.iitb.com.lvcreate.dbUtils.ProjectDb;
+import lokavidya.iitb.com.lvcreate.fileManagement.FileDataRetrieval;
 import lokavidya.iitb.com.lvcreate.fileManagement.ManageFolder;
 import lokavidya.iitb.com.lvcreate.model.Project;
 import lokavidya.iitb.com.lvcreate.model.ProjectItem;
@@ -65,6 +66,8 @@ public class CreateProjectActivity extends AppCompatActivity {
     Boolean isProjectExist;
     long projectId;
     ProjectDb mDb;
+    TextView projectSizeText;
+    public static long currentProjectSize = 0;
 
     //permission status https://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
@@ -101,6 +104,8 @@ public class CreateProjectActivity extends AppCompatActivity {
         // Set up Toolbar
         setSupportActionBar(toolBar);
         getSupportActionBar().setTitle(title);
+
+        projectSizeText = (TextView) findViewById(R.id.project_size_text_view);
 
         // Set up RecyclerView
         adapter = new ProjectItemRecyclerAdapter(list);
@@ -389,6 +394,18 @@ public class CreateProjectActivity extends AppCompatActivity {
             ProjectItem lastImage = list.get(list.size() - 1);
             lastImage.setItemAudioPath(audioPaths.get(audioPaths.size() - 1));
 
+            //db entry file/audio size, duration
+            lastImage.setItemFileSize(FileDataRetrieval
+                    .getFileSizeInKB(lastImage.getItemFilePath()));
+            lastImage.setItemAudioFileSize(FileDataRetrieval
+                    .getFileSizeInKB(lastImage.getItemAudioPath()));
+            lastImage.setItemFileDuration(FileDataRetrieval
+                    .getFileDurationInSeconds(lastImage.getItemAudioPath()));
+
+            currentProjectSize += lastImage.getItemFileSize() + lastImage.getItemAudioFileSize();
+            projectSizeText.setText("Size: " + currentProjectSize);
+
+
             // Update the adapter to reflect the changes
             adapter.notifyDataSetChanged();
         }
@@ -401,7 +418,7 @@ public class CreateProjectActivity extends AppCompatActivity {
             for (int i = 0; i < videoPaths.size(); i++) {
                 Log.i("Video Paths", videoPaths.get(i));
 
-                list.add(new ProjectItem(
+                ProjectItem tempVideoProjectItem = new ProjectItem(
                         0,
                         videoPaths.get(i),
                         00,
@@ -410,7 +427,18 @@ public class CreateProjectActivity extends AppCompatActivity {
                         00,
                         00,
                         1,
-                        true));
+                        true);
+
+                list.add(tempVideoProjectItem);
+
+                //db entry file/audio size, duration
+                tempVideoProjectItem.setItemFileSize(FileDataRetrieval
+                        .getFileSizeInKB(tempVideoProjectItem.getItemFilePath()));
+                tempVideoProjectItem.setItemFileDuration(FileDataRetrieval
+                        .getFileDurationInSeconds(tempVideoProjectItem.getItemFilePath()));
+
+                currentProjectSize += tempVideoProjectItem.getItemFileSize();
+                projectSizeText.setText("Size: " + currentProjectSize);
 
                 // Update the adapter to reflect the changes
                 adapter.notifyDataSetChanged();
@@ -429,7 +457,7 @@ public class CreateProjectActivity extends AppCompatActivity {
 
                         if (!isProjectExist) {
 
-                            //delete the empty folders now as discarded
+                            //delete the empty folders now as project discarded
                             ManageFolder.removeFolder(getExternalFilesDir(
                                     Master.ALL_PROJECTS_FOLDER).getAbsolutePath() + "/" + title + "/");
                             mDb.projectDao().deleteItemById(projectId);

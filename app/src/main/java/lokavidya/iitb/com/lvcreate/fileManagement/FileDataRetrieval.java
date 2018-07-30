@@ -40,16 +40,16 @@ public class FileDataRetrieval {
         double g = sizeInKB / 1048576.0;
         double t = sizeInKB / 1073741824.0;
 
-        DecimalFormat dec = new DecimalFormat("0.00");
+        DecimalFormat dec = new DecimalFormat("0.0");
 
         if (t > 1) {
-            displaySize = dec.format(t).concat("TB");
+            displaySize = dec.format(t).concat(" TB");
         } else if (g > 1) {
-            displaySize = dec.format(g).concat("GB");
+            displaySize = dec.format(g).concat(" GB");
         } else if (m > 1) {
-            displaySize = dec.format(m).concat("MB");
+            displaySize = dec.format(m).concat(" MB");
         } else {
-            displaySize = dec.format(sizeInKB).concat("KB");
+            displaySize = dec.format(sizeInKB).concat(" KB");
         }
 
         return displaySize;
