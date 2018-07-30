@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="140dp"
     app:cardCornerRadius="7dp"
-    card_view:cardElevation="5dp"
+    card_view:cardElevation="3dp"
     card_view:cardUseCompatPadding="true"
     card_view:layout_constraintHorizontal_bias="0.0"
     tools:layout_editor_absoluteX="12dp"

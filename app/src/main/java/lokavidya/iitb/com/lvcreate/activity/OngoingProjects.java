@@ -1,5 +1,6 @@
 package lokavidya.iitb.com.lvcreate.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -42,7 +43,8 @@ public class OngoingProjects extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.ongoing_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
+        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
+        tabLayout.setTabTextColors(Color.parseColor("#666666"),Color.parseColor("#F57C00"));
     }
 
     private void setupViewPager(ViewPager viewPager) {
